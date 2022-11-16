@@ -42,6 +42,11 @@
             <artifactId>itextpdf</artifactId>
             <version>5.5.13.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.kennedyoliveira</groupId>
+            <artifactId>pastebin4j</artifactId>
+            <version>1.2.1</version>
+        </dependency>
     </dependencies>
     <name>IMS</name>
     <build>
