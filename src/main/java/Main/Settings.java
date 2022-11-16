@@ -4,6 +4,11 @@
  */
 package Main;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  *
  * @author Anupama
@@ -17,12 +22,12 @@ public class Settings extends javax.swing.JFrame {
         initComponents();
     }
 
-    
-    private void closeOption(){
+    private void closeOption() {
         Welcome welcome = new Welcome();
         welcome.setVisible(true);
         this.dispose();
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -154,8 +159,8 @@ public class Settings extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
