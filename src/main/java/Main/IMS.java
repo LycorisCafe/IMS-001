@@ -12,6 +12,7 @@ package Main;
 public class IMS {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Welcome welcome = new Welcome();
+        welcome.setVisible(true);
     }
 }

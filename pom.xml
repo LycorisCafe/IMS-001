@@ -32,6 +32,16 @@
             <artifactId>core</artifactId>
             <version>3.5.1</version>
         </dependency>
+         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.3</version>
+        </dependency>
     </dependencies>
     <name>IMS</name>
     <build>
@@ -65,7 +75,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                HotspotMaker.HotspotMaker
+                                Main.IMS
                             </mainClass>
                         </manifest>
                     </archive>
