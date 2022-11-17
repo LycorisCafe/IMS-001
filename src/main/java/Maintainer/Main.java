@@ -1,8 +1,10 @@
 package Maintainer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
@@ -11,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import javax.swing.JOptionPane;
+import java.io.FileReader;
 
 /**
  *
@@ -21,23 +24,32 @@ import javax.swing.JOptionPane;
 
 public class Main extends javax.swing.JFrame {
 
-    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
+    
     
     public Main() {
         initComponents();
         getData();
         
     }
-    
+    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
     private void getData() {
-        try ( Stream<String> lines = Files.lines(Paths.get(path))) {
-            //String defssid = lines.skip(0).findFirst().get();
-            //jTextField3.setText(defssid);
-            groupID.setText(lines.skip(0).findFirst().get());
-            botAPI.setText(lines.skip(1).findFirst().get());
-            //System.out.println();
-        } catch (IOException ex) {
+        File f = new File("C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc");
+        if(f.exists())
+        {
+            try ( Stream<String> lines = Files.lines(Paths.get(path))) {
+                groupID.setText(lines.skip(0).findFirst().get());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, ex);
+            }
+
+            try ( Stream<String> lines2 = Files.lines(Paths.get(path))){
+                botAPI.setText(lines2.skip(1).findFirst().get());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e);
+            }
         }
+        
+        
 
     }
     
@@ -131,12 +143,6 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
         JOptionPane.showMessageDialog(this, "Informations Saved!");
-
-        
-
-    
-
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
 /**
