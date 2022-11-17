@@ -20,9 +20,6 @@ import java.io.FileReader;
  * @author Anupama
  */
 public class Main extends javax.swing.JFrame {
-
-<<<<<<< HEAD
-    
     
     public Main() {
         initComponents();
