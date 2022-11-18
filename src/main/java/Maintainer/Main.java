@@ -20,15 +20,14 @@ import java.io.FileReader;
  * @author Anupama
  */
 public class Main extends javax.swing.JFrame {
-
-<<<<<<< HEAD
-    
+   
     
     public Main() {
         initComponents();
         getData();
         
     }
+    
     String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
     private void getData() {
         File f = new File("C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc");
@@ -46,39 +45,8 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, e);
             }
         }
-        
-        
-=======
-    public Main() {
-        initComponents();
-        getData();
->>>>>>> 94082d908a348aabeae08a3c68380be49c31c2f3
-
     }
-
-    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
-
-    private void getData() {
-//        try ( Stream<String> lines = Files.lines(Paths.get(path))) {
-//            //String defssid = lines.skip(0).findFirst().get();
-//            //jTextField3.setText(defssid);
-//            groupID.setText(lines.skip(0).findFirst().get());
-//            botAPI.setText(lines.skip(1).findFirst().get());
-//            //System.out.println();
-//        } catch (IOException ex) {
-//        }
-        try {
-            BufferedReader b = new BufferedReader(new FileReader(new File("C:\\Users\\Anupama\\Desktop\\aaa.txt")));
-            System.out.println(b.readLine());
-//        b.readLine();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,11 +136,6 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
         JOptionPane.showMessageDialog(this, "Informations Saved!");
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 94082d908a348aabeae08a3c68380be49c31c2f3
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
