@@ -1,8 +1,10 @@
 package Maintainer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
@@ -16,31 +18,36 @@ import javax.swing.JOptionPane;
  *
  * @author Anupama
  */
-
-
-
 public class Main extends javax.swing.JFrame {
 
-    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
-    
     public Main() {
         initComponents();
         getData();
-        
-    }
-    
-    private void getData() {
-        try ( Stream<String> lines = Files.lines(Paths.get(path))) {
-            //String defssid = lines.skip(0).findFirst().get();
-            //jTextField3.setText(defssid);
-            groupID.setText(lines.skip(0).findFirst().get());
-            botAPI.setText(lines.skip(1).findFirst().get());
-            //System.out.println();
-        } catch (IOException ex) {
-        }
 
     }
-    
+
+    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
+
+    private void getData() {
+//        try ( Stream<String> lines = Files.lines(Paths.get(path))) {
+//            //String defssid = lines.skip(0).findFirst().get();
+//            //jTextField3.setText(defssid);
+//            groupID.setText(lines.skip(0).findFirst().get());
+//            botAPI.setText(lines.skip(1).findFirst().get());
+//            //System.out.println();
+//        } catch (IOException ex) {
+//        }
+        try {
+            BufferedReader b = new BufferedReader(new FileReader(new File("C:\\Users\\Anupama\\Desktop\\aaa.txt")));
+            System.out.println(b.readLine());
+//        b.readLine();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -132,17 +139,13 @@ public class Main extends javax.swing.JFrame {
         }
         JOptionPane.showMessageDialog(this, "Informations Saved!");
 
-        
-
-    
-
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
-/**
- * @param args the command line arguments
- */
-public static void main(String args[]) {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -154,27 +157,23 @@ public static void main(String args[]) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class  
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
