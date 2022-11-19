@@ -2,3 +2,5 @@ Sinhala INetFont
 Bradley Hand ITC
 Segoe UI
 Consolas
+Swis721 Ex BT
+Copperplate Gothic Light

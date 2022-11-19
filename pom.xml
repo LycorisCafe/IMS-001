@@ -100,7 +100,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
                             <mainClass>
-                                Main.IMS
+                                MainPkg.IMS
                             </mainClass>
                         </manifest>
                     </archive>
