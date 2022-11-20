@@ -147,7 +147,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Group ID :"));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Help Desk Group ID :"));
 
         groupID.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         groupID.setHorizontalAlignment(javax.swing.JTextField.CENTER);

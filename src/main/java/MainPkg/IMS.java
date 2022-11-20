@@ -14,6 +14,10 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.ComputerSystem;
+import oshi.hardware.HardwareAbstractionLayer;
 
 /**
  *
@@ -69,7 +73,25 @@ public class IMS {
             }
         }
 
-        // ====================== Load Main Interface ==========================
+//        // ========================= Check License =============================
+//        SystemInfo systemInfo = new SystemInfo();
+//        HardwareAbstractionLayer hardware = systemInfo.getHardware();
+//        //get processor id
+//        CentralProcessor processorx = hardware.getProcessor();
+//        CentralProcessor.ProcessorIdentifier processorIdentifier = processorx.getProcessorIdentifier();
+//        String processor = processorIdentifier.getProcessorID();
+//        //get baseboard id
+//        ComputerSystem comsys = hardware.getComputerSystem();
+//        String baseboard = comsys.getBaseboard().getSerialNumber();
+//        if (processor.equals("BFEBFBFF0001067A") && baseboard.equals("LXEB40C0409070D4442000        ")) {
+//            Welcome welcome = new Welcome();
+//            welcome.setVisible(true);
+//        } else {
+//            AuthError auth = new AuthError();
+//            auth.setVisible(true);
+//        }
+
+        // =================== Load Main Interface (DEMO) ======================
         Welcome welcome = new Welcome();
         welcome.setVisible(true);
     }
