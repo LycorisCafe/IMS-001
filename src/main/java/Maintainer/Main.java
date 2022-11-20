@@ -301,7 +301,7 @@ public class Main extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-        JOptionPane.showMessageDialog(this, "Information Saved!");
+        JOptionPane.showMessageDialog(this, "Success! Please restart the application to make changes!");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
