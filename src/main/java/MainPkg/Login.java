@@ -4,6 +4,12 @@
  */
 package MainPkg;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Anupama
@@ -70,6 +76,11 @@ public class Login extends javax.swing.JFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton1.setText("Login");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Reset");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +203,7 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // clear all the text fields
         user.setText("");
         password.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -203,6 +214,95 @@ public class Login extends javax.swing.JFrame {
         welcome.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // featch all the login data form database
+        String type = jComboBox1.getSelectedItem().toString();
+        String uname = user.getText();
+        String pswd = String.valueOf(password.getPassword());
+        
+        // database connection
+        Connection conn = Helper.DB.connect();
+        
+        /*
+        * db name - ims
+        * table name - login
+        * rows - id, user, pass, type, lastLogin 
+        */
+        
+        if("Administrator".equals(type))
+        {
+            try 
+            {
+                Statement stmt = (Statement) conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT user FROM login where id='1'");
+
+                while(rs.next())
+                {
+                    String usr = rs.getString("user");
+                    if(uname.equals(usr))
+                    {
+                        ResultSet rs2 = stmt.executeQuery("SELECT pass FROM login where id='1'");
+                        while(rs2.next())
+                        {
+                            String psw = rs2.getString("pass");
+                            if(pswd.equals(psw))
+                            {
+                                this.dispose();
+                                Administrator.Main admin = new Administrator.Main();
+                                admin.setVisible(true);
+                            }
+                            else
+                                JOptionPane.showMessageDialog(this, "Invalid password for '"+type+"'!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    else
+                    JOptionPane.showMessageDialog(this, "Invalid Username", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } 
+            catch (SQLException e) 
+            {
+                // JOptionPane.showMessageDialog(this, e);
+                System.out.println(e); // comment this out after testing
+            }
+        }
+        else if("Moderator".equals(type))
+        {
+            try 
+            {
+                Statement stmt = (Statement) conn.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT user FROM login where id='2'");
+
+                while(rs.next())
+                {
+                    String usr = rs.getString("user");
+                    if(uname.equals(usr))
+                    {
+                        ResultSet rs2 = stmt.executeQuery("SELECT pass FROM login where id='2'");
+                        while(rs2.next())
+                        {
+                            String psw = rs2.getString("pass");
+                            if(pswd.equals(psw))
+                            {
+                                this.dispose();
+                                Moderator.Main moderator = new Moderator.Main();
+                                moderator.setVisible(true);
+                            }
+                            else
+                                JOptionPane.showMessageDialog(this, "Invalid password for '"+type+"'!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    }
+                    else
+                    JOptionPane.showMessageDialog(this, "Invalid Username", "Error", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } 
+            catch (SQLException e) 
+            {
+                // JOptionPane.showMessageDialog(this, e);
+                System.out.println(e); // comment this out after testing
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

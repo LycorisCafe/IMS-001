@@ -1,0 +1,8 @@
+SQL Queries for login table
+
+> INSERT INTO login (id, user, pass, type, lastLogin) VALUES ('1', 'admin', 'admin', 'Administrator', '2022-11-21 20:21:54');
+> INSERT INTO login (id, user, pass, type, lastLogin) VALUES ('2', 'user', 'user', 'Moderator', '2022-11-21 20:21:54');
+
+
+harida danna hodee.
+wadda wage gahan giyaata. he he

@@ -16,7 +16,7 @@ public class DB {
 
     public static Connection connect() {
         Connection conn = null;
-        String url = "jdbc:mysql://localhost/naveenb2004";
+        String url = "jdbc:mysql://localhost/ims";
         String username = "root";
         String password = "";
         try {
