@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2022 at 12:16 PM
+-- Generation Time: Nov 21, 2022 at 12:42 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -59,6 +59,20 @@ CREATE TABLE `exams` (
   `name` varchar(50) NOT NULL,
   `classId` varchar(20) NOT NULL,
   `date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `login`
+--
+
+CREATE TABLE `login` (
+  `id` varchar(20) NOT NULL,
+  `user` varchar(20) NOT NULL,
+  `pass` varchar(30) NOT NULL,
+  `type` varchar(20) NOT NULL,
+  `lastLogin` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -150,6 +164,12 @@ ALTER TABLE `classes`
 -- Indexes for table `exams`
 --
 ALTER TABLE `exams`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `login`
+--
+ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
