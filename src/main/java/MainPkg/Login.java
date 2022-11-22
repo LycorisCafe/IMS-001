@@ -4,10 +4,13 @@
  */
 package MainPkg;
 
+import java.awt.HeadlessException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -217,71 +220,62 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // featch all the login data form database
-        String type = jComboBox1.getSelectedItem().toString();
-        String uname = user.getText();
-        String pswd = String.valueOf(password.getPassword());
+        String typex = jComboBox1.getSelectedItem().toString();
+        String userx = user.getText();
+        String passwordx = String.valueOf(password.getPassword());
 
-        // database connection
-        Connection conn = Helper.DB.connect();
-
-        /*
-        * db name - ims
-        * table name - login
-        * rows - id, user, pass, type, lastLogin 
-         */
-        if ("Administrator".equals(type)) {
-            try {
-                Statement stmt = (Statement) conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT user FROM login where id='1'");
-
-                while (rs.next()) {
-                    String usr = rs.getString("user");
-                    if (uname.equals(usr)) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT pass FROM login where id='1'");
-                        while (rs2.next()) {
-                            String psw = rs2.getString("pass");
-                            if (pswd.equals(psw)) {
-                                this.dispose();
-                                Administrator.Main admin = new Administrator.Main();
-                                admin.setVisible(true);
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Invalid password for '" + type + "'!", "Error", JOptionPane.INFORMATION_MESSAGE);
-                            }
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Invalid Username", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                }
-            } catch (SQLException e) {
-                // JOptionPane.showMessageDialog(this, e);
-                System.out.println(e); // comment this out after testing
+        Connection con = Helper.DB.connect();
+        if ("System Maintainer".equals(typex)) {
+            if ("".equals(userx) && "".equals(passwordx)) {
+                Maintainer.Main maintainer = new Maintainer.Main();
+                maintainer.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid user name or password!");
             }
-        } else if ("Moderator".equals(type)) {
+        } else {
             try {
-                Statement stmt = (Statement) conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT user FROM login where id='2'");
-
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM login "
+                        + "WHERE type='" + typex + "'");
                 while (rs.next()) {
-                    String usr = rs.getString("user");
-                    if (uname.equals(usr)) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT pass FROM login where id='2'");
+                    String usery = rs.getString("user");
+                    if (usery.equalsIgnoreCase(userx)) {
+                        ResultSet rs2 = stmt.executeQuery("SELECT id "
+                                + "FROM login "
+                                + "WHERE user='" + userx + "'");
                         while (rs2.next()) {
-                            String psw = rs2.getString("pass");
-                            if (pswd.equals(psw)) {
-                                this.dispose();
-                                Moderator.Main moderator = new Moderator.Main();
-                                moderator.setVisible(true);
-                            } else {
-                                JOptionPane.showMessageDialog(this, "Invalid password for '" + type + "'!", "Error", JOptionPane.INFORMATION_MESSAGE);
+                            String userid = rs2.getString("id");
+                            ResultSet rs3 = stmt.executeQuery("SELECT pass "
+                                    + "FROM login "
+                                    + "WHERE id='" + userid + "'");
+                            while (rs3.next()) {
+                                String psw = rs3.getString("pass");
+                                if (passwordx.equals(psw)) {
+                                    String logtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                                    stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
+                                            + "WHERE id='" + userid + "'");
+                                    if ("Moderator".equals(typex)) {
+                                        Moderator.Main moderator = new Moderator.Main();
+                                        moderator.setVisible(true);
+                                        this.dispose();
+                                    } else {
+                                        Administrator.Main admin = new Administrator.Main();
+                                        admin.setVisible(true);
+                                        this.dispose();
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "Invalid user name or password!");
+                                }
                             }
                         }
                     } else {
-                        JOptionPane.showMessageDialog(this, "Invalid Username", "Error", JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Invalid user name or password!");
                     }
                 }
-            } catch (SQLException e) {
-                // JOptionPane.showMessageDialog(this, e);
-                System.out.println(e); // comment this out after testing
+                con.close();
+            } catch (HeadlessException | SQLException e) {
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
