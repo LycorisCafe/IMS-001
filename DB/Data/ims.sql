@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2022 at 02:30 AM
+-- Generation Time: Nov 22, 2022 at 10:26 AM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.4
 
@@ -82,7 +82,7 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
 ('1', 'admin', 'admin', 'Administrator', '0'),
-('2', 'user', 'user', 'Moderator', '0');
+('2', 'user', 'user', 'Morderator', '0');
 
 -- --------------------------------------------------------
 
@@ -164,16 +164,27 @@ CREATE TABLE `teachers` (
 --
 
 --
+-- Indexes for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studentId` (`studentId`),
+  ADD KEY `classId` (`classId`);
+
+--
 -- Indexes for table `classes`
 --
 ALTER TABLE `classes`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `subjectId` (`subjectId`,`teacherId`),
+  ADD KEY `teacherId` (`teacherId`);
 
 --
 -- Indexes for table `exams`
 --
 ALTER TABLE `exams`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `classId` (`classId`);
 
 --
 -- Indexes for table `login`
@@ -182,10 +193,20 @@ ALTER TABLE `login`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studentId` (`studentId`,`classId`),
+  ADD KEY `classId` (`classId`);
+
+--
 -- Indexes for table `results`
 --
 ALTER TABLE `results`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `examId` (`examId`,`studentId`),
+  ADD KEY `studentId` (`studentId`);
 
 --
 -- Indexes for table `students`
@@ -204,6 +225,44 @@ ALTER TABLE `subjects`
 --
 ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `attendance`
+--
+ALTER TABLE `attendance`
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+
+--
+-- Constraints for table `classes`
+--
+ALTER TABLE `classes`
+  ADD CONSTRAINT `classes_ibfk_2` FOREIGN KEY (`teacherId`) REFERENCES `teachers` (`id`),
+  ADD CONSTRAINT `classes_ibfk_3` FOREIGN KEY (`subjectId`) REFERENCES `subjects` (`id`);
+
+--
+-- Constraints for table `exams`
+--
+ALTER TABLE `exams`
+  ADD CONSTRAINT `exams_ibfk_1` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+
+--
+-- Constraints for table `payments`
+--
+ALTER TABLE `payments`
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+
+--
+-- Constraints for table `results`
+--
+ALTER TABLE `results`
+  ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `results_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
