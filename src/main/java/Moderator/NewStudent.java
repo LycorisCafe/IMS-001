@@ -5,26 +5,63 @@
 package Moderator;
 
 import com.github.javafaker.Faker;
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.NotFoundException;
+import com.google.zxing.Result;
+import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
+import com.google.zxing.common.HybridBinarizer;
+import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Anupama
  */
-public class NewStudent extends javax.swing.JFrame {
+public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
     /**
      * Creates new form NewStudent
      */
     public NewStudent() {
         initComponents();
+        setExtendedState(this.MAXIMIZED_BOTH);
     }
-    String code=null;
-    String teleId=null;
-    
-    private void botAuth(){
-        if (code.equals(telegram.getText())){
+    String code = null;
+    String teleId = null;
+    private WebcamPanel panel = null;
+    private Webcam webcam = null;
+    private Executor executor = Executors.newSingleThreadExecutor(this);
+    int x = 0;
+
+    private void botAuth() {
+        if (code.equals(telegram.getText())) {
             teleId = telegramId.getText();
         }
+    }
+
+    private void initWebCam() {
+        Dimension size = WebcamResolution.QVGA.getSize();
+        webcam = Webcam.getWebcams().get(0);
+        webcam.setViewSize(size);
+
+        panel = new WebcamPanel(webcam);
+        panel.setPreferredSize(size);
+        panel.setFPSDisplayed(true);
+
+        jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
+
+        executor.execute(this);
     }
 
     /**
@@ -135,6 +172,11 @@ public class NewStudent extends javax.swing.JFrame {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton4.setText("Next");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("Guardian's Phone No. :");
 
@@ -212,6 +254,11 @@ public class NewStudent extends javax.swing.JFrame {
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton2.setText("Capture");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("---");
 
@@ -577,8 +624,32 @@ public class NewStudent extends javax.swing.JFrame {
         code = faker.number().digits(5);
 //        System.out.println(code);
         jTextField5.setText(code);
-        
+
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        try {
+            Webcam webcam = Webcam.getDefault();
+            webcam.open();
+
+            // get image
+            BufferedImage image = webcam.getImage();
+
+            // save image to PNG file
+            ImageIO.write(image, "PNG", new File("test.png"));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        initWebCam();
+        // get default webcam and open it
+
+
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -670,4 +741,63 @@ public class NewStudent extends javax.swing.JFrame {
     public static javax.swing.JLabel telegram;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public Thread newThread(Runnable r) {
+        Thread t = new Thread(r, "My Thread");
+        t.setDaemon(true);
+        return t;
+    }
+
+    @Override
+    public void run() {
+        do {
+            if (x == 100) {
+                x = 0;
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            jProgressBar2.setValue(x);
+//            jProgressBar1.setString("Waiting for QR...");
+            x = x + 1;
+
+//            Result result = null;
+            BufferedImage image = null;
+
+            if (webcam.isOpen()) {
+                if ((image = webcam.getImage()) == null) {
+                    continue;
+                }
+            }
+            if (image != null) {
+//                LuminanceSource source = new BufferedImageLuminanceSource(image);
+//                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+//
+//                try {
+//                    result = new MultiFormatReader().decode(bitmap);
+//                } catch (NotFoundException ex) {
+////                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//                if (result != null) {
+//                    jLabel1.setText(result.getText());
+//                    int deleteitem = JOptionPane.showConfirmDialog(null, "Is this the Student?",
+//                            "Warning", JOptionPane.YES_NO_OPTION);
+//                    if (deleteitem == JOptionPane.YES_OPTION) {
+//                        System.out.println("Yes");
+//                        jLabel1.setText("---");
+//                    } else {
+//                        jLabel1.setText("---");
+//                        System.out.println("No");
+//                    }
+//                }
+            }
+        } while (true);
+//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
