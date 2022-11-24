@@ -757,22 +757,12 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             if (x == 100) {
                 x = 0;
             }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
             }
-            
             jProgressBar2.setValue(x);
             x = x + 1;
-            
-            BufferedImage image = null;
-
-            if (webcam.isOpen()) {
-                if ((image = webcam.getImage()) == null) {
-                    continue;
-                }
-            }
         } while (true);
     }
 
