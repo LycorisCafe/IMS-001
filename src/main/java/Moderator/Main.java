@@ -371,7 +371,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         });
 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/InstituteDesign.png"))); // NOI18N
+        jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/InstituteDesign.png"))); // NOI18N
 
         jButton6.setText("Edit Student's Classes");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
