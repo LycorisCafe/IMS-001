@@ -8,13 +8,6 @@ import com.github.javafaker.Faker;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
-import com.google.zxing.BinaryBitmap;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.Result;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
-import com.google.zxing.common.HybridBinarizer;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -23,7 +16,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -769,14 +761,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             jProgressBar2.setValue(x);
-//            jProgressBar1.setString("Waiting for QR...");
             x = x + 1;
-
-//            Result result = null;
+            
             BufferedImage image = null;
 
             if (webcam.isOpen()) {
@@ -784,30 +773,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                     continue;
                 }
             }
-            if (image != null) {
-//                LuminanceSource source = new BufferedImageLuminanceSource(image);
-//                BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-//
-//                try {
-//                    result = new MultiFormatReader().decode(bitmap);
-//                } catch (NotFoundException ex) {
-////                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                if (result != null) {
-//                    jLabel1.setText(result.getText());
-//                    int deleteitem = JOptionPane.showConfirmDialog(null, "Is this the Student?",
-//                            "Warning", JOptionPane.YES_NO_OPTION);
-//                    if (deleteitem == JOptionPane.YES_OPTION) {
-//                        System.out.println("Yes");
-//                        jLabel1.setText("---");
-//                    } else {
-//                        jLabel1.setText("---");
-//                        System.out.println("No");
-//                    }
-//                }
-            }
         } while (true);
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
