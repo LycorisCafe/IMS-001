@@ -15,6 +15,7 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,6 +37,18 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     public NewStudent() {
         initComponents();
         setExtendedState(this.MAXIMIZED_BOTH);
+        initWebCam();
+        widgetEnable();
+        
+    }
+    
+    private void widgetEnable()
+    {
+        Component[] com = jPanel4.getComponents();
+            for (int a = 0; a < com.length; a++) {
+                com[a].setEnabled(false);
+            }
+            jPanel5.setEnabled(false);
     }
     String code = null;
     String teleId = null;
@@ -644,11 +657,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        initWebCam();
-        // get default webcam and open it
-
-
+        jPanel5.setEnabled(true);
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
