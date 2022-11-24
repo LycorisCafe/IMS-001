@@ -18,6 +18,7 @@ public class Main extends javax.swing.JFrame {
     public Main() {
         initComponents();
         getData();
+        telegram.setText("1");
     }
 
     String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
@@ -52,7 +53,7 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        telegram = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -69,7 +70,7 @@ public class Main extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         botID = new javax.swing.JTextField();
 
-        jButton1.setText("jButton1");
+        telegram.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("System Maintainer");
@@ -359,7 +360,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField botID;
     private javax.swing.JTextField botToken;
     private javax.swing.JTextField groupID;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
@@ -371,5 +371,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextArea jTextArea1;
+    public static javax.swing.JLabel telegram;
     // End of variables declaration//GEN-END:variables
 }

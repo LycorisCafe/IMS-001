@@ -58,9 +58,21 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
-            Moderator.NewStudent.telegram.setText(update.getMessage().getText());
-            Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
+            System.out.println(update.getMessage().getFrom().getId() + " : " + update.getMessage().getText());
+            try {
+                Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            try {
+                if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())) {
+                    Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
+                    Moderator.NewStudent.jLabel8.setText("Success!");
+                    Moderator.NewStudent.jButton6.setEnabled(true);
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 

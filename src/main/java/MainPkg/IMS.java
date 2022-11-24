@@ -27,7 +27,7 @@ public class IMS {
 
     public static void main(String[] args) {
         // ================== Make Application Workspace =======================
-        File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\");
+        File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
         if (!file.exists()) {
             file.mkdirs();
         }
