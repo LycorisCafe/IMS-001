@@ -4,6 +4,8 @@
  */
 package Moderator;
 
+import com.github.javafaker.Faker;
+
 /**
  *
  * @author Anupama
@@ -16,6 +18,14 @@ public class NewStudent extends javax.swing.JFrame {
     public NewStudent() {
         initComponents();
     }
+    String code=null;
+    String teleId=null;
+    
+    private void botAuth(){
+        if (code.equals(telegram.getText())){
+            teleId = telegramId.getText();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -26,6 +36,8 @@ public class NewStudent extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        telegram = new javax.swing.JLabel();
+        telegramId = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -75,6 +87,10 @@ public class NewStudent extends javax.swing.JFrame {
         jButton8 = new javax.swing.JButton();
         jProgressBar3 = new javax.swing.JProgressBar();
         jLabel13 = new javax.swing.JLabel();
+
+        telegram.setText("jLabel16");
+
+        telegramId.setText("jLabel16");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student Registration");
@@ -198,6 +214,11 @@ public class NewStudent extends javax.swing.JFrame {
         jLabel6.setText("---");
 
         jButton5.setText("Next");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -240,9 +261,14 @@ public class NewStudent extends javax.swing.JFrame {
         jLabel7.setText("Authentication Code :");
 
         jTextField5.setEditable(false);
-        jTextField5.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        jTextField5.setFont(new java.awt.Font("Consolas", 1, 20)); // NOI18N
         jTextField5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jTextField5.setText("---");
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -514,6 +540,19 @@ public class NewStudent extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // uda thawa atha:
+        Faker faker = new Faker();
+        code = faker.number().digits(5);
+//        System.out.println(code);
+        jTextField5.setText(code);
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -599,5 +638,7 @@ public class NewStudent extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    public static javax.swing.JLabel telegram;
+    public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }

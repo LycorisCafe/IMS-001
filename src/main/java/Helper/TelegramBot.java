@@ -22,6 +22,8 @@ public class TelegramBot extends TelegramLongPollingBot {
     String botID = null;
     String path = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
     File f = new File(path);
+    
+   String msg = null;
 
     private void Token() {
         if (f.exists()) {
@@ -59,6 +61,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
+            Moderator.NewStudent.telegram.setText(update.getMessage().getText());
+            Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
+            
         }
     }
 
