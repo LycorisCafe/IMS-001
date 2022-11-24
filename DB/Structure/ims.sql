@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2022 at 10:25 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.2.4
+-- Generation Time: Nov 24, 2022 at 06:47 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -46,7 +45,8 @@ CREATE TABLE `classes` (
   `subjectId` varchar(20) NOT NULL,
   `teacherId` varchar(20) NOT NULL,
   `payment` int(4) NOT NULL,
-  `day` int(1) NOT NULL
+  `day` int(1) NOT NULL,
+  `telegramId` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -103,6 +103,18 @@ CREATE TABLE `results` (
   `examId` varchar(20) NOT NULL,
   `studentId` varchar(20) NOT NULL,
   `marks` int(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `specialclasses`
+--
+
+CREATE TABLE `specialclasses` (
+  `id` varchar(20) NOT NULL,
+  `classId` varchar(20) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -201,6 +213,13 @@ ALTER TABLE `results`
   ADD KEY `studentId` (`studentId`);
 
 --
+-- Indexes for table `specialclasses`
+--
+ALTER TABLE `specialclasses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `classId` (`classId`);
+
+--
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
@@ -255,6 +274,12 @@ ALTER TABLE `payments`
 ALTER TABLE `results`
   ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
   ADD CONSTRAINT `results_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`);
+
+--
+-- Constraints for table `specialclasses`
+--
+ALTER TABLE `specialclasses`
+  ADD CONSTRAINT `specialclasses_ibfk_1` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
