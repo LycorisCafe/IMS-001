@@ -40,6 +40,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         initWebCam();
     }
 
+    private void webcamClose() {
+        webcam.close();
+    }
+
     private void initWebCam() {
         Dimension size = WebcamResolution.QVGA.getSize();
         webcam = Webcam.getWebcams().get(0);
@@ -439,6 +443,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
+        webcamClose();
         NewStudent newstudent = new NewStudent();
         newstudent.setVisible(true);
         this.dispose();
@@ -446,6 +451,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
+        webcamClose();
         EditClasses editclasses = new EditClasses();
         editclasses.setVisible(true);
         this.dispose();
@@ -453,6 +459,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        webcamClose();
         MainPkg.Welcome logout = new MainPkg.Welcome();
         logout.setVisible(true);
         this.dispose();
