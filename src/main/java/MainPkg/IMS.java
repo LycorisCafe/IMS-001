@@ -31,6 +31,10 @@ public class IMS {
         if (!file.exists()) {
             file.mkdirs();
         }
+        File file1 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp");
+        if (!file1.exists()) {
+            file1.mkdirs();
+        }
 
         // ===================== Register Telegram Bot =========================
         try {

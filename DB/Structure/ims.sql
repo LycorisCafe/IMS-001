@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2022 at 06:47 AM
+-- Generation Time: Nov 25, 2022 at 06:09 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -29,8 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `attendance` (
   `id` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `regClassId` varchar(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -90,6 +89,18 @@ CREATE TABLE `payments` (
   `month` varchar(2) NOT NULL,
   `status` int(1) NOT NULL,
   `payment` int(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `regclass`
+--
+
+CREATE TABLE `regclass` (
+  `id` varchar(20) NOT NULL,
+  `studentId` varchar(20) NOT NULL,
+  `classId` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -172,8 +183,7 @@ CREATE TABLE `teachers` (
 --
 ALTER TABLE `attendance`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `studentId` (`studentId`),
-  ADD KEY `classId` (`classId`);
+  ADD KEY `regClassId` (`regClassId`);
 
 --
 -- Indexes for table `classes`
@@ -200,6 +210,14 @@ ALTER TABLE `login`
 -- Indexes for table `payments`
 --
 ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studentId` (`studentId`,`classId`),
+  ADD KEY `classId` (`classId`);
+
+--
+-- Indexes for table `regclass`
+--
+ALTER TABLE `regclass`
   ADD PRIMARY KEY (`id`),
   ADD KEY `studentId` (`studentId`,`classId`),
   ADD KEY `classId` (`classId`);
@@ -245,8 +263,7 @@ ALTER TABLE `teachers`
 -- Constraints for table `attendance`
 --
 ALTER TABLE `attendance`
-  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  ADD CONSTRAINT `attendance_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+  ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`regClassId`) REFERENCES `regclass` (`id`);
 
 --
 -- Constraints for table `classes`
@@ -267,6 +284,13 @@ ALTER TABLE `exams`
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
   ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+
+--
+-- Constraints for table `regclass`
+--
+ALTER TABLE `regclass`
+  ADD CONSTRAINT `regclass_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `regclass_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
 
 --
 -- Constraints for table `results`

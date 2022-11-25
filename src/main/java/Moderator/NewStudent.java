@@ -8,19 +8,31 @@ import com.github.javafaker.Faker;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
-import java.awt.BorderLayout;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -42,6 +54,14 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private Webcam webcam = null;
     private Executor executor = Executors.newSingleThreadExecutor(this);
     int x = 0;
+    String cr1x;
+    String cr2x;
+    String subjectId;
+    String teacherId;
+    String classId;
+    String payment;
+    int newStudent = 0;
+    Connection con = Helper.DB.connect();
 
     private void disablePanels() {
         Component[] com1 = jPanel4.getComponents();
@@ -134,7 +154,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
-        jLabel13 = new javax.swing.JLabel();
 
         telegram.setText("jLabel16");
 
@@ -405,11 +424,26 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
         jLabel11.setText("Teacher :");
 
-        cr1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "6", "7", "8", "9", "10", "11" }));
+        cr1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr1ActionPerformed(evt);
+            }
+        });
 
         cr2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr2ActionPerformed(evt);
+            }
+        });
 
         cr3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr3ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Add");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -423,11 +457,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
             },
             new String [] {
-                "Grade", "Subject", "Teacher", "Day"
+                "ID", "Grade", "Subject", "Teacher", "Day", "Payment"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                true, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -444,6 +478,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         });
 
         cr4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr4ActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Day :");
 
@@ -532,8 +571,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         );
 
         jButton8.setText("Send & Save");
-
-        jLabel13.setText("---");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -543,9 +585,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addContainerGap()
                 .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -554,10 +594,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13)))
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -644,7 +681,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String path = "C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\temp.png";
+        String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png";
         if (jButton2.getText().equals("Get Camera View")) {
             File file = new File(path);
             if (file.exists()) {
@@ -708,8 +745,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
+        jButton3.setEnabled(false);
         jButton7.setEnabled(false);
-
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -719,12 +756,25 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             JOptionPane.showMessageDialog(this, "All field must be filled!");
         } else {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            Object[] row = {cr1.getSelectedItem(), cr2.getSelectedItem(),
-                cr3.getSelectedItem(), cr4.getSelectedItem()};
+            Object[] row = {classId, cr1x, cr2x, cr3.getSelectedItem(),
+                cr4.getSelectedItem(), payment};
             model.addRow(row);
             if (!jButton7.isEnabled()) {
                 jButton7.setEnabled(true);
             }
+            cr2.removeAllItems();
+            cr2.addItem("Please Select...");
+            cr2.setSelectedIndex(0);
+            cr3.removeAllItems();
+            cr3.addItem("Please Select...");
+            cr3.setSelectedIndex(0);
+            cr4.removeAllItems();
+            cr4.addItem("Please Select...");
+            cr4.setSelectedIndex(0);
+            cr2.setEnabled(false);
+            cr3.setEnabled(false);
+            cr4.setEnabled(false);
+            jButton3.setEnabled(false);
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -738,7 +788,39 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id "
+                    + "FROM students "
+                    + "ORDER BY id DESC LIMIT 1");
+            while (rs.next()) {
+                newStudent = rs.getInt("id");
+                newStudent = newStudent + 1;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+        int width = 150;  // width of the QR code
+        int height = 150;
+        String institute = Helper.MainDetails.instituteName();
+        String newStudentId = newStudent + "";
+        String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp";
+
+        try {
+            ByteArrayOutputStream out = QRCode
+                    .from(institute + "-Student-" + newStudentId)
+                    .to(ImageType.PNG)
+                    .withSize(width, height)
+                    .stream();
+            FileOutputStream fout = new FileOutputStream(new File(path + "\\TempQR.png"));
+            fout.write(out.toByteArray());
+            fout.flush();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        jLabel12.setText("");
+        jLabel12.setIcon(new ImageIcon(path + "\\TempQR.png"));
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -746,6 +828,144 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         ImagePreview preview = new ImagePreview();
         preview.setVisible(true);
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
+        // TODO add your handling code here:
+        cr1x = cr1.getSelectedItem().toString();
+        if (cr1.getSelectedIndex() == 0) {
+            cr2.setEnabled(false);
+            cr3.setEnabled(false);
+            cr4.setEnabled(false);
+        } else {
+            cr2.setEnabled(true);
+            cr2.removeAllItems();
+            cr2.addItem("Please Select...");
+            cr2.setSelectedIndex(0);
+            try {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + cr1x + "'");
+                while (rs.next()) {
+                    cr2.addItem(rs.getString("subject"));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_cr1ActionPerformed
+
+    private void cr2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr2ActionPerformed
+        // TODO add your handling code here:
+        cr2x = cr2.getSelectedItem().toString();
+        if (cr2.getSelectedIndex() == 0) {
+            cr3.setEnabled(false);
+            cr4.setEnabled(false);
+        } else {
+            cr3.setEnabled(true);
+            cr3.removeAllItems();
+            cr3.addItem("Please Select...");
+            cr3.setSelectedIndex(0);
+            try {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + cr1x + "' AND subject='" + cr2x + "'");
+                while (rs.next()) {
+                    subjectId = rs.getString("id");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE subjectId='" + subjectId + "'");
+                    while (rs2.next()) {
+                        teacherId = rs2.getString("teacherId");
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM teachers "
+                                + "WHERE id='" + teacherId + "'");
+                        while (rs3.next()) {
+                            cr3.addItem(rs3.getString("name"));
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_cr2ActionPerformed
+
+    private void cr3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr3ActionPerformed
+        // TODO add your handling code here:
+        if (cr3.getSelectedIndex() == 0) {
+            cr4.setEnabled(false);
+        } else {
+            cr4.setEnabled(true);
+            cr4.removeAllItems();
+            cr4.addItem("Please Select...");
+            cr4.setSelectedIndex(0);
+            try {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE subjectId='" + subjectId + "' AND teacherId='" + teacherId + "'");
+                while (rs.next()) {
+                    cr4.addItem(rs.getString("day"));
+                    classId = rs.getString("id");
+                    payment = rs.getString("payment");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_cr3ActionPerformed
+
+    private void cr4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr4ActionPerformed
+        // TODO add your handling code here:
+        if (cr4.getSelectedIndex() == 0) {
+            jButton3.setEnabled(false);
+        } else {
+            jButton3.setEnabled(true);
+        }
+    }//GEN-LAST:event_cr4ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        InputFile file = new InputFile("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempQR.png");
+        SendPhoto qr = new SendPhoto();
+        qr.setChatId(telegramId.getText());
+        qr.setPhoto(file);
+        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
+        try {
+            telegramBot.execute(qr);
+        } catch (TelegramApiException ex) {
+            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("INSERT INTO students "
+                    + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status)"
+                    + "VALUES"
+                    + "('" + newStudent + "','" + fName.getText() + "','" + lName.getText() + "',"
+                    + "'" + gName.getText() + "','" + gPhone.getText() + "','" + address.getText() + "',"
+                    + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0')");
+        } catch (SQLException ex) {
+            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        try {
+//            Statement stmt = con.createStatement();
+//            stmt.executeUpdate("INSERT INTO regclass "
+//                    + "(studentId,classId)"
+//                    + "VALUES"
+//                    + "('" + newStudent + "','" + fName.getText() + "')");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
+        File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
+        tempImage.renameTo(new File("\\StudentImgs\\" + newStudent + ".png"));
+        JOptionPane.showMessageDialog(this, "Success!");
+        jLabel12.removeAll();
+        jLabel12.setText("-");
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -805,7 +1025,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
@@ -849,7 +1068,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 x = 0;
             }
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
             }
             jProgressBar1.setValue(x);

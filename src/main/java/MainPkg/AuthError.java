@@ -19,7 +19,7 @@ public class AuthError extends javax.swing.JFrame {
     }
     
     private void getSerial(){
-        String serial = Helper.SerialCode.code();
+        String serial = Helper.MainDetails.projectSerial();
         jLabel3.setText(serial);
     }
 
