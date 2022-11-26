@@ -20,6 +20,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
 import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.Statement;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -34,6 +37,7 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         formDetails();
         grabData();
+        loadTable();
     }
     
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
@@ -41,6 +45,8 @@ public class Main extends javax.swing.JFrame {
     String month = new SimpleDateFormat("MM").format(new Date());
     
     private void grabData() {
+    {
+
         // grabing data from students table
         try {
             Connection con = Helper.DB.connect();
@@ -86,11 +92,55 @@ public class Main extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-    
-    private void formDetails() {
+        
+        // grabing and calculating the monthly income from the payments table
+//        String year;
+//        int month;
+//        String classID;
+//        try {
+//            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT 'year', 'month', 'classId' FROM payments");
+//            while (rs.next()) 
+//            {
+//                
+//                month = Calendar.getInstance().get(Calendar.MONTH);
+//                String sqlMonth = null;
+//                System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
+////                if(sqlMonth == month)
+////                {
+////                    System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
+////                }
+//            }
+//            //con.close();
+//        }
+//        catch (SQLException ex)
+//        {
+//            System.out.println(ex);
+//        }
+        formDetails();
+    }
+       
+    private void formDetails(){
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
+    }
+    
+    private void loadTable()
+    {
+        Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT id, name, nic FROM teachers");
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            while (rs2.next()) {
+                Object[] row = {rs2.getString("id"),
+                    rs2.getString("name"), rs2.getString("nic")};
+                model.addRow(row);
+
+            }
+        } catch (SQLException e) {
+        }
     }
 
     /**
@@ -500,6 +550,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -516,7 +571,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel10.setText("Status :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactive", "Active" }));
 
         jLabel13.setText("Telegram ID :");
 
@@ -592,8 +647,18 @@ public class Main extends javax.swing.JFrame {
         jButton6.setText("Delete");
 
         jButton7.setText("Update");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Add");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -2087,6 +2152,60 @@ public class Main extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }//GEN-LAST:event_jButton33ActionPerformed
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        // grabing data from selected row
+        
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // adding data to teachers table
+        String name = jTextField5.getName();
+        String nic = jTextField6.getName();
+        String contact = jTextField7.getName();
+        String address = jTextField8.getName();
+        int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
+        int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
+        int count = 3;
+        
+        Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            String sql = "INSERT INTO teachers(id, name, nic, address, telegramId, contact, status) VALUES "
+                    + "('"+count+"', '"+name+"', '"+nic+"', '"+contact+"', '"+address+", 'NULL', '"+status+"')";
+            stmt.executeUpdate(sql);
+            count += 1;
+            JOptionPane.showMessageDialog(this, "New Teacher Added!");
+        } catch (SQLException e) {
+        }
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // updating data in teachers table
+        String name = jTextField5.getName();
+        String nic = jTextField6.getName();
+        String contact = jTextField7.getName();
+        String address = jTextField8.getName();
+        int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
+        int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '"+name+"'?");
+        
+        Connection con = Helper.DB.connect();
+        if(choice == 0)
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "UPDATE teachers SET name='"+name+"', nic='"+nic+"', address='"+address+"' , "
+                        + ", telegramId='NULL', contact='"+contact+"', status='"+status+"'";
+                stmt.executeUpdate(sql);
+
+                JOptionPane.showMessageDialog(this, "New Teacher Added!");
+            } catch (SQLException e) {
+            }
+        }
+        
+    }//GEN-LAST:event_jButton7ActionPerformed
+
 
     /**
      * @param args the command line arguments
