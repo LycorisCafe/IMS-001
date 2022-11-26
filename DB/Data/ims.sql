@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2022 at 06:31 PM
+-- Generation Time: Nov 26, 2022 at 09:43 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `attendance` (
-  `id` varchar(20) NOT NULL,
-  `regClassId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `regClassId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,9 +40,9 @@ CREATE TABLE `attendance` (
 --
 
 CREATE TABLE `classes` (
-  `id` varchar(20) NOT NULL,
-  `subjectId` varchar(20) NOT NULL,
-  `teacherId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `subjectId` int(20) NOT NULL,
+  `teacherId` int(20) NOT NULL,
   `payment` int(4) NOT NULL,
   `day` int(1) NOT NULL,
   `telegramId` varchar(20) NOT NULL
@@ -53,7 +53,7 @@ CREATE TABLE `classes` (
 --
 
 INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `telegramId`) VALUES
-('1', '1', '001', 1000, 0, '-1001698896292');
+(1, 1, 1, 1000, 0, '-1001698896292');
 
 -- --------------------------------------------------------
 
@@ -62,9 +62,9 @@ INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `telegr
 --
 
 CREATE TABLE `exams` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -88,7 +88,7 @@ CREATE TABLE `login` (
 
 INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
 ('1', 'admin', 'admin', 'Administrator', '0'),
-('2', 'user', 'user', 'Moderator', '2022-11-25 21:00:41');
+('2', 'user', 'user', 'Moderator', '2022-11-26 14:02:08');
 
 -- --------------------------------------------------------
 
@@ -97,9 +97,9 @@ INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
 --
 
 CREATE TABLE `payments` (
-  `id` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `year` varchar(4) NOT NULL,
   `month` varchar(2) NOT NULL,
   `status` int(1) NOT NULL,
@@ -113,9 +113,9 @@ CREATE TABLE `payments` (
 --
 
 CREATE TABLE `regclass` (
-  `id` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL
+  `id` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
+  `classId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -123,7 +123,7 @@ CREATE TABLE `regclass` (
 --
 
 INSERT INTO `regclass` (`id`, `studentId`, `classId`) VALUES
-('1', '00001', '1');
+(1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -132,9 +132,9 @@ INSERT INTO `regclass` (`id`, `studentId`, `classId`) VALUES
 --
 
 CREATE TABLE `results` (
-  `id` varchar(20) NOT NULL,
-  `examId` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `examId` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
   `marks` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -145,8 +145,8 @@ CREATE TABLE `results` (
 --
 
 CREATE TABLE `specialclasses` (
-  `id` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -157,7 +157,7 @@ CREATE TABLE `specialclasses` (
 --
 
 CREATE TABLE `students` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `firstName` varchar(20) NOT NULL,
   `lastName` varchar(30) NOT NULL,
   `guardianName` varchar(50) NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`id`, `firstName`, `lastName`, `guardianName`, `guardianPhone`, `address`, `grade`, `telegramId`, `status`) VALUES
-('00001', 'Naveen', 'Balasooriya', 'Anupama Balasooriya', '0711716616', 'No.109, Diddeliya, Meetiyagoda', 10, '1241006555', 0);
+(1, 'Naveen', 'Balasooriya', 'Anupama Balasooriya', '0711716616', 'No.109, Diddeliya, Meetiyagoda', 10, '1241006555', 0);
 
 -- --------------------------------------------------------
 
@@ -182,7 +182,7 @@ INSERT INTO `students` (`id`, `firstName`, `lastName`, `guardianName`, `guardian
 --
 
 CREATE TABLE `subjects` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `grade` int(2) NOT NULL,
   `subject` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -192,8 +192,8 @@ CREATE TABLE `subjects` (
 --
 
 INSERT INTO `subjects` (`id`, `grade`, `subject`) VALUES
-('1', 10, 'Maths'),
-('2', 10, 'Science');
+(1, 10, 'Maths'),
+(2, 10, 'Science');
 
 -- --------------------------------------------------------
 
@@ -202,7 +202,7 @@ INSERT INTO `subjects` (`id`, `grade`, `subject`) VALUES
 --
 
 CREATE TABLE `teachers` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `name` varchar(40) NOT NULL,
   `nic` varchar(20) NOT NULL,
   `address` varchar(255) NOT NULL,
@@ -216,7 +216,7 @@ CREATE TABLE `teachers` (
 --
 
 INSERT INTO `teachers` (`id`, `name`, `nic`, `address`, `telegramId`, `contact`, `status`) VALUES
-('001', 'Nirmana Balasooriya', '200416903113', 'No.109, Diddeliya, Meetiyagoda', '1241006555', '0711716616', 0);
+(1, 'Nirmana Balasooriya', '200416903113', 'No.109, Diddeliya, Meetiyagoda', '1241006555', '0711716616', 0);
 
 --
 -- Indexes for dumped tables
@@ -300,6 +300,22 @@ ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `regclass`
+--
+ALTER TABLE `regclass`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -326,8 +342,7 @@ ALTER TABLE `exams`
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
 
 --
 -- Constraints for table `regclass`
@@ -340,8 +355,7 @@ ALTER TABLE `regclass`
 -- Constraints for table `results`
 --
 ALTER TABLE `results`
-  ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  ADD CONSTRAINT `results_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`);
+  ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
 
 --
 -- Constraints for table `specialclasses`

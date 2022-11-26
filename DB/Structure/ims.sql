@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2022 at 06:09 PM
+-- Generation Time: Nov 26, 2022 at 09:43 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `attendance` (
-  `id` varchar(20) NOT NULL,
-  `regClassId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `regClassId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,9 +40,9 @@ CREATE TABLE `attendance` (
 --
 
 CREATE TABLE `classes` (
-  `id` varchar(20) NOT NULL,
-  `subjectId` varchar(20) NOT NULL,
-  `teacherId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `subjectId` int(20) NOT NULL,
+  `teacherId` int(20) NOT NULL,
   `payment` int(4) NOT NULL,
   `day` int(1) NOT NULL,
   `telegramId` varchar(20) NOT NULL
@@ -55,9 +55,9 @@ CREATE TABLE `classes` (
 --
 
 CREATE TABLE `exams` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `name` varchar(50) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -82,9 +82,9 @@ CREATE TABLE `login` (
 --
 
 CREATE TABLE `payments` (
-  `id` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `year` varchar(4) NOT NULL,
   `month` varchar(2) NOT NULL,
   `status` int(1) NOT NULL,
@@ -98,9 +98,9 @@ CREATE TABLE `payments` (
 --
 
 CREATE TABLE `regclass` (
-  `id` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL
+  `id` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
+  `classId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -110,9 +110,9 @@ CREATE TABLE `regclass` (
 --
 
 CREATE TABLE `results` (
-  `id` varchar(20) NOT NULL,
-  `examId` varchar(20) NOT NULL,
-  `studentId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `examId` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
   `marks` int(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -123,8 +123,8 @@ CREATE TABLE `results` (
 --
 
 CREATE TABLE `specialclasses` (
-  `id` varchar(20) NOT NULL,
-  `classId` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
+  `classId` int(20) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -135,7 +135,7 @@ CREATE TABLE `specialclasses` (
 --
 
 CREATE TABLE `students` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `firstName` varchar(20) NOT NULL,
   `lastName` varchar(30) NOT NULL,
   `guardianName` varchar(50) NOT NULL,
@@ -153,7 +153,7 @@ CREATE TABLE `students` (
 --
 
 CREATE TABLE `subjects` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `grade` int(2) NOT NULL,
   `subject` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -165,7 +165,7 @@ CREATE TABLE `subjects` (
 --
 
 CREATE TABLE `teachers` (
-  `id` varchar(20) NOT NULL,
+  `id` int(20) NOT NULL,
   `name` varchar(40) NOT NULL,
   `nic` varchar(20) NOT NULL,
   `address` varchar(255) NOT NULL,
@@ -256,6 +256,22 @@ ALTER TABLE `teachers`
   ADD PRIMARY KEY (`id`);
 
 --
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `attendance`
+--
+ALTER TABLE `attendance`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `regclass`
+--
+ALTER TABLE `regclass`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -282,8 +298,7 @@ ALTER TABLE `exams`
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
 
 --
 -- Constraints for table `regclass`
@@ -296,8 +311,7 @@ ALTER TABLE `regclass`
 -- Constraints for table `results`
 --
 ALTER TABLE `results`
-  ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
-  ADD CONSTRAINT `results_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`);
+  ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
 
 --
 -- Constraints for table `specialclasses`

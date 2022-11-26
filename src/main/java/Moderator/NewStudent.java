@@ -30,8 +30,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
@@ -48,7 +47,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         setExtendedState(this.MAXIMIZED_BOTH);
         disablePanels();
     }
-
+    
     String code = null;
     private WebcamPanel panel = null;
     private Webcam webcam = null;
@@ -62,7 +61,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     String payment;
     int newStudent = 0;
     Connection con = Helper.DB.connect();
-
+    
     private void disablePanels() {
         Component[] com1 = jPanel4.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -81,19 +80,32 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             com4[a].setEnabled(false);
         }
     }
-
+    
     private void initWebCam() {
         Dimension size = WebcamResolution.QVGA.getSize();
         webcam = Webcam.getWebcams().get(0);
         webcam.setViewSize(size);
-
+        
         panel = new WebcamPanel(webcam);
         panel.setPreferredSize(size);
         panel.setFPSDisplayed(true);
-
+        
         jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
-
+        
         executor.execute(this);
+    }
+    
+    private void clearData() {
+        fName.setText("");
+        lName.setText("");
+        gName.setText("");
+        gPhone.setText("");
+        address.setText("");
+        grade.setSelectedIndex(0);
+        jLabel6.setText("Waiting for capture...");
+        jLabel8.setText("Waiting for authentication...");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
     }
 
     /**
@@ -461,7 +473,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -745,16 +757,17 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
+        jTextField5.setText("---");
         jButton3.setEnabled(false);
         jButton7.setEnabled(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (cr1.getSelectedIndex() == 0 || cr2.getSelectedIndex() == 0
-                || cr3.getSelectedIndex() == 0 || cr4.getSelectedIndex() == 0) {
+        if (cr4.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "All field must be filled!");
         } else {
+//            String dayCho = cr3.getSelectedItem().toString();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             Object[] row = {classId, cr1x, cr2x, cr3.getSelectedItem(),
                 cr4.getSelectedItem(), payment};
@@ -762,14 +775,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             if (!jButton7.isEnabled()) {
                 jButton7.setEnabled(true);
             }
-            cr2.removeAllItems();
-            cr2.addItem("Please Select...");
+            cr1.setSelectedIndex(0);
             cr2.setSelectedIndex(0);
-            cr3.removeAllItems();
-            cr3.addItem("Please Select...");
             cr3.setSelectedIndex(0);
-            cr4.removeAllItems();
-            cr4.addItem("Please Select...");
             cr4.setSelectedIndex(0);
             cr2.setEnabled(false);
             cr3.setEnabled(false);
@@ -800,13 +808,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } catch (SQLException ex) {
             Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         int width = 150;  // width of the QR code
         int height = 150;
         String institute = Helper.MainDetails.instituteName();
         String newStudentId = newStudent + "";
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp";
-
+        
         try {
             ByteArrayOutputStream out = QRCode
                     .from(institute + "-Student-" + newStudentId)
@@ -928,17 +936,18 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        InputFile file = new InputFile("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempQR.png");
-        SendPhoto qr = new SendPhoto();
-        qr.setChatId(telegramId.getText());
-        qr.setPhoto(file);
+        SendMessage message = new SendMessage();
+        message.setChatId(telegramId.getText());
+        message.setText("Student Registration Success!\n\n"
+                + "Student ID : " + newStudent + "\n"
+                + "Student Name : " + fName.getText() + " " + lName.getText());
         Helper.TelegramBot telegramBot = new Helper.TelegramBot();
         try {
-            telegramBot.execute(qr);
+            telegramBot.execute(message);
         } catch (TelegramApiException ex) {
             Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         try {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO students "
@@ -950,21 +959,34 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } catch (SQLException ex) {
             Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        try {
-//            Statement stmt = con.createStatement();
-//            stmt.executeUpdate("INSERT INTO regclass "
-//                    + "(studentId,classId)"
-//                    + "VALUES"
-//                    + "('" + newStudent + "','" + fName.getText() + "')");
-//        } catch (SQLException ex) {
-//            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-
+        int y = 0;
+        int rowcount = jTable1.getRowCount();
+        do {
+            try {
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO regclass "
+                        + "(studentId,classId) "
+                        + "VALUES "
+                        + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
+            } catch (SQLException ex) {
+                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            y = y + 1;
+        } while (y > rowcount);
+        
         File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
         tempImage.renameTo(new File("\\StudentImgs\\" + newStudent + ".png"));
         JOptionPane.showMessageDialog(this, "Success!");
-        jLabel12.removeAll();
-        jLabel12.setText("-");
+        
+        Component[] com1 = jPanel9.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        Component[] com2 = jPanel3.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(true);
+        }
+        clearData();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
@@ -1060,7 +1082,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         t.setDaemon(true);
         return t;
     }
-
+    
     @Override
     public void run() {
         do {
@@ -1075,5 +1097,5 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             x = x + 1;
         } while (true);
     }
-
+    
 }
