@@ -104,6 +104,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel4 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -201,6 +202,18 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jTextField5.setFocusable(false);
 
         jButton1.setText("Mark Attendance");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Check");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -209,17 +222,18 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel6Layout.createSequentialGroup()
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jTextField5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -232,13 +246,14 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jButton2.setText("Pay");
+        jButton2.setText("Payments");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -548,6 +563,56 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox3.getSelectedIndex() != 0) {
+            String selectedClass = jComboBox3.getSelectedItem().toString();
+            String thisYear = new SimpleDateFormat("yyyy").format(new Date());
+            String thisMonth = new SimpleDateFormat("MM").format(new Date());
+            String[] parts = selectedClass.split(" - ");
+            try {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
+                while (rs.next()) {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE subjectId='" + rs.getString("id") + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM payments "
+                                + "WHERE studentId='" + jLabel1.getText() + "' AND "
+                                + "classId='" + rs2.getString("id") + "' AND "
+                                + "year='" + thisYear + "' AND month='" + thisMonth + "'");
+                        while (rs3.next()) {
+                            if (rs3.getString("status").equals("1")) {
+                                jTextField5.setText("Paid!");
+                                jTextField5.setForeground(Color.green);
+                            } else {
+                                jTextField5.setText("Not Paid!");
+                                jTextField5.setForeground(Color.red);
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            jButton1.setEnabled(true);
+        } else {
+            jTextField5.setText("---");
+            if (jButton1.isEnabled()) {
+                jButton1.setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -587,6 +652,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -689,7 +755,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "FROM students "
                         + "WHERE id='" + gotStudentId + "'");
                 while (rs.next()) {
-                    jTextField3.setText(rs.getString("firstName") + " " + rs.getString("lastName"));
+                    jTextField3.setText(rs.getString("firstName") + " "
+                            + rs.getString("lastName"));
                     jTextField4.setText(rs.getString("grade"));
                     if (rs.getString("status").equals("0")) {
                         jTextField6.setText("Active");

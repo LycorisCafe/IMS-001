@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 26, 2022 at 09:43 AM
+-- Generation Time: Nov 26, 2022 at 01:51 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -87,8 +87,7 @@ CREATE TABLE `payments` (
   `classId` int(20) NOT NULL,
   `year` varchar(4) NOT NULL,
   `month` varchar(2) NOT NULL,
-  `status` int(1) NOT NULL,
-  `payment` int(4) NOT NULL
+  `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -298,7 +297,8 @@ ALTER TABLE `exams`
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`);
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`),
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`classId`) REFERENCES `classes` (`id`);
 
 --
 -- Constraints for table `regclass`
