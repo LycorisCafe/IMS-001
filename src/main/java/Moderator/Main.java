@@ -29,6 +29,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import javax.swing.JOptionPane;
 import javax.swing.plaf.synth.ColorType;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 /**
  *
@@ -639,16 +640,22 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     + "FROM regclass "
                     + "WHERE studentId='" + studentId + "' AND classId='" + classId + "'");
             while (rs.next()) {
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                String regClassId = rs.getString("id");
+                ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) "
                         + "FROM attendance "
                         + "WHERE regClassId='" + rs.getString("id") + "' "
                         + "AND date='" + date + "'");
                 while (rs2.next()) {
-                    if (rs2.getString("id").equals("null")) {
+                    int count = rs2.getInt(1);
+                    if (count == 0) {
                         stmt.executeUpdate("INSERT INTO attendance "
                                 + "(regClassId,date) "
                                 + "VALUES "
-                                + "('" + rs.getString("id") + "','" + date + "')");
+                                + "('" + regClassId + "','" + date + "')");
+//                        SendMessage message = new SendMessage();
+//                        message.setText("test text");
+//                        message.setChatId("");
+
                         JOptionPane.showMessageDialog(this, "Success!");
                         disablePanels();
                     } else {
