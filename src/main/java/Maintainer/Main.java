@@ -308,7 +308,7 @@ public class Main extends javax.swing.JFrame {
             out.println(Aid);
             out.println(Gid);
         } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(null, ex);
+            System.out.println(ex);
         }
         JOptionPane.showMessageDialog(this, "Success! Please restart the application to make changes!");
     }//GEN-LAST:event_jButton2ActionPerformed
