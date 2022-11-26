@@ -972,7 +972,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
             }
             y = y + 1;
-        } while (y > rowcount);
+        } while (y == rowcount);
         
         File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
         tempImage.renameTo(new File("\\StudentImgs\\" + newStudent + ".png"));

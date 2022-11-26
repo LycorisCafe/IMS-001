@@ -14,8 +14,16 @@ import com.google.zxing.NotFoundException;
 import com.google.zxing.Result;
 import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.HybridBinarizer;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -31,6 +39,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private Webcam webcam = null;
     private Executor executor = Executors.newSingleThreadExecutor(this);
     int x = 0;
+    String qrResult;
+    String grade;
+    String subject;
+    Connection con = Helper.DB.connect();
 
     /**
      * Creates new form Operations
@@ -38,6 +50,15 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     public Main() {
         initComponents();
         initWebCam();
+        disablePanels();
+    }
+
+    private void disablePanels() {
+        Component[] com1 = jPanel6.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        jButton2.setEnabled(false);
     }
 
     private void webcamClose() {
@@ -169,6 +190,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel7.setText("Select Class :");
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Payments :");
 
@@ -201,7 +227,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -215,6 +241,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         );
 
         jButton2.setText("Pay");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -223,7 +254,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
@@ -234,9 +264,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                             .addComponent(jTextField4)
                             .addComponent(jTextField6)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -255,9 +284,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     .addComponent(jLabel10)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(97, 97, 97)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -511,6 +540,49 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        Payments payments = new Payments();
+        payments.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+        String selectedClass = jComboBox3.getSelectedItem().toString();
+        String thisYear = new SimpleDateFormat("yyyy").format(new Date());
+        String thisMonth = new SimpleDateFormat("MM").format(new Date());
+        String[] parts = selectedClass.split("-");
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM subjects "
+                    + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
+            while (rs.next()) {
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE subjectId='" + rs.getString("id") + "'");
+                while (rs2.next()) {
+                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            + "FROM payments "
+                            + "WHERE studentId='" + jLabel1.getText() + "' AND "
+                            + "classId='" + rs2.getString("id") + "' AND "
+                            + "year='" + thisYear + "' AND month='" + thisMonth + "'");
+                    while (rs3.next()){
+                        if (rs.getString("status").equals("1")){
+                            jTextField5.setText("Paid!");
+                            jTextField5.setForeground(Color.green);
+                        } else {
+                            jTextField5.setText("Not Paid!");
+                            jTextField5.setForeground(Color.red);
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -625,16 +697,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 //                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (result != null) {
-                    jLabel1.setText(result.getText());
-                    int deleteitem = JOptionPane.showConfirmDialog(null, "Is this the Student?",
-                            "Warning", JOptionPane.YES_NO_OPTION);
-                    if (deleteitem == JOptionPane.YES_OPTION) {
-                        System.out.println("Yes");
-                        jLabel1.setText("---");
-                    } else {
-                        jLabel1.setText("---");
-                        System.out.println("No");
-                    }
+                    qrResult = result.getText();
+                    qrSlice();
                 }
             }
         } while (true);
@@ -645,5 +709,66 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         Thread t = new Thread(r, "My Thread");
         t.setDaemon(true);
         return t;
+    }
+
+    private void qrSlice() {
+        Helper.MainDetails data = new Helper.MainDetails();
+        String instituteName = data.instituteName();
+        String[] parts = qrResult.split("-");
+        if (parts[0].equals(instituteName)) {
+            String gotStudentId = parts[2];
+            jLabel1.setText(gotStudentId);
+            try {
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM students "
+                        + "WHERE id='" + gotStudentId + "'");
+                while (rs.next()) {
+                    jTextField3.setText(rs.getString("firstName") + " " + rs.getString("lastName"));
+                    jTextField4.setText(rs.getString("grade"));
+                    if (rs.getString("status").equals("0")) {
+                        jTextField6.setText("Active");
+                        jTextField6.setForeground(Color.GREEN);
+                        Component[] com1 = jPanel6.getComponents();
+                        for (int a = 0; a < com1.length; a++) {
+                            com1[a].setEnabled(true);
+                        }
+                        jButton1.setEnabled(false);
+                        jButton2.setEnabled(true);
+                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                                + "FROM regclass "
+                                + "WHERE studentId='" + jLabel1.getText() + "'");
+                        while (rs2.next()) {
+                            //https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+                            String today = new SimpleDateFormat("u").format(new Date());
+                            System.out.println(today);
+                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                    + "FROM classes "
+                                    + "WHERE id='" + rs2.getString("classId") + "' AND day='" + today + "'");
+                            while (rs3.next()) {
+                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                        + "FROM subjects "
+                                        + "WHERE id='" + rs3.getString("subjectId") + "'");
+                                while (rs4.next()) {
+                                    grade = rs4.getString("grade");
+                                    subject = rs4.getString("subject");
+                                    jComboBox3.removeAllItems();
+                                    jComboBox3.addItem("Please Select...");
+                                    jComboBox3.setSelectedIndex(0);
+                                    jComboBox3.addItem(grade + " - " + subject);
+                                }
+                            }
+                        }
+                    } else {
+                        jTextField6.setText("Suspended!");
+                        jTextField6.setForeground(Color.red);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid QR Code!");
+        }
     }
 }
