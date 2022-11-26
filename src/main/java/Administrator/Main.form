@@ -324,6 +324,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Send"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton27ActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel42">
                   <Properties>
@@ -337,6 +340,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Log"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton28ActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -2286,7 +2292,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane8" pref="504" max="32767" attributes="0"/>
-                          <Component id="jPanel25" pref="0" max="32767" attributes="0"/>
+                          <Component id="jPanel25" pref="504" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jTabbedPane4" min="-2" pref="468" max="-2" attributes="0"/>

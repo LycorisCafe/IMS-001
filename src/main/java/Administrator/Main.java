@@ -4,6 +4,26 @@
  */
 package Administrator;
 
+import Helper.DB;
+import java.awt.HeadlessException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import org.bridj.cpp.mfc.OnUpdateCommand;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
 /**
  *
  * @author Anupama
@@ -13,8 +33,92 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
+    
+    
+    
+    
     public Main() {
         initComponents();
+        grabData();
+    }
+    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.lc";
+    
+    
+    private void grabData()
+    {
+        // grabing data from students table
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(firstName) FROM students");
+            while (rs.next()) 
+            {
+                int count = rs.getInt(1);
+                jTextField1.setText("" + count);
+            }
+            //con.close();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println(ex);
+        }
+        
+        // grabing data from teachers table
+        try {
+            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(name) FROM teachers");
+            while (rs.next()) 
+            {
+                int count = rs.getInt(1);
+                jTextField2.setText("" + count);
+            }
+            //con.close();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println(ex);
+        }
+        
+        // grabing data from classes table
+        try {
+            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(subjectId) FROM classes");
+            while (rs.next()) 
+            {
+                int count = rs.getInt(1);
+                jTextField3.setText("" + count);
+            }
+            //con.close();
+        }
+        catch (SQLException ex)
+        {
+            System.out.println(ex);
+        }
+        
+        // grabing and calculating the monthly income from the payments table
+//        String year;
+//        int month;
+//        String classID;
+//        try {
+//            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT 'year', 'month', 'classId' FROM payments");
+//            while (rs.next()) 
+//            {
+//                
+//                month = Calendar.getInstance().get(Calendar.MONTH);
+//                String sqlMonth = null;
+//                System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
+////                if(sqlMonth == month)
+////                {
+////                    System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
+////                }
+//            }
+//            //con.close();
+//        }
+//        catch (SQLException ex)
+//        {
+//            System.out.println(ex);
+//        }
     }
 
     /**
@@ -280,11 +384,21 @@ public class Main extends javax.swing.JFrame {
         jScrollPane10.setViewportView(jTextArea4);
 
         jButton27.setText("Send");
+        jButton27.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton27ActionPerformed(evt);
+            }
+        });
 
         jLabel42.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel42.setText("[ Messages will send via Telegram Bot ]");
 
         jButton28.setText("Log");
+        jButton28.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton28ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel29Layout = new javax.swing.GroupLayout(jPanel29);
         jPanel29.setLayout(jPanel29Layout);
@@ -1546,7 +1660,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
-                    .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, 504, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -1875,6 +1989,111 @@ public class Main extends javax.swing.JFrame {
     private void jTextField24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField24ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField24ActionPerformed
+
+    private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
+        // getting the admin's message and send the message
+        String to = jComboBox11.getSelectedItem().toString();
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
+            SendMessage sm = new SendMessage();
+            if("All Students".equals(to))
+            {
+                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM students");
+                while(rs.next())
+                {
+                    String id = rs.getString("telegramId");
+                    System.out.println(id);
+                    sm.setText(jTextArea4.getText());
+                    sm.setChatId(id); // to set ID
+
+                    Helper.TelegramBot telegram = new Helper.TelegramBot();
+                    try {
+                        telegram.execute(sm);
+                    } catch (TelegramApiException e) {
+                        JOptionPane.showMessageDialog(null, e + "\nFrom std");
+                    }
+                }
+            }
+            else if("All Teachers".equals(to))
+            {
+                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM teachers");
+                while(rs.next())
+                {
+                    String id = rs.getString("telegramId");
+                    System.out.println(id);
+                    sm.setText(jTextArea4.getText());
+                    sm.setChatId(id); // to set ID
+
+                    Helper.TelegramBot telegram = new Helper.TelegramBot();
+                    try {
+                        telegram.execute(sm);
+                    } catch (TelegramApiException e) {
+                        JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
+                    }
+                }
+            }
+            else
+            {
+                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM classes");
+                while(rs.next())
+                {
+                    String id = rs.getString("telegramId");
+                    System.out.println(id);
+                    sm.setText(jTextArea4.getText());
+                    sm.setChatId(id); // to set ID
+
+                    Helper.TelegramBot telegram = new Helper.TelegramBot();
+                    try {
+                        telegram.execute(sm);
+                    } catch (TelegramApiException e) {
+                        JOptionPane.showMessageDialog(null, e + "\nFrom clz");
+                    }
+                }
+            }
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            File f = new File(path);
+            if(!f.exists())
+            {
+                try {
+                    FileWriter fw = new FileWriter(f, true);
+                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText()+"\n");
+                    fw.close();
+                } catch (IOException ex) {
+                    //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, ex);
+                }
+            }
+            else
+            {
+                try{
+                    FileWriter fw = new FileWriter(f, true);
+                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText()+"\n");
+                    fw.close();
+                }
+                catch(IOException e)
+                {
+                    System.out.println(e);
+                }
+            }
+            
+            
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+        
+    }//GEN-LAST:event_jButton27ActionPerformed
+
+    private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
+        // to open the log file
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process process = runtime.exec("C:\\Windows\\notepad.exe C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.lc");
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }//GEN-LAST:event_jButton28ActionPerformed
 
     /**
      * @param args the command line arguments
