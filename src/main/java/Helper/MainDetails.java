@@ -11,7 +11,8 @@ package Helper;
 public class MainDetails {
 
     public static String projectSerial() {
-        String projectSerial = "lcp0001";
+        // ProjectName-ProjectCount-StartDate(MMDDYY)
+        String projectSerial = "IMS-001-111122";
         return projectSerial;
     }
 
@@ -19,5 +20,10 @@ public class MainDetails {
         String instituteName = "Dekma";
         return instituteName;
     }
-    
+
+    public static String iconPath() {
+        String iconPath = "/Media/WelcomeLogo.png";
+        return iconPath;
+    }
+
 }

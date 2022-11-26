@@ -4,6 +4,8 @@
  */
 package MainPkg;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Anupama
@@ -15,7 +17,13 @@ public class AuthError extends javax.swing.JFrame {
      */
     public AuthError() {
         initComponents();
+        formDetails();
         getSerial();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
     
     private void getSerial(){

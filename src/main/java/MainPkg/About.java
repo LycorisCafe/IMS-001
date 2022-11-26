@@ -4,6 +4,8 @@
  */
 package MainPkg;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Anupama
@@ -15,6 +17,12 @@ public class About extends javax.swing.JFrame {
      */
     public About() {
         initComponents();
+        formDetails();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     /**

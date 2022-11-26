@@ -5,6 +5,7 @@
 package MainPkg;
 
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -24,6 +25,12 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        formDetails();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     /**

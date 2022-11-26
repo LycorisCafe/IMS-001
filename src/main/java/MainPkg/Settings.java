@@ -4,6 +4,7 @@
  */
 package MainPkg;
 
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
@@ -23,7 +24,13 @@ public class Settings extends javax.swing.JFrame {
      */
     public Settings() {
         initComponents();
+        formDetails();
         dataGrab();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
     
     private void dataGrab() {

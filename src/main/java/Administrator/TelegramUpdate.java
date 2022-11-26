@@ -4,6 +4,8 @@
  */
 package Administrator;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Anupama
@@ -15,6 +17,12 @@ public class TelegramUpdate extends javax.swing.JFrame {
      */
     public TelegramUpdate() {
         initComponents();
+        formDetails();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     /**

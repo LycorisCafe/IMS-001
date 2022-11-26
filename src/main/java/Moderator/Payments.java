@@ -4,6 +4,8 @@
  */
 package Moderator;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Anupama
@@ -15,6 +17,12 @@ public class Payments extends javax.swing.JFrame {
      */
     public Payments() {
         initComponents();
+        formDetails();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     /**

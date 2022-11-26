@@ -4,6 +4,7 @@
  */
 package Moderator;
 
+import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 
 /**
@@ -17,11 +18,17 @@ public class ImagePreview extends javax.swing.JFrame {
      */
     public ImagePreview() {
         initComponents();
+        formDetails();
         getImage();
     }
     
     private void getImage(){
         jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     /**
@@ -38,7 +45,6 @@ public class ImagePreview extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Image Preview");
-        setPreferredSize(new java.awt.Dimension(500, 500));
         setResizable(false);
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
@@ -51,14 +57,14 @@ public class ImagePreview extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
