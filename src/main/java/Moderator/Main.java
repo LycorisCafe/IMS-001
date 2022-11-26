@@ -40,8 +40,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private Executor executor = Executors.newSingleThreadExecutor(this);
     int x = 0;
     String qrResult;
-    String grade;
-    String subject;
     Connection con = Helper.DB.connect();
 
     /**
@@ -548,39 +546,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-        String selectedClass = jComboBox3.getSelectedItem().toString();
-        String thisYear = new SimpleDateFormat("yyyy").format(new Date());
-        String thisMonth = new SimpleDateFormat("MM").format(new Date());
-        String[] parts = selectedClass.split("-");
-        try {
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM subjects "
-                    + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
-            while (rs.next()) {
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
-                        + "FROM classes "
-                        + "WHERE subjectId='" + rs.getString("id") + "'");
-                while (rs2.next()) {
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
-                            + "FROM payments "
-                            + "WHERE studentId='" + jLabel1.getText() + "' AND "
-                            + "classId='" + rs2.getString("id") + "' AND "
-                            + "year='" + thisYear + "' AND month='" + thisMonth + "'");
-                    while (rs3.next()){
-                        if (rs.getString("status").equals("1")){
-                            jTextField5.setText("Paid!");
-                            jTextField5.setForeground(Color.green);
-                        } else {
-                            jTextField5.setText("Not Paid!");
-                            jTextField5.setForeground(Color.red);
-                        }
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     /**
@@ -739,9 +704,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                 + "FROM regclass "
                                 + "WHERE studentId='" + jLabel1.getText() + "'");
                         while (rs2.next()) {
-                            //https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+                            // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
                             String today = new SimpleDateFormat("u").format(new Date());
-                            System.out.println(today);
                             ResultSet rs3 = stmt.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + rs2.getString("classId") + "' AND day='" + today + "'");
@@ -750,12 +714,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                         + "FROM subjects "
                                         + "WHERE id='" + rs3.getString("subjectId") + "'");
                                 while (rs4.next()) {
-                                    grade = rs4.getString("grade");
-                                    subject = rs4.getString("subject");
                                     jComboBox3.removeAllItems();
                                     jComboBox3.addItem("Please Select...");
                                     jComboBox3.setSelectedIndex(0);
-                                    jComboBox3.addItem(grade + " - " + subject);
+                                    jComboBox3.addItem(rs4.getString("grade")
+                                            + " - " + rs4.getString("subject"));
                                 }
                             }
                         }
