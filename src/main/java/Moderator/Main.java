@@ -66,6 +66,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jTextField6.setForeground(jTextField4.getForeground());
         jTextField5.setText("---");
         jTextField5.setForeground(jTextField4.getForeground());
+        jComboBox3.removeAllItems();
+        jComboBox3.addItem("Please Select...");
+        jComboBox3.setSelectedIndex(0);
         jButton2.setEnabled(false);
     }
 
@@ -808,15 +811,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         Helper.MainDetails data = new Helper.MainDetails();
         String instituteName = data.instituteName();
         String[] parts = qrResult.split("-");
-        if (parts[0].equals(instituteName)) {
+        if (parts[0].equals(instituteName) && parts[1].equals("STUDENT")) {
             String gotStudentId = parts[2];
-            jLabel1.setText(gotStudentId);
             try {
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM students "
                         + "WHERE id='" + gotStudentId + "'");
                 while (rs.next()) {
+                    jLabel1.setText(gotStudentId);
+
                     jTextField3.setText(rs.getString("firstName") + " "
                             + rs.getString("lastName"));
                     jTextField4.setText(rs.getString("grade"));
@@ -858,6 +862,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 }
             } catch (SQLException e) {
                 System.out.println(e);
+            }
+            if (jLabel1.getText().equals("---")) {
+                JOptionPane.showMessageDialog(this, "User not found!");
             }
         } else {
             JOptionPane.showMessageDialog(this, "Invalid QR Code!");
