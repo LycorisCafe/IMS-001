@@ -852,6 +852,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane7.setViewportView(jTextArea2);
 
         jButton21.setText("Send");
+        jButton21.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton21ActionPerformed(evt);
+            }
+        });
 
         jLabel36.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel36.setText("[ Messages will send via Telegram Bot ]");
@@ -2080,6 +2085,7 @@ public class Main extends javax.swing.JFrame {
                     Helper.TelegramBot telegram = new Helper.TelegramBot();
                     try {
                         telegram.execute(sm);
+                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
                     } catch (TelegramApiException e) {
                         JOptionPane.showMessageDialog(null, e + "\nFrom std");
                     }
@@ -2095,6 +2101,7 @@ public class Main extends javax.swing.JFrame {
                     Helper.TelegramBot telegram = new Helper.TelegramBot();
                     try {
                         telegram.execute(sm);
+                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
                     } catch (TelegramApiException e) {
                         JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
                     }
@@ -2110,6 +2117,7 @@ public class Main extends javax.swing.JFrame {
                     Helper.TelegramBot telegram = new Helper.TelegramBot();
                     try {
                         telegram.execute(sm);
+                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
                     } catch (TelegramApiException e) {
                         JOptionPane.showMessageDialog(null, e + "\nFrom clz");
                     }
@@ -2295,6 +2303,38 @@ public class Main extends javax.swing.JFrame {
         jCheckBox1.setSelected(false);
         jComboBox1.setSelectedIndex(0);
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
+        // send message from teacher panel to telegram
+        int r = jTable1.getSelectedRow();
+        
+        String id = jTable1.getValueAt(r, 0).toString();
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT telegramId "
+                    + "FROM teachers "
+                    + "WHERE id='" + id + "'");
+            SendMessage sm = new SendMessage();
+            while (rs.next()) {
+                String Teleid = rs.getString("telegramId");
+                System.out.println(Teleid);
+                sm.setText(jTextArea2.getText());
+                sm.setChatId(Teleid); // to set ID
+
+                Helper.TelegramBot telegram = new Helper.TelegramBot();
+                try {
+                    telegram.execute(sm);
+                    JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
+                } catch (TelegramApiException e) {
+                    JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton21ActionPerformed
 
 
     /**
