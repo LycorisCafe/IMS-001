@@ -904,13 +904,30 @@ public class Main extends javax.swing.JFrame {
 
         jLabel16.setText("by NIC :");
 
-        jTextField10.setText("---");
+        jTextField10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField10ActionPerformed(evt);
+            }
+        });
 
-        jTextField11.setText("---");
+        jTextField11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField11ActionPerformed(evt);
+            }
+        });
 
-        jTextField12.setText("---");
+        jTextField12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField12ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Reset");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -2331,10 +2348,91 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
                 }
             }
+            con.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_jButton21ActionPerformed
+
+    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+        // to filter selected data by ID
+        Connection con = Helper.DB.connect();
+        String id = jTextField10.getText();
+        if(!"".equals(jTextField10.getText()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
+                    + "WHERE id='" + id + "'");
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("name"), rs.getString("nic")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+        
+    }//GEN-LAST:event_jTextField10ActionPerformed
+
+    private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
+        // to filter selected data by name
+        Connection con = Helper.DB.connect();
+        String name = jTextField11.getText();
+        if(!"".equals(jTextField11.getText()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
+                    + "WHERE name LIKE '%"+name+"%'");
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("name"), rs.getString("nic")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField11ActionPerformed
+
+    private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
+        // to filter selected data by nic
+        Connection con = Helper.DB.connect();
+        String nic = jTextField12.getText();
+        if(!"".equals(jTextField12.getText()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
+                    + "WHERE nic='" + nic + "'");
+                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("name"), rs.getString("nic")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField12ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // to reset all texts of text fields in Search panel
+        jTextField10.setText("");
+        jTextField11.setText("");
+        jTextField12.setText("");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     /**
