@@ -167,10 +167,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel16 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jComboBox4 = new javax.swing.JComboBox<>();
         jButton8 = new javax.swing.JButton();
@@ -454,10 +450,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             jTable1.getColumnModel().getColumn(2).setMaxWidth(150);
         }
 
-        jLabel16.setText("Search by ID :");
-
-        jLabel17.setText("Search by Name :");
-
         jLabel11.setText("Teacher :");
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
@@ -482,14 +474,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
@@ -535,15 +519,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     .addComponent(jLabel14)
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
 
@@ -776,10 +752,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel15.setText("---");
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        jTextField1.setText("");
-        jTextField2.setText("");
-        jTextField1.setEnabled(false);
-        jTextField2.setEnabled(false);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
@@ -840,6 +812,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 }
                 con.close();
             } catch (SQLException e) {
+                System.out.println(e);
             }
         }
     }//GEN-LAST:event_jComboBox2ActionPerformed
@@ -850,12 +823,71 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             jLabel15.setText("---");
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
-            jTextField1.setText("");
-            jTextField2.setText("");
-            jTextField1.setEnabled(false);
-            jTextField2.setEnabled(false);
         } else {
-            
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            String grade = jComboBox1.getSelectedItem().toString();
+            String subject = jComboBox2.getSelectedItem().toString();
+            String teacher = jComboBox4.getSelectedItem().toString();
+            String subjectId;
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + grade + "' "
+                        + "AND subject='" + subject + "'");
+                while (rs.next()) {
+                    subjectId = rs.getString("id");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM teachers "
+                            + "WHERE name='" + teacher + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM classes "
+                                + "WHERE subjectId='" + subjectId + "' "
+                                + "AND teacherId='" + rs2.getString("id") + "'");
+                        while (rs3.next()) {
+                            ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                    + "FROM regclass "
+                                    + "WHERE classId='" + rs3.getString("id") + "'");
+                            while (rs4.next()) {
+                                String todayLong = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+                                ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                        + "FROM attendance "
+                                        + "WHERE regClassId='" + rs4.getString("id") + "' "
+                                        + "AND date='" + todayLong + "'");
+                                while (rs5.next()) {
+                                    ResultSet rs6 = stmt.executeQuery("SELECT * "
+                                            + "FROM attendance "
+                                            + "WHERE id='" + rs5.getString("id") + "'");
+                                    while (rs6.next()) {
+                                        ResultSet rs7 = stmt.executeQuery("SELECT * "
+                                                + "FROM regclass "
+                                                + "WHERE id='" + rs6.getString("regClassId") + "'");
+                                        while (rs7.next()) {
+                                            ResultSet rs8 = stmt.executeQuery("SELECT * "
+                                                    + "FROM students "
+                                                    + "WHERE id='" + rs7.getString("studentId") + "' "
+                                                    + "ORDER BY id ASC");
+                                            while (rs8.next()) {
+                                                Object[] row = {rs8.getString("id"),
+                                                    rs8.getString("firstName") + " " + rs8.getString("lastName"),
+                                                    rs8.getString("guardianPhone")};
+                                                model.addRow(row);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                con.close();
+                jLabel15.setText("" + model.getRowCount());
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
         }
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
@@ -914,8 +946,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -934,8 +964,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
