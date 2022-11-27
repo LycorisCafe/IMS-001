@@ -117,6 +117,30 @@ public class Main extends javax.swing.JFrame {
 //        }
         formDetails();
     }
+    
+    private void writeLog(String to, String message)
+    {
+        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        File f = new File(logPath + "broadcastMessage.log");
+        if (!f.exists()) {
+            try {
+                FileWriter fw = new FileWriter(f, true);
+                fw.append(currentTime + " - " + to + " - " + message + "\n");
+                fw.close();
+            } catch (IOException ex) {
+                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        } else {
+            try {
+                FileWriter fw = new FileWriter(f, true);
+                fw.append(currentTime + " - " + to + " - " + message + "\n");
+                fw.close();
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
+    }
        
     private void formDetails(){
         Helper.MainDetails details = new Helper.MainDetails();
@@ -2143,26 +2167,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             }
-            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            File f = new File(logPath + "broadcastMessage.log");
-            if (!f.exists()) {
-                try {
-                    FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " - " + jTextArea4.getText() + "\n");
-                    fw.close();
-                } catch (IOException ex) {
-                    //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, ex);
-                }
-            } else {
-                try {
-                    FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " - " + jTextArea4.getText() + "\n");
-                    fw.close();
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
-            }
+            writeLog(to, jTextArea4.getText());
             
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
@@ -2352,15 +2357,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
                 }
             }
-            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            File f = new File(logPath + "broadcastMessage.log");
-                try {
-                    FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + name2 + " - " + jTextArea2.getText() + "\n");
-                    fw.close();
-                } catch (IOException e) {
-                    System.out.println(e);              
-                }
+            writeLog(name2, jTextArea2.getText());
             con.close();
         } catch (SQLException e) {
             System.out.println(e);
