@@ -4,7 +4,6 @@
  */
 package Administrator;
 
-<<<<<<< HEAD
 import Helper.DB;
 import java.awt.HeadlessException;
 import java.io.File;
@@ -24,9 +23,7 @@ import javax.swing.JOptionPane;
 import org.bridj.cpp.mfc.OnUpdateCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-=======
 import java.awt.Toolkit;
->>>>>>> c346e8ce23069907d9d68a98a8249b630186a1ad
 
 /**
  *
@@ -43,7 +40,6 @@ public class Main extends javax.swing.JFrame {
     
     public Main() {
         initComponents();
-<<<<<<< HEAD
         grabData();
     }
     String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.lc";
@@ -124,7 +120,6 @@ public class Main extends javax.swing.JFrame {
 //        {
 //            System.out.println(ex);
 //        }
-=======
         formDetails();
     }
     
@@ -132,7 +127,6 @@ public class Main extends javax.swing.JFrame {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
->>>>>>> c346e8ce23069907d9d68a98a8249b630186a1ad
     }
 
     /**

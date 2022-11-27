@@ -31,6 +31,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -44,6 +45,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     int x = 0;
     String qrResult;
     String classId;
+    // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
+    String today = new SimpleDateFormat("u").format(new Date());
 
     /**
      * Creates new form Operations
@@ -58,7 +61,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void dataGrab() {
         try {
-            String today = new SimpleDateFormat("u").format(new Date());
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * "
@@ -409,8 +411,18 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel8.setText("Subject :");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Total :");
 
@@ -449,8 +461,18 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel11.setText("Teacher :");
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
         jButton8.setText("Reset");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -744,6 +766,99 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         disablePanels();
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        dataGrab();
+        jComboBox2.setSelectedIndex(0);
+        jComboBox4.setSelectedIndex(0);
+        jComboBox2.setEnabled(false);
+        jComboBox4.setEnabled(false);
+        jLabel15.setText("---");
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField1.setEnabled(false);
+        jTextField2.setEnabled(false);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox1.getSelectedIndex() == 0 || jComboBox1.getSelectedItem() == null) {
+            jComboBox2.setEnabled(false);
+            jComboBox4.setEnabled(false);
+        } else {
+            String grade = jComboBox1.getSelectedItem().toString();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + grade + "'");
+                while (rs.next()) {
+                    jComboBox2.setEnabled(true);
+                    jComboBox2.removeAllItems();
+                    jComboBox2.addItem("Please Select...");
+                    jComboBox2.setSelectedIndex(0);
+                    jComboBox2.addItem(rs.getString("subject"));
+                }
+                con.close();
+            } catch (SQLException e) {
+            }
+        }
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox2.getSelectedIndex() == 0 || jComboBox2.getSelectedItem() == null) {
+            jComboBox4.setEnabled(false);
+        } else {
+            String subject = jComboBox2.getSelectedItem().toString();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + jComboBox1.getSelectedItem().toString() + "' "
+                        + "AND subject='" + subject + "'");
+                while (rs.next()) {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE subjectId='" + rs.getString("id") + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM teachers "
+                                + "WHERE id='" + rs2.getString("teacherId") + "'");
+                        while (rs3.next()) {
+                            jComboBox4.setEnabled(true);
+                            jComboBox4.removeAllItems();
+                            jComboBox4.addItem("Please Select...");
+                            jComboBox4.setSelectedIndex(0);
+                            jComboBox4.addItem(rs3.getString("name"));
+                        }
+                    }
+                }
+                con.close();
+            } catch (SQLException e) {
+            }
+        }
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox4.getSelectedIndex() == 0 || jComboBox4.getSelectedItem() == null) {
+            jLabel15.setText("---");
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField1.setEnabled(false);
+            jTextField2.setEnabled(false);
+        } else {
+            
+        }
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -901,8 +1016,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                 + "FROM regclass "
                                 + "WHERE studentId='" + jLabel1.getText() + "'");
                         while (rs2.next()) {
-                            // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
-                            String today = new SimpleDateFormat("u").format(new Date());
                             ResultSet rs3 = stmt.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + rs2.getString("classId") + "' AND day='" + today + "'");
