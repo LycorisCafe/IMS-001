@@ -643,8 +643,18 @@ public class Main extends javax.swing.JFrame {
         jPanel8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         jButton5.setText("Reset");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setText("Delete");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Update");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -1178,6 +1188,11 @@ public class Main extends javax.swing.JFrame {
         jButton4.setText("Add");
 
         jButton9.setText("Update");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton10.setText("Delete");
 
@@ -2130,7 +2145,7 @@ public class Main extends javax.swing.JFrame {
         // to open the log file
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec("C:\\Windows\\notepad.exe C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.lc");
+            Process process = runtime.exec("C:\\Windows\\notepad.exe C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log");
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, ex);
@@ -2166,22 +2181,28 @@ public class Main extends javax.swing.JFrame {
         String address = jTextField8.getName();
         int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
-        int count = 3;
         
-        Connection con = Helper.DB.connect();
+        
         try {
+            Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
-            String sql = "INSERT INTO teachers(id, name, nic, address, telegramId, contact, status) VALUES "
-                    + "('"+count+"', '"+name+"', '"+nic+"', '"+contact+"', '"+address+", 'NULL', '"+status+"')";
-            stmt.executeUpdate(sql);
-            count += 1;
+            String sql = "INSERT INTO teachers(name, nic, address, telegramId, contact, status) VALUES "
+                    + "('"+name+"', '"+nic+"', '"+address+"', '0', '"+contact+"', '"+status+"')";
+            stmt.execute(sql);
             JOptionPane.showMessageDialog(this, "New Teacher Added!");
+            jButton5ActionPerformed(evt);
+            loadTable();
+            con.close();
         } catch (SQLException e) {
+            System.out.println(e);
         }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // updating data in teachers table
+        int r = jTable1.getSelectedRow();
+        
+        String id = jTable1.getValueAt(r, 0).toString();
         String name = jTextField5.getName();
         String nic = jTextField6.getName();
         String contact = jTextField7.getName();
@@ -2190,21 +2211,63 @@ public class Main extends javax.swing.JFrame {
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
         int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '"+name+"'?");
         
-        Connection con = Helper.DB.connect();
         if(choice == 0)
         {
             try {
+                Connection con = Helper.DB.connect();
                 Statement stmt = (Statement) con.createStatement();
                 String sql = "UPDATE teachers SET name='"+name+"', nic='"+nic+"', address='"+address+"' , "
-                        + ", telegramId='NULL', contact='"+contact+"', status='"+status+"'";
+                        + ", telegramId='0', contact='"+contact+"', status='"+status+"' WHERE id='"+id+"'";
                 stmt.executeUpdate(sql);
 
-                JOptionPane.showMessageDialog(this, "New Teacher Added!");
+                JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
+                jButton5ActionPerformed(evt);
+                loadTable();
+                con.close();
             } catch (SQLException e) {
+                System.out.println(e);
             }
         }
         
+        
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // delete selected row
+        int r = jTable1.getSelectedRow();
+        
+        String id = jTable1.getValueAt(r, 0).toString();
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '"+id+"'?");
+        if(choice == 0)
+        {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "DELETE FROM teachers WHERE id='"+id+"'";
+                stmt.executeUpdate(sql);
+                JOptionPane.showMessageDialog(this, "Row Deleted!");
+                jButton5ActionPerformed(evt);
+                loadTable();
+                con.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // resetting all the textfields
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+        jCheckBox1.setSelected(false);
+        jComboBox1.setSelectedIndex(0);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
 
     /**

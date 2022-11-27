@@ -120,17 +120,25 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     }
 
     private void initWebCam() {
-        Dimension size = WebcamResolution.QVGA.getSize();
-        webcam = Webcam.getWebcams().get(0);
-        webcam.setViewSize(size);
+        try
+        {
+            Dimension size = WebcamResolution.QVGA.getSize();
+            webcam = Webcam.getWebcams().get(0);
+            webcam.setViewSize(size);
 
-        panel = new WebcamPanel(webcam);
-        panel.setPreferredSize(size);
-        panel.setFPSDisplayed(true);
+            panel = new WebcamPanel(webcam);
+            panel.setPreferredSize(size);
+            panel.setFPSDisplayed(true);
 
-        jPanel2.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 250));
+            jPanel2.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 250));
 
-        executor.execute(this);
+            executor.execute(this);
+        }
+        
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
