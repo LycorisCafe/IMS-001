@@ -17,6 +17,7 @@ import com.google.zxing.common.HybridBinarizer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -50,8 +51,15 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
      */
     public Main() {
         initComponents();
+        formDetails();
         initWebCam();
         disablePanels();
+    }
+    
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+        setExtendedState(this.MAXIMIZED_BOTH);
     }
 
     private void disablePanels() {
