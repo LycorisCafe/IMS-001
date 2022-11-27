@@ -156,7 +156,7 @@ public class Main extends javax.swing.JFrame {
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM teachers");
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            //model.setRowCount(0);
+            model.setRowCount(0);
             while (rs2.next()) {
                 Object[] row = {rs2.getString("id"),
                     rs2.getString("name"), rs2.getString("nic")};
@@ -177,7 +177,7 @@ public class Main extends javax.swing.JFrame {
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM students");
             DefaultTableModel model2 = (DefaultTableModel) jTable3.getModel();
-            //model.setRowCount(0);
+            model2.setRowCount(0);
             while (rs2.next()) {
                 Object[] row2 = {rs2.getString("id"),
                     rs2.getString("firstName")+ " " +rs2.getString("lastName"), rs2.getString("grade")};
@@ -2280,27 +2280,26 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // adding data to teachers table
-        String name = jTextField5.getName();
-        String nic = jTextField6.getName();
-        String contact = jTextField7.getName();
-        String address = jTextField8.getName();
+        String name = jTextField5.getText();
+        String nic = jTextField6.getText();
+        String contact = jTextField7.getText();
+        String address = jTextField8.getText();
         int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
         
-        
+        Connection con = Helper.DB.connect();
         try {
-            Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             String sql = "INSERT INTO teachers(name, nic, address, telegramId, contact, status) VALUES "
                     + "('"+name+"', '"+nic+"', '"+address+"', '0', '"+contact+"', '"+status+"')";
             stmt.execute(sql);
             JOptionPane.showMessageDialog(this, "New Teacher Added!");
             jButton5ActionPerformed(evt);
-            loadTable();
             con.close();
         } catch (SQLException e) {
             System.out.println(e);
         }
+        jButton5ActionPerformed(evt);
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -2327,12 +2326,12 @@ public class Main extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
                 jButton5ActionPerformed(evt);
-                loadTable();
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
         }
+        jButton5ActionPerformed(evt);
         
         
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -2352,12 +2351,12 @@ public class Main extends javax.swing.JFrame {
                 stmt.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this, "Row Deleted!");
                 jButton5ActionPerformed(evt);
-                loadTable();
                 con.close();
             } catch (HeadlessException | SQLException e) {
                 System.out.println(e);
             }
         }
+        jButton5ActionPerformed(evt);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -2384,11 +2383,12 @@ public class Main extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
                 jButton5ActionPerformed(evt);
-                loadStudentTable();
+                
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
+            jButton11ActionPerformed(evt);
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -2400,6 +2400,7 @@ public class Main extends javax.swing.JFrame {
         jTextField8.setText("");
         jCheckBox1.setSelected(false);
         jComboBox1.setSelectedIndex(0);
+        loadTable();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
@@ -2531,8 +2532,7 @@ public class Main extends javax.swing.JFrame {
         String address = jTextField18.getText();
         String grade = jComboBox5.getSelectedItem().toString();
         // int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
-        
-        
+       
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -2542,11 +2542,12 @@ public class Main extends javax.swing.JFrame {
             stmt.execute(sql);
             JOptionPane.showMessageDialog(this, "New Student Added!");
             jButton5ActionPerformed(evt);
-            loadStudentTable();
             con.close();
+            
         } catch (SQLException e) {
             System.out.println(e);
         }
+        jButton11ActionPerformed(evt);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -2564,11 +2565,12 @@ public class Main extends javax.swing.JFrame {
                 stmt.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this, "Row Deleted!");
                 jButton5ActionPerformed(evt);
-                loadStudentTable();
                 con.close();
+               
             } catch (HeadlessException | SQLException e) {
                 System.out.println(e);
             }
+            jButton11ActionPerformed(evt);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -2609,6 +2611,7 @@ public class Main extends javax.swing.JFrame {
         jTextField18.setText("");
         jComboBox5.setSelectedIndex(0);
         jCheckBox2.setSelected(false);
+        loadStudentTable();
     }//GEN-LAST:event_jButton11ActionPerformed
 
 
