@@ -1088,12 +1088,30 @@ public class Main extends javax.swing.JFrame {
         jLabel18.setText("by Grade :");
 
         jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
-        jTextField9.setText("---");
+        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField9ActionPerformed(evt);
+            }
+        });
 
-        jTextField13.setText("---");
+        jTextField13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField13ActionPerformed(evt);
+            }
+        });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -1602,11 +1620,21 @@ public class Main extends javax.swing.JFrame {
         jScrollPane6.setViewportView(jTextArea1);
 
         jButton19.setText("Send");
+        jButton19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton19ActionPerformed(evt);
+            }
+        });
 
         jLabel35.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel35.setText("[ Messages will send via Telegram Bot ]");
 
         jButton20.setText("Log");
+        jButton20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton20ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -2516,6 +2544,7 @@ public class Main extends javax.swing.JFrame {
         jTextField10.setText("");
         jTextField11.setText("");
         jTextField12.setText("");
+        loadTable();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
@@ -2613,6 +2642,124 @@ public class Main extends javax.swing.JFrame {
         jCheckBox2.setSelected(false);
         loadStudentTable();
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
+        // to send private message to selected student via telegram bot
+        int r = jTable3.getSelectedRow();
+        String name = null;
+        String id = jTable3.getValueAt(r, 0).toString();
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT firstName, lastName, telegramId "
+                    + "FROM students "
+                    + "WHERE id='" + id + "'");
+            SendMessage sm = new SendMessage();
+            while (rs.next()) {
+                String Teleid = rs.getString("telegramId");
+                name = rs.getString("firstName") + " " + rs.getString("lastName");
+                sm.setText(jTextArea1.getText());
+                sm.setChatId(Teleid); // to set ID
+                Helper.TelegramBot telegram = new Helper.TelegramBot();
+                try {
+                    telegram.execute(sm);
+                    JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
+                } catch (TelegramApiException e) {
+                    JOptionPane.showMessageDialog(null, e);
+                }
+            }
+            writeLog(name, jTextArea1.getText());
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton19ActionPerformed
+
+    private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
+        // to display the log file
+        jButton28ActionPerformed(evt);
+    }//GEN-LAST:event_jButton20ActionPerformed
+
+    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+        // search for students by id
+        Connection con = Helper.DB.connect();
+        String id = jTextField9.getText();
+        if(!"".equals(jTextField9.getText()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
+                    + "WHERE id='" + id + "'");
+                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField9ActionPerformed
+
+    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
+        // search for students by name
+        Connection con = Helper.DB.connect();
+        String name = jTextField13.getText();
+        if(!"".equals(jTextField13.getText()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
+                    + "WHERE firstName OR lastName LIKE '%"+name+"%'");
+                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField13ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // search for students by grade
+        Connection con = Helper.DB.connect();
+        String grade = jComboBox4.getSelectedItem().toString();
+        if(!"".equals(jComboBox4.getSelectedItem().toString()))
+        {
+            try {
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
+                    + "WHERE grade='"+grade+"'");
+                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+                model.setRowCount(0);
+                while (rs.next()) {
+                    Object[] row = {rs.getString("id"),
+                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
+                    model.addRow(row);
+                }
+            con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // reset all the text fields in search panel - students
+        jTextField9.setText("");
+        jTextField13.setText("");
+        jComboBox3.setSelectedIndex(0);
+        loadStudentTable();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     /**
