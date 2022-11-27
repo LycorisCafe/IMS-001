@@ -140,6 +140,7 @@ public class Main extends javax.swing.JFrame {
 
             }
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 
@@ -2170,7 +2171,33 @@ public class Main extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // grabing data from selected row
+        int r = jTable1.getSelectedRow();
         
+        String id = jTable1.getValueAt(r, 0).toString();
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            
+            ResultSet rs = stmt.executeQuery("SELECT id "
+                    + "FROM teachers "
+                    + "WHERE id='" + id + "'");
+
+            while (rs.next()) {
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM teachers "
+                        + "WHERE id='" + rs.getString("id") + "'");
+                while (rs2.next()) {
+                    jTextField5.setText(id);
+                    jTextField6.setText(rs2.getString("name"));
+                    jTextField7.setText(rs2.getString("nic"));
+                    jTextField8.setText(rs2.getString("address"));
+                    // jCheckBox1.isSelected();
+                    jComboBox1.setSelectedItem(rs2.getString("status"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
