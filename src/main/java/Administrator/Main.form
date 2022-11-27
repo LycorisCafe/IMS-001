@@ -64,6 +64,8 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel52" min="-2" pref="100" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jButton1" min="-2" pref="100" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -74,7 +76,10 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButton1" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jButton1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel52" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -88,6 +93,13 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel52">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Media/Loding(100x25).gif"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -145,7 +157,11 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jTextField3" max="32767" attributes="0"/>
-                                  <Component id="jTextField4" max="32767" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="jTextField4" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="jButton33" min="-2" pref="100" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -175,10 +191,11 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton33" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="109" max="32767" attributes="0"/>
+                      <EmptySpace pref="108" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -346,6 +363,14 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="jButton33">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Get Data"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton33ActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
@@ -739,7 +764,7 @@
                               <Component id="jScrollPane2" min="-2" pref="255" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel9" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="137" max="32767" attributes="0"/>
+                              <EmptySpace pref="144" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -993,7 +1018,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton22" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace pref="97" max="32767" attributes="0"/>
+                              <EmptySpace pref="104" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1724,7 +1749,7 @@
                               <Component id="jScrollPane4" min="-2" pref="231" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel19" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="253" max="32767" attributes="0"/>
+                              <EmptySpace pref="260" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2224,7 +2249,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton20" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace pref="97" max="32767" attributes="0"/>
+                              <EmptySpace pref="104" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2557,7 +2582,7 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton25" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace pref="97" max="32767" attributes="0"/>
+                              <EmptySpace pref="104" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2629,7 +2654,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jButton26" min="-2" pref="30" max="-2" attributes="0"/>
-                              <EmptySpace pref="504" max="32767" attributes="0"/>
+                              <EmptySpace pref="511" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2684,7 +2709,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanel31" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="jScrollPane11" pref="488" max="32767" attributes="0"/>
+                              <Component id="jScrollPane11" pref="495" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel30" min="-2" max="-2" attributes="0"/>
                           </Group>

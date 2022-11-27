@@ -4,26 +4,22 @@
  */
 package Administrator;
 
-import Helper.DB;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import org.bridj.cpp.mfc.OnUpdateCommand;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
+import java.sql.Statement;
 
 /**
  *
@@ -34,96 +30,64 @@ public class Main extends javax.swing.JFrame {
     /**
      * Creates new form Main
      */
-    
-    
-    
-    
     public Main() {
         initComponents();
+        formDetails();
         grabData();
     }
-    String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.lc";
     
+    String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
+    String year = new SimpleDateFormat("yyyy").format(new Date());
+    String month = new SimpleDateFormat("MM").format(new Date());
     
-    private void grabData()
-    {
+    private void grabData() {
         // grabing data from students table
-        java.sql.Connection con = Helper.DB.connect();
         try {
-            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(firstName) FROM students");
-            while (rs.next()) 
-            {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
+                    + "FROM students");
+            while (rs.next()) {
                 int count = rs.getInt(1);
                 jTextField1.setText("" + count);
             }
-            //con.close();
-        }
-        catch (SQLException ex)
-        {
+            con.close();
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
-        
+
         // grabing data from teachers table
         try {
-            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(name) FROM teachers");
-            while (rs.next()) 
-            {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
+                    + "FROM teachers");
+            while (rs.next()) {
                 int count = rs.getInt(1);
                 jTextField2.setText("" + count);
             }
-            //con.close();
-        }
-        catch (SQLException ex)
-        {
+            con.close();
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
-        
+
         // grabing data from classes table
         try {
-            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(subjectId) FROM classes");
-            while (rs.next()) 
-            {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
+                    + "FROM classes");
+            while (rs.next()) {
                 int count = rs.getInt(1);
                 jTextField3.setText("" + count);
             }
-            //con.close();
-        }
-        catch (SQLException ex)
-        {
+            con.close();
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
-        
-        // grabing and calculating the monthly income from the payments table
-//        String year;
-//        int month;
-//        String classID;
-//        try {
-//            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-//            ResultSet rs = stmt.executeQuery("SELECT 'year', 'month', 'classId' FROM payments");
-//            while (rs.next()) 
-//            {
-//                
-//                month = Calendar.getInstance().get(Calendar.MONTH);
-//                String sqlMonth = null;
-//                System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
-////                if(sqlMonth == month)
-////                {
-////                    System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
-////                }
-//            }
-//            //con.close();
-//        }
-//        catch (SQLException ex)
-//        {
-//            System.out.println(ex);
-//        }
-        formDetails();
     }
     
-    private void formDetails(){
+    private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
@@ -141,6 +105,7 @@ public class Main extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
+        jLabel52 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -159,6 +124,7 @@ public class Main extends javax.swing.JFrame {
         jButton27 = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         jButton28 = new javax.swing.JButton();
+        jButton33 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -342,12 +308,16 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jLabel52.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/Loding(100x25).gif"))); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -355,7 +325,9 @@ public class Main extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel52, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -447,6 +419,13 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jButton33.setText("Get Data");
+        jButton33.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton33ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -470,7 +449,10 @@ public class Main extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField3)
-                            .addComponent(jTextField4))))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jTextField4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -491,10 +473,11 @@ public class Main extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(109, Short.MAX_VALUE))
+                .addContainerGap(108, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Summary", jPanel2);
@@ -781,7 +764,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Classes", jPanel7);
@@ -827,7 +810,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel36))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Message", jPanel24);
@@ -1250,7 +1233,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addContainerGap(260, Short.MAX_VALUE))
         );
 
         jTabbedPane3.addTab("Classes", jPanel18);
@@ -1477,7 +1460,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel35))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         jTabbedPane3.addTab("Message", jPanel23);
@@ -1632,7 +1615,7 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel40))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("Message", jPanel26);
@@ -1655,7 +1638,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel27Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(504, Short.MAX_VALUE))
+                .addContainerGap(511, Short.MAX_VALUE))
         );
 
         jTabbedPane4.addTab("Update", jPanel27);
@@ -1954,7 +1937,7 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel28Layout.createSequentialGroup()
-                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -2005,11 +1988,9 @@ public class Main extends javax.swing.JFrame {
         try {
             java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
             SendMessage sm = new SendMessage();
-            if("All Students".equals(to))
-            {
+            if ("All Students".equals(to)) {
                 ResultSet rs = stmt.executeQuery("SELECT telegramId FROM students");
-                while(rs.next())
-                {
+                while (rs.next()) {
                     String id = rs.getString("telegramId");
                     System.out.println(id);
                     sm.setText(jTextArea4.getText());
@@ -2022,12 +2003,9 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, e + "\nFrom std");
                     }
                 }
-            }
-            else if("All Teachers".equals(to))
-            {
+            } else if ("All Teachers".equals(to)) {
                 ResultSet rs = stmt.executeQuery("SELECT telegramId FROM teachers");
-                while(rs.next())
-                {
+                while (rs.next()) {
                     String id = rs.getString("telegramId");
                     System.out.println(id);
                     sm.setText(jTextArea4.getText());
@@ -2040,12 +2018,9 @@ public class Main extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
                     }
                 }
-            }
-            else
-            {
+            } else {
                 ResultSet rs = stmt.executeQuery("SELECT telegramId FROM classes");
-                while(rs.next())
-                {
+                while (rs.next()) {
                     String id = rs.getString("telegramId");
                     System.out.println(id);
                     sm.setText(jTextArea4.getText());
@@ -2060,36 +2035,30 @@ public class Main extends javax.swing.JFrame {
                 }
             }
             String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            File f = new File(path);
-            if(!f.exists())
-            {
+            File f = new File(logPath + "broadcastMessage.lc");
+            if (!f.exists()) {
                 try {
                     FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText()+"\n");
+                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText() + "\n");
                     fw.close();
                 } catch (IOException ex) {
                     //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, ex);
                 }
-            }
-            else
-            {
-                try{
+            } else {
+                try {
                     FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText()+"\n");
+                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText() + "\n");
                     fw.close();
-                }
-                catch(IOException e)
-                {
+                } catch (IOException e) {
                     System.out.println(e);
                 }
             }
             
-            
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
         }
-        
+
     }//GEN-LAST:event_jButton27ActionPerformed
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
@@ -2102,6 +2071,22 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }//GEN-LAST:event_jButton28ActionPerformed
+
+    private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
+        // grabing monthly income
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
+                    + "FROM classes");
+            while (rs.next()) {
+                
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_jButton33ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2166,6 +2151,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
+    private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -2232,6 +2218,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

@@ -26,8 +26,6 @@ import java.sql.Statement;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -63,8 +61,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     String payment;
     String institute = Helper.MainDetails.instituteName();
     int newStudent = 0;
-    
-    private void formDetails(){
+
+    private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
@@ -791,7 +789,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         if (cr4.getSelectedIndex() == 0) {
             JOptionPane.showMessageDialog(this, "All field must be filled!");
         } else {
-//            String dayCho = cr3.getSelectedItem().toString();
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             Object[] row = {classId, cr1x, cr2x, cr3.getSelectedItem(),
                 cr4.getSelectedItem(), payment};
@@ -836,7 +833,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             }
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
 
         int width = 150;  // width of the QR code
@@ -892,7 +889,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 }
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
     }//GEN-LAST:event_cr1ActionPerformed
@@ -931,7 +928,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 }
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
     }//GEN-LAST:event_cr2ActionPerformed
@@ -952,13 +949,38 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "FROM classes "
                         + "WHERE subjectId='" + subjectId + "' AND teacherId='" + teacherId + "'");
                 while (rs.next()) {
-                    cr4.addItem(rs.getString("day"));
+                    int dayCho = Integer.parseInt(rs.getString("day"));
+                    String convertDay = null;
+                    switch (dayCho) {
+                        case 1:
+                            convertDay = "Monday";
+                            break;
+                        case 2:
+                            convertDay = "Tuesday";
+                            break;
+                        case 3:
+                            convertDay = "Wednesday";
+                            break;
+                        case 4:
+                            convertDay = "Thursday";
+                            break;
+                        case 5:
+                            convertDay = "Friday";
+                            break;
+                        case 6:
+                            convertDay = "Saturday";
+                            break;
+                        case 7:
+                            convertDay = "Sunday";
+                            break;
+                    }
+                    cr4.addItem(convertDay);
                     classId = rs.getString("id");
                     payment = rs.getString("payment");
                 }
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
     }//GEN-LAST:event_cr3ActionPerformed
@@ -985,7 +1007,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                     + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0')");
             con.close();
         } catch (SQLException ex) {
-            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         int rowcount = jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
@@ -998,7 +1020,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
                 con.close();
             } catch (SQLException ex) {
-                Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
 
@@ -1013,7 +1035,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         try {
             telegramBot.execute(message);
         } catch (TelegramApiException ex) {
-            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
