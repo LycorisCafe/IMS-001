@@ -36,6 +36,7 @@ public class Main extends javax.swing.JFrame {
         formDetails();
         grabData();
         loadTable();
+        loadStudentTable();
     }
     
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
@@ -153,17 +154,42 @@ public class Main extends javax.swing.JFrame {
         Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
-            ResultSet rs2 = stmt.executeQuery("SELECT id, name, nic FROM teachers");
+            ResultSet rs2 = stmt.executeQuery("SELECT * FROM teachers");
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            //model.setRowCount(0);
             while (rs2.next()) {
                 Object[] row = {rs2.getString("id"),
                     rs2.getString("name"), rs2.getString("nic")};
                 model.addRow(row);
-
+                
             }
+            con.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e);
+            // JOptionPane.showMessageDialog(null, e);
+            System.out.println(e);
         }
+    }
+    
+    private void loadStudentTable()
+    {
+        Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT * FROM students");
+            DefaultTableModel model2 = (DefaultTableModel) jTable3.getModel();
+            //model.setRowCount(0);
+            while (rs2.next()) {
+                Object[] row2 = {rs2.getString("id"),
+                    rs2.getString("firstName")+ " " +rs2.getString("lastName"), rs2.getString("grade")};
+                model2.addRow(row2);
+                
+            }
+            con.close();
+        } catch (SQLException e) {
+            // JOptionPane.showMessageDialog(null, e);
+            System.out.println(e + "\nfrom std err");
+        }
+        
     }
 
     /**
@@ -1046,6 +1072,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(jTable3);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Search :"));
@@ -1124,7 +1155,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel24.setText("Grade :");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13" }));
 
         jLabel25.setText("Telegram ID :");
 
@@ -1236,6 +1267,11 @@ public class Main extends javax.swing.JFrame {
         jPanel16.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         jButton4.setText("Add");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton9.setText("Update");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -1245,8 +1281,18 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton10.setText("Delete");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jButton11.setText("Reset");
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -2172,7 +2218,6 @@ public class Main extends javax.swing.JFrame {
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
         }
-
     }//GEN-LAST:event_jButton27ActionPerformed
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
@@ -2309,14 +2354,42 @@ public class Main extends javax.swing.JFrame {
                 jButton5ActionPerformed(evt);
                 loadTable();
                 con.close();
-            } catch (Exception e) {
+            } catch (HeadlessException | SQLException e) {
                 System.out.println(e);
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+        // to update data of the selected row
+        String fname = jTextField14.getText();
+        String lname = jTextField15.getText();
+        String gname = jTextField16.getText();
+        String gPhone = jTextField17.getText();
+        String address = jTextField18.getText();
+        String grade = jComboBox5.getSelectedItem().toString();
+        int r = jTable3.getSelectedRow();
+        String id = jTable3.getValueAt(r, 0).toString();
+        
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '"+fname+"'?");
+        if(choice == 0)
+        {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "UPDATE students SET firstName='"+fname+"', lastName='"+lname+"', guardianName='"+gname+"',"
+                        + " guardianPhone='"+gPhone+"', address='"+address+"', grade='"+grade+"', telegramId='0',"
+                        + "status='0' WHERE id='"+id+"'";
+                stmt.executeUpdate(sql);
+
+                JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
+                jButton5ActionPerformed(evt);
+                loadStudentTable();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -2448,6 +2521,95 @@ public class Main extends javax.swing.JFrame {
         // to display the log file
         jButton28ActionPerformed(evt);
     }//GEN-LAST:event_jButton22ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // insert new student into students table
+        String fname = jTextField14.getText();
+        String lname = jTextField15.getText();
+        String gname = jTextField16.getText();
+        String gPhone = jTextField17.getText();
+        String address = jTextField18.getText();
+        String grade = jComboBox5.getSelectedItem().toString();
+        // int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
+        
+        
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = (Statement) con.createStatement();
+            String sql = "INSERT INTO students(firstName, lastName, guardianName, guardianPhone, address, grade,"
+                    + "telegramId, status) VALUES ('"+fname+"', '"+lname+"', '"+gname+"', '"+gPhone+"', '"+address+"',"
+                    + " '"+grade+"', '0', '0')";
+            stmt.execute(sql);
+            JOptionPane.showMessageDialog(this, "New Student Added!");
+            jButton5ActionPerformed(evt);
+            loadStudentTable();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // delete a student from students table
+        int r = jTable3.getSelectedRow();
+        
+        String id = jTable3.getValueAt(r, 0).toString();
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '"+id+"'?");
+        if(choice == 0)
+        {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = (Statement) con.createStatement();
+                String sql = "DELETE FROM students WHERE id='"+id+"'";
+                stmt.executeUpdate(sql);
+                JOptionPane.showMessageDialog(this, "Row Deleted!");
+                jButton5ActionPerformed(evt);
+                loadStudentTable();
+                con.close();
+            } catch (HeadlessException | SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // grabing data from selected row
+        int r = jTable3.getSelectedRow();
+        
+        String id = jTable3.getValueAt(r, 0).toString();
+        java.sql.Connection con = Helper.DB.connect();
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM students WHERE id='" + id + "'");
+
+            while (rs.next()) {
+                ResultSet rs2 = stmt.executeQuery("SELECT * FROM students WHERE id='" + rs.getString("id") + "'");
+                while (rs2.next()) {
+                    jTextField14.setText(rs2.getString("firstName"));
+                    jTextField15.setText(rs2.getString("lastName"));
+                    jTextField16.setText(rs2.getString("guardianName"));
+                    jTextField17.setText(rs2.getString("guardianPhone"));
+                    jTextField18.setText(rs2.getString("address"));
+                    jComboBox5.setSelectedItem(rs2.getString("grade"));
+                    // jCheckBox1.isSelected();
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e + "\ntable mouse click");
+        }
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // reset all the text fields in students panel
+        jTextField14.setText("");
+        jTextField15.setText("");
+        jTextField16.setText("");
+        jTextField17.setText("");
+        jTextField18.setText("");
+        jComboBox5.setSelectedIndex(0);
+        jCheckBox2.setSelected(false);
+    }//GEN-LAST:event_jButton11ActionPerformed
 
 
     /**
