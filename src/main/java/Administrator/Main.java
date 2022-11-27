@@ -8,7 +8,6 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -19,7 +18,6 @@ import javax.swing.JOptionPane;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.swing.table.DefaultTableModel;
@@ -862,6 +860,11 @@ public class Main extends javax.swing.JFrame {
         jLabel36.setText("[ Messages will send via Telegram Bot ]");
 
         jButton22.setText("Log");
+        jButton22.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton22ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
         jPanel24.setLayout(jPanel24Layout);
@@ -2141,11 +2144,11 @@ public class Main extends javax.swing.JFrame {
                 }
             }
             String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-            File f = new File(logPath + "broadcastMessage.lc");
+            File f = new File(logPath + "broadcastMessage.log");
             if (!f.exists()) {
                 try {
                     FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText() + "\n");
+                    fw.append(currentTime + " - " + to + " - " + jTextArea4.getText() + "\n");
                     fw.close();
                 } catch (IOException ex) {
                     //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -2154,7 +2157,7 @@ public class Main extends javax.swing.JFrame {
             } else {
                 try {
                     FileWriter fw = new FileWriter(f, true);
-                    fw.append(currentTime + " - " + to + " -" + jTextArea4.getText() + "\n");
+                    fw.append(currentTime + " - " + to + " - " + jTextArea4.getText() + "\n");
                     fw.close();
                 } catch (IOException e) {
                     System.out.println(e);
@@ -2324,18 +2327,19 @@ public class Main extends javax.swing.JFrame {
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         // send message from teacher panel to telegram
         int r = jTable1.getSelectedRow();
-        
+        String name2 = null;
         String id = jTable1.getValueAt(r, 0).toString();
         java.sql.Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
             
-            ResultSet rs = stmt.executeQuery("SELECT telegramId "
+            ResultSet rs = stmt.executeQuery("SELECT name, telegramId "
                     + "FROM teachers "
                     + "WHERE id='" + id + "'");
             SendMessage sm = new SendMessage();
             while (rs.next()) {
                 String Teleid = rs.getString("telegramId");
+                name2 = rs.getString("name");
                 System.out.println(Teleid);
                 sm.setText(jTextArea2.getText());
                 sm.setChatId(Teleid); // to set ID
@@ -2348,6 +2352,15 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
                 }
             }
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            File f = new File(logPath + "broadcastMessage.log");
+                try {
+                    FileWriter fw = new FileWriter(f, true);
+                    fw.append(currentTime + " - " + name2 + " - " + jTextArea2.getText() + "\n");
+                    fw.close();
+                } catch (IOException e) {
+                    System.out.println(e);              
+                }
             con.close();
         } catch (SQLException e) {
             System.out.println(e);
@@ -2433,6 +2446,11 @@ public class Main extends javax.swing.JFrame {
         jTextField11.setText("");
         jTextField12.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
+        // to display the log file
+        jButton28ActionPerformed(evt);
+    }//GEN-LAST:event_jButton22ActionPerformed
 
 
     /**
