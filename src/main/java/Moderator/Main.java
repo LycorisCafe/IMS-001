@@ -20,6 +20,12 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -96,7 +102,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         }
         jLabel6.setIcon(null);
         jLabel6.setText("-");
-        jLabel1.setText("---");
+        studentIdLabel.setText("---");
         jTextField3.setText("---");
         jTextField4.setText("---");
         jTextField6.setText("---");
@@ -140,7 +146,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        studentIdLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -157,6 +163,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -174,7 +181,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jPanel7 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
-        jButton6 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -209,11 +215,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addContainerGap())
         );
 
-        jLabel1.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("---");
-        jLabel1.setToolTipText("Student ID");
-        jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        studentIdLabel.setFont(new java.awt.Font("Consolas", 0, 14)); // NOI18N
+        studentIdLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        studentIdLabel.setText("---");
+        studentIdLabel.setToolTipText("Student ID");
+        studentIdLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -320,6 +326,13 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             }
         });
 
+        jButton6.setText("Edit Student's Classes");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -338,7 +351,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             .addComponent(jTextField4)
                             .addComponent(jTextField6)))
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -358,7 +372,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -378,7 +394,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(studentIdLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                             .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
@@ -391,7 +407,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(studentIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -542,13 +558,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/InstituteDesign.png"))); // NOI18N
 
-        jButton6.setText("Edit Student's Classes");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -557,19 +566,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 545, Short.MAX_VALUE)
+                .addGap(42, 42, 42)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -669,7 +675,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         classId = rs2.getString("id");
                         ResultSet rs3 = stmt.executeQuery("SELECT * "
                                 + "FROM payments "
-                                + "WHERE studentId='" + jLabel1.getText() + "' AND "
+                                + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
                                 + "classId='" + classId + "' AND "
                                 + "year='" + thisYear + "' AND month='" + thisMonth + "'");
                         while (rs3.next()) {
@@ -698,7 +704,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String studentId = jLabel1.getText();
+        String studentId = studentIdLabel.getText();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
@@ -940,7 +946,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -968,6 +973,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JLabel studentIdLabel;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -1022,8 +1028,13 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "FROM students "
                         + "WHERE id='" + gotStudentId + "'");
                 while (rs.next()) {
-                    jLabel1.setText(gotStudentId);
-
+                    studentIdLabel.setText(gotStudentId);
+                    try ( PrintStream out = new PrintStream(
+                            new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\StudentId.lc"))) {
+                        out.println(gotStudentId);
+                    } catch (FileNotFoundException ex) {
+                        System.out.println(ex);
+                    }
                     jTextField3.setText(rs.getString("firstName") + " "
                             + rs.getString("lastName"));
                     jTextField4.setText(rs.getString("grade"));
@@ -1042,7 +1053,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         jButton2.setEnabled(true);
                         ResultSet rs2 = stmt.executeQuery("SELECT * "
                                 + "FROM regclass "
-                                + "WHERE studentId='" + jLabel1.getText() + "'");
+                                + "WHERE studentId='" + studentIdLabel.getText() + "'");
                         while (rs2.next()) {
                             ResultSet rs3 = stmt.executeQuery("SELECT * "
                                     + "FROM classes "
@@ -1069,7 +1080,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             } catch (SQLException e) {
                 System.out.println(e);
             }
-            if (jLabel1.getText().equals("---")) {
+            if (studentIdLabel.getText().equals("---")) {
                 JOptionPane.showMessageDialog(this, "User not found!");
             }
         } else {
