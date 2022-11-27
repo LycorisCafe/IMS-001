@@ -6,12 +6,14 @@ package Moderator;
 
 import com.github.javafaker.Faker;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 import net.glxn.qrgen.QRCode;
 import net.glxn.qrgen.image.ImageType;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,10 +46,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
      */
     public NewStudent() {
         initComponents();
-        setExtendedState(this.MAXIMIZED_BOTH);
+        formDetails();
         disablePanels();
     }
-    
+
     String code = null;
     private WebcamPanel panel = null;
     private Webcam webcam = null;
@@ -59,9 +61,15 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     String teacherId;
     String classId;
     String payment;
+    String institute = Helper.MainDetails.instituteName();
     int newStudent = 0;
-    Connection con = Helper.DB.connect();
     
+    private void formDetails(){
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+        setExtendedState(this.MAXIMIZED_BOTH);
+    }
+
     private void disablePanels() {
         Component[] com1 = jPanel4.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -80,21 +88,21 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             com4[a].setEnabled(false);
         }
     }
-    
+
     private void initWebCam() {
         Dimension size = WebcamResolution.QVGA.getSize();
         webcam = Webcam.getWebcams().get(0);
         webcam.setViewSize(size);
-        
+
         panel = new WebcamPanel(webcam);
         panel.setPreferredSize(size);
         panel.setFPSDisplayed(true);
-        
+
         jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
-        
+
         executor.execute(this);
     }
-    
+
     private void clearData() {
         fName.setText("");
         lName.setText("");
@@ -106,6 +114,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         jLabel8.setText("Waiting for authentication...");
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
+        jLabel12.setIcon(null);
+        jLabel12.setText("-");
     }
 
     /**
@@ -162,6 +172,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         jButton7 = new javax.swing.JButton();
         cr4 = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -498,6 +509,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
         jLabel14.setText("Day :");
 
+        jButton10.setText("Remove");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -524,9 +542,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         .addComponent(cr4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -553,7 +573,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton7)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton7)
+                    .addComponent(jButton10))
                 .addContainerGap())
         );
 
@@ -714,11 +736,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             try {
                 Webcam webcam = Webcam.getDefault();
                 webcam.open();
-                // get image
-                BufferedImage image = webcam.getImage();
-                // save image to PNG file
-                ImageIO.write(image, "PNG", new File(path));
-            } catch (Exception e) {
+                BufferedImage img = webcam.getImage();
+                BufferedImage newImg = img.getSubimage(img.getNumXTiles() / 2, img.getNumYTiles() / 2, img.getHeight(), img.getHeight());
+                ImageIO.write(newImg, "PNG", new File(path));
+            } catch (WebcamException | IOException e) {
                 System.out.println(e);
             }
             jLabel6.setText("Success!");
@@ -760,6 +781,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         jTextField5.setText("---");
         jButton3.setEnabled(false);
         jButton7.setEnabled(false);
+        jButton10.setEnabled(false);
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -774,6 +796,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             model.addRow(row);
             if (!jButton7.isEnabled()) {
                 jButton7.setEnabled(true);
+            }
+            if (!jButton10.isEnabled()) {
+                jButton10.setEnabled(true);
             }
             cr1.setSelectedIndex(0);
             cr2.setSelectedIndex(0);
@@ -796,7 +821,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
+
         try {
+            Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT id "
                     + "FROM students "
@@ -805,19 +832,22 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 newStudent = rs.getInt("id");
                 newStudent = newStudent + 1;
             }
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         int width = 150;  // width of the QR code
         int height = 150;
-        String institute = Helper.MainDetails.instituteName();
         String newStudentId = newStudent + "";
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp";
-        
+        File qrExist = new File(path + "\\TempQR.png");
+        if (qrExist.exists()) {
+            qrExist.delete();
+        }
         try {
             ByteArrayOutputStream out = QRCode
-                    .from(institute + "-Student-" + newStudentId)
+                    .from(institute + "-STUDENT-" + newStudentId)
                     .to(ImageType.PNG)
                     .withSize(width, height)
                     .stream();
@@ -839,17 +869,18 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
         // TODO add your handling code here:
-        cr1x = cr1.getSelectedItem().toString();
-        if (cr1.getSelectedIndex() == 0) {
+        if (cr1.getSelectedIndex() == 0 || cr1.getSelectedItem() == null) {
             cr2.setEnabled(false);
             cr3.setEnabled(false);
             cr4.setEnabled(false);
         } else {
+            cr1x = cr1.getSelectedItem().toString();
             cr2.setEnabled(true);
             cr2.removeAllItems();
             cr2.addItem("Please Select...");
             cr2.setSelectedIndex(0);
             try {
+                Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects "
@@ -857,6 +888,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 while (rs.next()) {
                     cr2.addItem(rs.getString("subject"));
                 }
+                con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -865,16 +897,17 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void cr2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr2ActionPerformed
         // TODO add your handling code here:
-        cr2x = cr2.getSelectedItem().toString();
-        if (cr2.getSelectedIndex() == 0) {
+        if (cr2.getSelectedIndex() == 0 || cr2.getSelectedItem() == null) {
             cr3.setEnabled(false);
             cr4.setEnabled(false);
         } else {
+            cr2x = cr2.getSelectedItem().toString();
             cr3.setEnabled(true);
             cr3.removeAllItems();
             cr3.addItem("Please Select...");
             cr3.setSelectedIndex(0);
             try {
+                Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects "
@@ -894,6 +927,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         }
                     }
                 }
+                con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -902,7 +936,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void cr3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr3ActionPerformed
         // TODO add your handling code here:
-        if (cr3.getSelectedIndex() == 0) {
+        if (cr3.getSelectedIndex() == 0 || cr3.getSelectedItem() == null) {
             cr4.setEnabled(false);
         } else {
             cr4.setEnabled(true);
@@ -910,6 +944,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             cr4.addItem("Please Select...");
             cr4.setSelectedIndex(0);
             try {
+                Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM classes "
@@ -919,6 +954,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                     classId = rs.getString("id");
                     payment = rs.getString("payment");
                 }
+                con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -927,7 +963,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void cr4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr4ActionPerformed
         // TODO add your handling code here:
-        if (cr4.getSelectedIndex() == 0) {
+        if (cr4.getSelectedIndex() == 0 || cr4.getSelectedItem() == null) {
             jButton3.setEnabled(false);
         } else {
             jButton3.setEnabled(true);
@@ -936,19 +972,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        SendMessage message = new SendMessage();
-        message.setChatId(telegramId.getText());
-        message.setText("Student Registration Success!\n\n"
-                + "Student ID : " + newStudent + "\n"
-                + "Student Name : " + fName.getText() + " " + lName.getText());
-        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
         try {
-            telegramBot.execute(message);
-        } catch (TelegramApiException ex) {
-            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
+            Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO students "
                     + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status)"
@@ -956,28 +981,39 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                     + "('" + newStudent + "','" + fName.getText() + "','" + lName.getText() + "',"
                     + "'" + gName.getText() + "','" + gPhone.getText() + "','" + address.getText() + "',"
                     + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0')");
+            con.close();
         } catch (SQLException ex) {
             Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
         }
-        int y = 0;
         int rowcount = jTable1.getRowCount();
-        do {
+        for (int y = 0; y < rowcount; y++) {
             try {
+                Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate("INSERT INTO regclass "
                         + "(studentId,classId) "
                         + "VALUES "
                         + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
+                con.close();
             } catch (SQLException ex) {
                 Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
             }
-            y = y + 1;
-        } while (y == rowcount);
-        
+        }
+
         File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
-        tempImage.renameTo(new File("\\StudentImgs\\" + newStudent + ".png"));
+        tempImage.renameTo(new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png"));
+        SendMessage message = new SendMessage();
+        message.setChatId(telegramId.getText());
+        message.setText("Student Registration Success!\n\n"
+                + "Student ID : " + institute + "-" + "STUDENT" + "-" + newStudent + "\n"
+                + "Student Name : " + fName.getText() + " " + lName.getText());
+        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
+        try {
+            telegramBot.execute(message);
+        } catch (TelegramApiException ex) {
+            Logger.getLogger(NewStudent.class.getName()).log(Level.SEVERE, null, ex);
+        }
         JOptionPane.showMessageDialog(this, "Success!");
-        
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {
             com1[a].setEnabled(false);
@@ -988,6 +1024,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         }
         clearData();
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int selectedrow = jTable1.getSelectedRow();
+        model.removeRow(selectedrow);
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1035,6 +1078,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JTextField gPhone;
     private javax.swing.JComboBox<String> grade;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1082,7 +1126,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         t.setDaemon(true);
         return t;
     }
-    
+
     @Override
     public void run() {
         do {
@@ -1097,5 +1141,5 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             x = x + 1;
         } while (true);
     }
-    
+
 }
