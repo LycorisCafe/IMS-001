@@ -5,6 +5,7 @@
 package Moderator;
 
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamPanel;
 import com.github.sarxos.webcam.WebcamResolution;
 import com.google.zxing.BinaryBitmap;
@@ -20,11 +21,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -53,6 +51,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     String classId;
     // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
     String today = new SimpleDateFormat("u").format(new Date());
+    String todate = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
 
     /**
      * Creates new form Operations
@@ -116,12 +115,15 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     }
 
     private void webcamClose() {
-        webcam.close();
+        try {
+            webcam.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private void initWebCam() {
-        try
-        {
+        try {
             Dimension size = WebcamResolution.QVGA.getSize();
             webcam = Webcam.getWebcams().get(0);
             webcam.setViewSize(size);
@@ -133,11 +135,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             jPanel2.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 250));
 
             executor.execute(this);
-        }
-        
-        catch(Exception e)
-        {
-            JOptionPane.showMessageDialog(null, e);
+        } catch (WebcamException e) {
+            System.out.println(e);
         }
     }
 
@@ -656,6 +655,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         // TODO add your handling code here:
         Payments payments = new Payments();
         payments.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed

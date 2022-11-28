@@ -23,6 +23,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -88,17 +90,21 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     }
 
     private void initWebCam() {
-        Dimension size = WebcamResolution.QVGA.getSize();
-        webcam = Webcam.getWebcams().get(0);
-        webcam.setViewSize(size);
+        try {
+            Dimension size = WebcamResolution.QVGA.getSize();
+            webcam = Webcam.getWebcams().get(0);
+            webcam.setViewSize(size);
 
-        panel = new WebcamPanel(webcam);
-        panel.setPreferredSize(size);
-        panel.setFPSDisplayed(true);
+            panel = new WebcamPanel(webcam);
+            panel.setPreferredSize(size);
+            panel.setFPSDisplayed(true);
 
-        jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
+            jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
 
-        executor.execute(this);
+            executor.execute(this);
+        } catch (WebcamException e) {
+            System.out.println(e);
+        }
     }
 
     private void clearData() {
@@ -108,6 +114,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         gPhone.setText("");
         address.setText("");
         grade.setSelectedIndex(0);
+        jButton2.setText("Get Camera View");
         jLabel6.setText("Waiting for capture...");
         jLabel8.setText("Waiting for authentication...");
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -1014,6 +1021,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } catch (SQLException ex) {
             System.out.println(ex);
         }
+        String year = new SimpleDateFormat("yyyy").format(new Date());
+        String month = new SimpleDateFormat("MM").format(new Date());
+
         int rowcount = jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             try {
@@ -1027,10 +1037,28 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO payments "
+                        + "(studentId,classId,year,month,status) "
+                        + "VALUES ('" + newStudent + "',"
+                        + "'" + jTable1.getValueAt(y, 0) + "',"
+                        + "'" + year + "',"
+                        + "'" + month + "','1')");
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
 
         File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
-        tempImage.renameTo(new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png"));
+        File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
+        if (imgPathSave.exists()) {
+            imgPathSave.delete();
+        } else {
+            tempImage.renameTo(imgPathSave);
+        }
         SendMessage message = new SendMessage();
         message.setChatId(telegramId.getText());
         message.setText("Student Registration Success!\n\n"
