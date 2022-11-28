@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2022 at 04:34 PM
+-- Generation Time: Nov 28, 2022 at 04:36 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -304,12 +304,6 @@ ALTER TABLE `results`
 -- AUTO_INCREMENT for table `specialclasses`
 --
 ALTER TABLE `specialclasses`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `students`
---
-ALTER TABLE `students`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
