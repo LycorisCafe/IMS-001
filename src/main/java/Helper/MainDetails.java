@@ -11,9 +11,14 @@ package Helper;
 public class MainDetails {
 
     public static String projectSerial() {
-        // ProjectName-ProjectCount-StartDate(MMDDYY)
+        // ProjectName-PrijectId-StartDate(MMDDYY)
         String projectSerial = "IMS-001-111122";
         return projectSerial;
+    }
+
+    public static String version() {
+        String version = "0.1";
+        return version;
     }
 
     public static String instituteName() {
