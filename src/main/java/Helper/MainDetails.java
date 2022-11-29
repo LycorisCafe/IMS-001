@@ -26,4 +26,14 @@ public class MainDetails {
         return iconPath;
     }
 
+    public static String cpuId() {
+        String cpuId = null;
+        return cpuId;
+    }
+
+    public static String baseBordId() {
+        String baseBordId = null;
+        return baseBordId;
+    }
+
 }

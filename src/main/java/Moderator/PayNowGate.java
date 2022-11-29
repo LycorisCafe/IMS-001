@@ -4,6 +4,7 @@
  */
 package Moderator;
 
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +22,13 @@ public class PayNowGate extends javax.swing.JFrame {
      */
     public PayNowGate() {
         initComponents();
+        formDetails();
         dataGrab();
+    }
+    
+    private void formDetails() {
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
     private void dataGrab() {

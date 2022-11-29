@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
@@ -26,30 +27,6 @@ import oshi.hardware.HardwareAbstractionLayer;
 public class IMS {
 
     public static void main(String[] args) {
-        // ================== Make Application Workspace =======================
-        File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        File file1 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp");
-        if (!file1.exists()) {
-            file1.mkdirs();
-        }
-        File file2 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Logs");
-        if (!file2.exists()) {
-            file2.mkdirs();
-        }
-        
-        
-
-        // ===================== Register Telegram Bot =========================
-        try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot((LongPollingBot) new Helper.TelegramBot());
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-
         // =========================== Set Theme ===============================
         File theme = new File("C:\\ProgramData\\LycorisCafe\\IMS\\theme.lc");
         if (theme.exists()) {
@@ -67,20 +44,47 @@ public class IMS {
                         try {
                             UIManager.setLookAndFeel(
                                     UIManager.getSystemLookAndFeelClassName());
-                        } catch (Exception e) {
+                        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
                         }
                     }
                 }
                 myReader.close();
             } catch (FileNotFoundException e) {
-                System.out.println("An error occurred.");
+                System.out.println(e);
             }
         } else {
             try {
                 UIManager.setLookAndFeel(
                         UIManager.getSystemLookAndFeelClassName());
-            } catch (Exception e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+                System.out.println(e);
             }
+        }
+        
+        // ======================= Load Splash Screen ==========================
+        SplashScreen splash = new SplashScreen();
+        splash.setVisible(true);
+        
+        // ================== Make Application Workspace =======================
+        File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        File file1 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp");
+        if (!file1.exists()) {
+            file1.mkdirs();
+        }
+        File file2 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Logs");
+        if (!file2.exists()) {
+            file2.mkdirs();
+        }
+        
+        // ===================== Register Telegram Bot =========================
+        try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot((LongPollingBot) new Helper.TelegramBot());
+        } catch (TelegramApiException e) {
+            System.out.println(e);
         }
 
 //        // ========================= Check License =============================
@@ -93,16 +97,20 @@ public class IMS {
 //        //get baseboard id
 //        ComputerSystem comsys = hardware.getComputerSystem();
 //        String baseboard = comsys.getBaseboard().getSerialNumber();
-//        if (processor.equals("BFEBFBFF0001067A") && baseboard.equals("LXEB40C0409070D4442000        ")) {
+//        if (processor.equals(Helper.MainDetails.cpuId()) 
+//                && baseboard.equals(Helper.MainDetails.baseBordId())) {
 //            Welcome welcome = new Welcome();
+//            splash.dispose();
 //            welcome.setVisible(true);
 //        } else {
 //            AuthError auth = new AuthError();
+//            splash.dispose();
 //            auth.setVisible(true);
 //        }
 
         // =================== Load Main Interface (DEMO) ======================
         Welcome welcome = new Welcome();
+        splash.dispose();
         welcome.setVisible(true);
     }
 }
