@@ -10,7 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -59,19 +61,23 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             System.out.println(update.getMessage().getFrom().getId() + " : " + update.getMessage().getText());
-            try {
-                Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-            try {
-                if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())) {
-                    Moderator.NewStudent.telegramId.setText(update.getMessage().getChatId().toString());
-                    Moderator.NewStudent.jLabel8.setText("Success!");
-                    Moderator.NewStudent.jButton6.setEnabled(true);
+            if (Maintainer.Main.jTextArea1 != null) {
+                try {
+                    Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
-            } catch (Exception e) {
-                System.out.println(e);
+            }
+            if (Moderator.NewStudent.telegram != null) {
+                try {
+                    if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())) {
+                        Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
+                        Moderator.NewStudent.jLabel8.setText("Success!");
+                        Moderator.NewStudent.jButton6.setEnabled(true);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }
     }

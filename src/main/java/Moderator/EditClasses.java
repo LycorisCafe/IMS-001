@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.stream.Stream;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -492,6 +494,21 @@ public class EditClasses extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
+        String year = new SimpleDateFormat("yyyy").format(new Date());
+        String month = new SimpleDateFormat("MM").format(new Date());
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("INSERT INTO payments "
+                    + "(studentId,classId,year,month,status) "
+                    + "VALUES ('" + jTextField1.getText() + "',"
+                    + "'" + classId + "',"
+                    + "'" + year + "',"
+                    + "'" + month + "','0')");
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
         getData();
         JOptionPane.showMessageDialog(this, "Success!");
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -517,7 +534,19 @@ public class EditClasses extends javax.swing.JFrame {
                         + "WHERE studentId='" + jTextField1.getText() + "' AND "
                         + "classId='" + value + "'");
                 con.close();
-            } catch (Exception e) {
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("DELETE "
+                        + "FROM payments "
+                        + "WHERE studentId='" + jTextField1.getText() + "' AND "
+                        + "classId='" + value + "'");
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
             }
             model.removeRow(selectedrow);
         }
