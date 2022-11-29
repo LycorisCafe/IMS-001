@@ -68,6 +68,17 @@ public class TelegramBot extends TelegramLongPollingBot {
                     Moderator.NewStudent.jButton6.setEnabled(true);
                 }
             }
+            
+            if (Administrator.TelegramUpdate.jTextField10 != null) {
+                if (update.getMessage().getText().equals(Administrator.TelegramUpdate.jTextField10.getText())
+                        && update.getMessage().getChat().getType().equals(Administrator.TelegramUpdate.type.getText())) {
+                    Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
+                    Administrator.TelegramUpdate telegram = new Administrator.TelegramUpdate();
+                    telegram.dispose();
+                    // =====>>>>
+                }
+            }
+            
         }
         if (Maintainer.Main.jTextArea1 != null) {
             Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
