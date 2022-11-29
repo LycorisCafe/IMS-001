@@ -603,6 +603,9 @@ public class Main extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable1MouseEntered(evt);
+            }
         });
         jScrollPane1.setViewportView(jTable1);
 
@@ -795,9 +798,9 @@ public class Main extends javax.swing.JFrame {
 
         jLabel12.setText("Subject :");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13" }));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "O/L - Mathematics", "O/L - Science", "O/L - English", "O/L - History", "O/L - Sinhala", "O/L - Music", "O/L - Arts", "O/L - ICT", "O/L - Commerce", "O/L - Sinhala Lit.", "A/L - Combind Maths (Applied)", "A/L - Combind Maths (Pure)", "A/L - Biology", "A/L - Physics", "A/L - Chemistry", "A/L - Engineering Tech. (ET)", "A/L - Bio System Tech. (BST)", "A/L - Science For Tech. (SFT)", "A/L - Information and Comm. Tech. (ICT)", "A/L - Agricultural Science", "A/L - Media Studies", "A/L - Accounting", "A/L - Economics", "A/L - Business Studies", "A/L - Sinhala", "A/L - Politial Science", "A/L - Logic", "A/L - Geography", "A/L - Buddhist Civilization (BC)" }));
 
         jPanel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -2301,7 +2304,28 @@ public class Main extends javax.swing.JFrame {
                     jComboBox1.setSelectedItem(rs2.getString("status"));
                 }
             }
+            //con.close();
         } catch (SQLException e) {
+            System.out.println(e);
+        }
+        
+        
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT subjectId FROM classes WHERE teacherId='"+id+"'");
+            while(rs2.next())
+            {
+                ResultSet rs3 = stmt.executeQuery("SELECT subject, grade FROM subjects WHERE id='"+rs2.getString("subjectId")+"'");
+                while(rs3.next())
+                {
+                    DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+                    model.setRowCount(0);
+                    Object[] row = {rs3.getString("subject"), rs3.getString("grade")};
+                    model.addRow(row);
+                }
+            }
+            con.close();
+        } catch (Exception e) {
             System.out.println(e);
         }
     }//GEN-LAST:event_jTable1MouseClicked
@@ -2625,9 +2649,36 @@ public class Main extends javax.swing.JFrame {
                     // jCheckBox1.isSelected();
                 }
             }
-            con.close();
+            
         } catch (SQLException e) {
-            System.out.println(e + "\ntable mouse click");
+            System.out.println(e);
+        }
+        
+        try {
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT teacherId, day FROM classes WHERE subjectId='"+id+"'");
+            while(rs2.next())
+            {
+                ResultSet rs3 = stmt.executeQuery("SELECT name FROM teachers WHERE id='"+rs2.getString("teacherId")+"'");
+                while(rs3.next())
+                {
+                    ResultSet rs4 = stmt.executeQuery("SELECT subject, grade FROM subjects WHERE id='"+rs2.getString("subjectId")+"'");
+                    while(rs3.next())
+                    {
+                        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
+                        model.setRowCount(0);
+                        Object[] row2 = {rs4.getString("grade"), rs4.getString("subjects"), rs3.getString("name"), rs2.getString("day")};
+                        model.addRow(row2);
+                    }
+//                    DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+//                    model.setRowCount(0);
+//                    Object[] row = {rs3.getString("subject"), rs3.getString("grade")};
+//                    model.addRow(row);
+                }
+            }
+            con.close();
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
@@ -2760,6 +2811,10 @@ public class Main extends javax.swing.JFrame {
         jComboBox3.setSelectedIndex(0);
         loadStudentTable();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable1MouseEntered
 
 
     /**
