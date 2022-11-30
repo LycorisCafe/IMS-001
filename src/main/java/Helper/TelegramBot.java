@@ -60,25 +60,18 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            System.out.println(update.getMessage().getFrom().getId() + " : " + update.getMessage().getText());
-            if (Maintainer.Main.jTextArea1 != null) {
-                try {
-                    Maintainer.Main.jTextArea1.append(update.getMessage().getText() + "\n");
-                } catch (Exception e) {
-                    System.out.println(e);
-                }
-            }
             if (Moderator.NewStudent.telegram != null) {
-                try {
-                    if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())) {
-                        Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                        Moderator.NewStudent.jLabel8.setText("Success!");
-                        Moderator.NewStudent.jButton6.setEnabled(true);
-                    }
-                } catch (Exception e) {
-                    System.out.println(e);
+                if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())
+                        && update.getMessage().getChat().getType().equals("private")) {
+                    Moderator.NewStudent.telegramId.setText(update.getMessage().getFrom().getId().toString());
+                    Moderator.NewStudent.jLabel8.setText("Success!");
+                    Moderator.NewStudent.jButton6.setEnabled(true);
                 }
             }
+        }
+        if (Maintainer.Main.jTextArea1 != null) {
+            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
+                    + " : " + update.getMessage().getText() + "\n");
         }
     }
 
