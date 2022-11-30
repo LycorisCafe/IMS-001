@@ -85,7 +85,6 @@ public class Login extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Login");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,7 +92,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton2.setText("Reset");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,7 +99,6 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton3.setText("Back");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +149,11 @@ public class Login extends javax.swing.JFrame {
         user.setToolTipText("Enter the User Name");
 
         password.setToolTipText("Enter the Password");
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -291,6 +293,7 @@ public class Login extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (HeadlessException | SQLException e) {
+                System.out.println(e);
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -298,6 +301,11 @@ public class Login extends javax.swing.JFrame {
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+        jButton1ActionPerformed(evt);
+    }//GEN-LAST:event_passwordActionPerformed
 
     /**
      * @param args the command line arguments

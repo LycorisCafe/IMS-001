@@ -20,6 +20,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,14 +40,12 @@ public class Main extends javax.swing.JFrame {
         loadTable();
         loadStudentTable();
     }
-    
+
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
     String year = new SimpleDateFormat("yyyy").format(new Date());
     String month = new SimpleDateFormat("MM").format(new Date());
-    
-    private void grabData() {
-    {
 
+    private void grabData() {
         // grabing data from students table
         try {
             Connection con = Helper.DB.connect();
@@ -90,37 +90,48 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-    }
-        
         // grabing and calculating the monthly income from the payments table
-//        String year;
-//        int month;
-//        String classID;
-//        try {
-//            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-//            ResultSet rs = stmt.executeQuery("SELECT 'year', 'month', 'classId' FROM payments");
-//            while (rs.next()) 
-//            {
-//                
-//                month = Calendar.getInstance().get(Calendar.MONTH);
-//                String sqlMonth = null;
-//                System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
-////                if(sqlMonth == month)
-////                {
-////                    System.out.println("OK. SQL month: " + sqlMonth + " Java Month: " + month);
-////                }
-//            }
-//            //con.close();
-//        }
-//        catch (SQLException ex)
-//        {
-//            System.out.println(ex);
-//        }
-        formDetails();
+        String classId;
+        int payment;
+        int count;
+        int total = 0;
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM classes");
+            while (rs.next()) {
+                classId = rs.getString("id");
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + classId + "'");
+                while (rs2.next()) {
+                    payment = rs2.getInt("payment");
+                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + classId + "'");
+                    while (rs3.next()) {
+                        ResultSet rs4 = stmt.executeQuery("SELECT COUNT(id) "
+                                + "FROM payments "
+                                + "WHERE studentId='" + rs3.getString("studentId") + "' "
+                                + "AND classId='" + classId + "' "
+                                + "AND year='" + year + "' "
+                                + "AND month='" + month + "'");
+                        while (rs4.next()) {
+                            count = rs4.getInt(1);
+                            total = payment * count;
+                            jTextField4.setText("" + total);
+                        }
+                    }
+                }
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
     }
-    
-    private void writeLog(String to, String message)
-    {
+
+    private void writeLog(String to, String message) {
         String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         File f = new File(logPath + "broadcastMessage.log");
         if (!f.exists()) {
@@ -142,15 +153,14 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }
-       
-    private void formDetails(){
+
+    private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-    
-    private void loadTable()
-    {
+
+    private void loadTable() {
         Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
@@ -161,17 +171,15 @@ public class Main extends javax.swing.JFrame {
                 Object[] row = {rs2.getString("id"),
                     rs2.getString("name"), rs2.getString("nic")};
                 model.addRow(row);
-                
+
             }
             con.close();
         } catch (SQLException e) {
-            // JOptionPane.showMessageDialog(null, e);
             System.out.println(e);
         }
     }
-    
-    private void loadStudentTable()
-    {
+
+    private void loadStudentTable() {
         Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
@@ -180,16 +188,13 @@ public class Main extends javax.swing.JFrame {
             model2.setRowCount(0);
             while (rs2.next()) {
                 Object[] row2 = {rs2.getString("id"),
-                    rs2.getString("firstName")+ " " +rs2.getString("lastName"), rs2.getString("grade")};
+                    rs2.getString("firstName") + " " + rs2.getString("lastName"), rs2.getString("grade")};
                 model2.addRow(row2);
-                
             }
             con.close();
         } catch (SQLException e) {
-            // JOptionPane.showMessageDialog(null, e);
             System.out.println(e + "\nfrom std err");
         }
-        
     }
 
     /**
@@ -223,7 +228,6 @@ public class Main extends javax.swing.JFrame {
         jButton27 = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         jButton28 = new javax.swing.JButton();
-        jButton33 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -448,7 +452,7 @@ public class Main extends javax.swing.JFrame {
 
         jTextField3.setEditable(false);
 
-        jLabel4.setText("Monthly Income :");
+        jLabel4.setText("Income for this month :");
 
         jTextField4.setEditable(false);
 
@@ -493,7 +497,7 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jComboBox11, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel29Layout.createSequentialGroup()
                         .addComponent(jLabel42)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 649, Short.MAX_VALUE)
                         .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel29Layout.createSequentialGroup()
                         .addComponent(jButton28, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -518,13 +522,6 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton33.setText("Get Data");
-        jButton33.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton33ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -534,24 +531,21 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField4))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField2))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jTextField4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField3))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -570,13 +564,12 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton33, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Summary", jPanel2);
@@ -2187,103 +2180,37 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
-        String to = jComboBox11.getSelectedItem().toString();
-        java.sql.Connection con = Helper.DB.connect();
-        try {
-            java.sql.Statement stmt = (java.sql.Statement) con.createStatement();
-            SendMessage sm = new SendMessage();
-            if ("All Students".equals(to)) {
-                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM students");
-                while (rs.next()) {
-                    String id = rs.getString("telegramId");
-                    System.out.println(id);
-                    sm.setText(jTextArea4.getText());
-                    sm.setChatId(id); // to set ID
-
-                    Helper.TelegramBot telegram = new Helper.TelegramBot();
-                    try {
-                        telegram.execute(sm);
-                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (TelegramApiException e) {
-                        JOptionPane.showMessageDialog(null, e + "\nFrom std");
-                    }
-                }
-            } else if ("All Teachers".equals(to)) {
-                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM teachers");
-                while (rs.next()) {
-                    String id = rs.getString("telegramId");
-                    System.out.println(id);
-                    sm.setText(jTextArea4.getText());
-                    sm.setChatId(id); // to set ID
-
-                    Helper.TelegramBot telegram = new Helper.TelegramBot();
-                    try {
-                        telegram.execute(sm);
-                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (TelegramApiException e) {
-                        JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
-                    }
-                }
-            } else {
-                ResultSet rs = stmt.executeQuery("SELECT telegramId FROM classes");
-                while (rs.next()) {
-                    String id = rs.getString("telegramId");
-                    System.out.println(id);
-                    sm.setText(jTextArea4.getText());
-                    sm.setChatId(id); // to set ID
-
-                    Helper.TelegramBot telegram = new Helper.TelegramBot();
-                    try {
-                        telegram.execute(sm);
-                        JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (TelegramApiException e) {
-                        JOptionPane.showMessageDialog(null, e + "\nFrom clz");
-                    }
-                }
-            }
-            writeLog(to, jTextArea4.getText());
-            
-        } catch (HeadlessException | SQLException e) {
-            System.out.println(e);
+        if (jTextArea4 == null) {
+            JOptionPane.showMessageDialog(this, "Please enter message to broadcast!");
+        } else {
+            TelegramBroadcast broadcast = new TelegramBroadcast();
+            broadcast.setVisible(true);
         }
     }//GEN-LAST:event_jButton27ActionPerformed
 
+
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
         // to open the log file
-        Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec("C:\\Windows\\notepad.exe C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log");
-        } catch (IOException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, ex);
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log");
+            processBuilder.redirectErrorStream(true);
+            processBuilder.start();
+        } catch (IOException e) {
+            System.out.println(e);
         }
     }//GEN-LAST:event_jButton28ActionPerformed
-
-    private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        // grabing monthly income
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
-                    + "FROM classes");
-            while (rs.next()) {
-                
-            }
-            con.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-    }//GEN-LAST:event_jButton33ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         // grabing data from selected row
         int r = jTable1.getSelectedRow();
-        
+
         String id = jTable1.getValueAt(r, 0).toString();
         java.sql.Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
-            
+
             ResultSet rs = stmt.executeQuery("SELECT id "
                     + "FROM teachers "
                     + "WHERE id='" + id + "'");
@@ -2312,14 +2239,14 @@ public class Main extends javax.swing.JFrame {
         String nic = jTextField6.getText();
         String contact = jTextField7.getText();
         String address = jTextField8.getText();
-        int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
+        int update = jCheckBox1.isSelected() ? 1 : 0; // to telegram ID Update Now
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
-        
+
         Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
             String sql = "INSERT INTO teachers(name, nic, address, telegramId, contact, status) VALUES "
-                    + "('"+name+"', '"+nic+"', '"+address+"', '0', '"+contact+"', '"+status+"')";
+                    + "('" + name + "', '" + nic + "', '" + address + "', '0', '" + contact + "', '" + status + "')";
             stmt.execute(sql);
             JOptionPane.showMessageDialog(this, "New Teacher Added!");
             jButton5ActionPerformed(evt);
@@ -2333,26 +2260,25 @@ public class Main extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // updating data in teachers table
         int r = jTable1.getSelectedRow();
-        
+
         String id = jTable1.getValueAt(r, 0).toString();
         String name = jTextField5.getName();
         String nic = jTextField6.getName();
         String contact = jTextField7.getName();
         String address = jTextField8.getName();
-        int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
+        int update = jCheckBox1.isSelected() ? 1 : 0; // to telegram ID Update Now
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
-        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '"+name+"'?");
-        
-        if(choice == 0)
-        {
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '" + name + "'?");
+
+        if (choice == 0) {
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "UPDATE teachers SET name='"+name+"', nic='"+nic+"', address='"+address+"' , "
-                        + ", telegramId='0', contact='"+contact+"', status='"+status+"' WHERE id='"+id+"'";
+                String sql = "UPDATE teachers SET name='" + name + "', nic='" + nic + "', address='" + address + "' , "
+                        + ", telegramId='0', contact='" + contact + "', status='" + status + "' WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
 
-                JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
+                JOptionPane.showMessageDialog(this, "Data in '" + id + "' id is updating completed!");
                 jButton5ActionPerformed(evt);
                 con.close();
             } catch (SQLException e) {
@@ -2360,22 +2286,21 @@ public class Main extends javax.swing.JFrame {
             }
         }
         jButton5ActionPerformed(evt);
-        
-        
+
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // delete selected row
         int r = jTable1.getSelectedRow();
-        
+
         String id = jTable1.getValueAt(r, 0).toString();
-        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '"+id+"'?");
-        if(choice == 0)
-        {
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '" + id + "'?");
+        if (choice == 0) {
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "DELETE FROM teachers WHERE id='"+id+"'";
+                String sql = "DELETE FROM teachers WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this, "Row Deleted!");
                 jButton5ActionPerformed(evt);
@@ -2397,21 +2322,20 @@ public class Main extends javax.swing.JFrame {
         String grade = jComboBox5.getSelectedItem().toString();
         int r = jTable3.getSelectedRow();
         String id = jTable3.getValueAt(r, 0).toString();
-        
-        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '"+fname+"'?");
-        if(choice == 0)
-        {
+
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '" + fname + "'?");
+        if (choice == 0) {
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "UPDATE students SET firstName='"+fname+"', lastName='"+lname+"', guardianName='"+gname+"',"
-                        + " guardianPhone='"+gPhone+"', address='"+address+"', grade='"+grade+"', telegramId='0',"
-                        + "status='0' WHERE id='"+id+"'";
+                String sql = "UPDATE students SET firstName='" + fname + "', lastName='" + lname + "', guardianName='" + gname + "',"
+                        + " guardianPhone='" + gPhone + "', address='" + address + "', grade='" + grade + "', telegramId='0',"
+                        + "status='0' WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
 
-                JOptionPane.showMessageDialog(this, "Data in '"+id+"' id is updating completed!");
+                JOptionPane.showMessageDialog(this, "Data in '" + id + "' id is updating completed!");
                 jButton5ActionPerformed(evt);
-                
+
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
@@ -2439,7 +2363,7 @@ public class Main extends javax.swing.JFrame {
         java.sql.Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
-            
+
             ResultSet rs = stmt.executeQuery("SELECT name, telegramId "
                     + "FROM teachers "
                     + "WHERE id='" + id + "'");
@@ -2470,12 +2394,11 @@ public class Main extends javax.swing.JFrame {
         // to filter selected data by ID
         Connection con = Helper.DB.connect();
         String id = jTextField10.getText();
-        if(!"".equals(jTextField10.getText()))
-        {
+        if (!"".equals(jTextField10.getText())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
-                    + "WHERE id='" + id + "'");
+                        + "WHERE id='" + id + "'");
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2483,24 +2406,23 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("name"), rs.getString("nic")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
         }
-        
+
     }//GEN-LAST:event_jTextField10ActionPerformed
 
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // to filter selected data by name
         Connection con = Helper.DB.connect();
         String name = jTextField11.getText();
-        if(!"".equals(jTextField11.getText()))
-        {
+        if (!"".equals(jTextField11.getText())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
-                    + "WHERE name LIKE '%"+name+"%'");
+                        + "WHERE name LIKE '%" + name + "%'");
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2508,7 +2430,7 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("name"), rs.getString("nic")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -2519,12 +2441,11 @@ public class Main extends javax.swing.JFrame {
         // to filter selected data by nic
         Connection con = Helper.DB.connect();
         String nic = jTextField12.getText();
-        if(!"".equals(jTextField12.getText()))
-        {
+        if (!"".equals(jTextField12.getText())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
-                    + "WHERE nic='" + nic + "'");
+                        + "WHERE nic='" + nic + "'");
                 DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2532,7 +2453,7 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("name"), rs.getString("nic")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -2561,18 +2482,18 @@ public class Main extends javax.swing.JFrame {
         String address = jTextField18.getText();
         String grade = jComboBox5.getSelectedItem().toString();
         // int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
-       
+
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             String sql = "INSERT INTO students(firstName, lastName, guardianName, guardianPhone, address, grade,"
-                    + "telegramId, status) VALUES ('"+fname+"', '"+lname+"', '"+gname+"', '"+gPhone+"', '"+address+"',"
-                    + " '"+grade+"', '0', '0')";
+                    + "telegramId, status) VALUES ('" + fname + "', '" + lname + "', '" + gname + "', '" + gPhone + "', '" + address + "',"
+                    + " '" + grade + "', '0', '0')";
             stmt.execute(sql);
             JOptionPane.showMessageDialog(this, "New Student Added!");
             jButton5ActionPerformed(evt);
             con.close();
-            
+
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -2582,20 +2503,19 @@ public class Main extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // delete a student from students table
         int r = jTable3.getSelectedRow();
-        
+
         String id = jTable3.getValueAt(r, 0).toString();
-        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '"+id+"'?");
-        if(choice == 0)
-        {
+        int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '" + id + "'?");
+        if (choice == 0) {
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = (Statement) con.createStatement();
-                String sql = "DELETE FROM students WHERE id='"+id+"'";
+                String sql = "DELETE FROM students WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this, "Row Deleted!");
                 jButton5ActionPerformed(evt);
                 con.close();
-               
+
             } catch (HeadlessException | SQLException e) {
                 System.out.println(e);
             }
@@ -2606,7 +2526,7 @@ public class Main extends javax.swing.JFrame {
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // grabing data from selected row
         int r = jTable3.getSelectedRow();
-        
+
         String id = jTable3.getValueAt(r, 0).toString();
         java.sql.Connection con = Helper.DB.connect();
         try {
@@ -2651,7 +2571,7 @@ public class Main extends javax.swing.JFrame {
         java.sql.Connection con = Helper.DB.connect();
         try {
             Statement stmt = (Statement) con.createStatement();
-            
+
             ResultSet rs = stmt.executeQuery("SELECT firstName, lastName, telegramId "
                     + "FROM students "
                     + "WHERE id='" + id + "'");
@@ -2685,12 +2605,11 @@ public class Main extends javax.swing.JFrame {
         // search for students by id
         Connection con = Helper.DB.connect();
         String id = jTextField9.getText();
-        if(!"".equals(jTextField9.getText()))
-        {
+        if (!"".equals(jTextField9.getText())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                    + "WHERE id='" + id + "'");
+                        + "WHERE id='" + id + "'");
                 DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2698,7 +2617,7 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -2709,12 +2628,11 @@ public class Main extends javax.swing.JFrame {
         // search for students by name
         Connection con = Helper.DB.connect();
         String name = jTextField13.getText();
-        if(!"".equals(jTextField13.getText()))
-        {
+        if (!"".equals(jTextField13.getText())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                    + "WHERE firstName OR lastName LIKE '%"+name+"%'");
+                        + "WHERE firstName OR lastName LIKE '%" + name + "%'");
                 DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2722,7 +2640,7 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -2733,12 +2651,11 @@ public class Main extends javax.swing.JFrame {
         // search for students by grade
         Connection con = Helper.DB.connect();
         String grade = jComboBox4.getSelectedItem().toString();
-        if(!"".equals(jComboBox4.getSelectedItem().toString()))
-        {
+        if (!"".equals(jComboBox4.getSelectedItem().toString())) {
             try {
                 Statement stmt = (Statement) con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                    + "WHERE grade='"+grade+"'");
+                        + "WHERE grade='" + grade + "'");
                 DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 model.setRowCount(0);
                 while (rs.next()) {
@@ -2746,7 +2663,7 @@ public class Main extends javax.swing.JFrame {
                         rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
                     model.addRow(row);
                 }
-            con.close();
+                con.close();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -2760,7 +2677,6 @@ public class Main extends javax.swing.JFrame {
         jComboBox3.setSelectedIndex(0);
         loadStudentTable();
     }//GEN-LAST:event_jButton3ActionPerformed
-
 
     /**
      * @param args the command line arguments
@@ -2825,7 +2741,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton30;
     private javax.swing.JButton jButton31;
     private javax.swing.JButton jButton32;
-    private javax.swing.JButton jButton33;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -2836,7 +2751,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox10;
-    private javax.swing.JComboBox<String> jComboBox11;
+    public static javax.swing.JComboBox<String> jComboBox11;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -2959,7 +2874,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea4;
+    public static javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;

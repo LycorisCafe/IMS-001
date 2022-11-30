@@ -140,28 +140,24 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jPanel29" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jTextField1" pref="860" max="32767" attributes="0"/>
+                              <Component id="jLabel4" min="-2" pref="140" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jTextField4" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabel2" min="-2" pref="100" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jTextField2" max="32767" attributes="0"/>
+                              <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jTextField1" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="jLabel4" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jLabel3" alignment="0" pref="100" max="32767" attributes="0"/>
+                                  <Component id="jLabel3" max="32767" attributes="0"/>
+                                  <Component id="jLabel2" pref="100" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jTextField2" max="32767" attributes="0"/>
                                   <Component id="jTextField3" max="32767" attributes="0"/>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jTextField4" max="32767" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton33" min="-2" pref="100" max="-2" attributes="0"/>
-                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -188,14 +184,13 @@
                           <Component id="jTextField3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextField4" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton33" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextField4" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace pref="122" max="32767" attributes="0"/>
                       <Component id="jPanel29" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="108" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -233,7 +228,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Monthly Income :"/>
+                <Property name="text" type="java.lang.String" value="Income for this month :"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField4">
@@ -268,7 +263,7 @@
                               </Group>
                               <Group type="102" alignment="1" attributes="0">
                                   <Component id="jLabel42" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="649" max="32767" attributes="0"/>
                                   <Component id="jButton27" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
@@ -320,6 +315,7 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                   </AuxValues>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane10">
@@ -334,6 +330,9 @@
                         <Property name="columns" type="int" value="20"/>
                         <Property name="rows" type="int" value="5"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -363,14 +362,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton33">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Get Data"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton33ActionPerformed"/>
-              </Events>
-            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel3">
