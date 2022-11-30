@@ -4,16 +4,14 @@
  */
 package Administrator;
 
+import java.awt.Component;
 import java.awt.HeadlessException;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -22,8 +20,6 @@ import java.io.BufferedWriter;
 import java.io.Writer;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,14 +35,18 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         formDetails();
         grabData();
-        loadTable();
-        loadStudentTable();
     }
 
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
     String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String year = new SimpleDateFormat("yyyy").format(new Date());
     String month = new SimpleDateFormat("MM").format(new Date());
+
+    private void formDetails() {
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+        setExtendedState(this.MAXIMIZED_BOTH);
+    }
 
     private void grabData() {
         // grabing data from students table
@@ -134,38 +134,9 @@ public class Main extends javax.swing.JFrame {
         }
     }
 
-    private void writeLog(String to, String message) {
-        String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        File f = new File(logPath + "broadcastMessage.log");
-        if (!f.exists()) {
-            try {
-                FileWriter fw = new FileWriter(f, true);
-                fw.append(currentTime + " - " + to + " - " + message + "\n");
-                fw.close();
-            } catch (IOException ex) {
-                //Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(null, ex);
-            }
-        } else {
-            try {
-                FileWriter fw = new FileWriter(f, true);
-                fw.append(currentTime + " - " + to + " - " + message + "\n");
-                fw.close();
-            } catch (IOException e) {
-                System.out.println(e);
-            }
-        }
-    }
-
-    private void formDetails() {
-        Helper.MainDetails details = new Helper.MainDetails();
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
-        setExtendedState(this.MAXIMIZED_BOTH);
-    }
-
-    private void loadTable() {
-        Connection con = Helper.DB.connect();
+    private void loadTeachers() {
         try {
+            Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM teachers");
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -180,11 +151,21 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
+        jButton7.setEnabled(false);
+        jButton6.setEnabled(false);
+        Component[] com1 = jPanel7.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        Component[] com2 = jPanel24.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(false);
+        }
     }
 
-    private void loadStudentTable() {
-        Connection con = Helper.DB.connect();
+    private void loadStudents() {
         try {
+            Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM students");
             DefaultTableModel model2 = (DefaultTableModel) jTable3.getModel();
@@ -197,6 +178,55 @@ public class Main extends javax.swing.JFrame {
             con.close();
         } catch (SQLException e) {
             System.out.println(e + "\nfrom std err");
+        }
+        jButton9.setEnabled(false);
+        jButton10.setEnabled(false);
+        Component[] com1 = jPanel18.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        Component[] com2 = jPanel20.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(false);
+        }
+        Component[] com3 = jPanel23.getComponents();
+        for (int a = 0; a < com3.length; a++) {
+            com3[a].setEnabled(false);
+        }
+    }
+
+    private void loadGroups() {
+
+    }
+
+    private void loadAccounts() {
+        DefaultTableModel model2 = (DefaultTableModel) jTable7.getModel();
+        model2.setRowCount(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs2 = stmt.executeQuery("SELECT * FROM login");
+
+            while (rs2.next()) {
+                Object[] row2 = {rs2.getString("id"),
+                    rs2.getString("type") + " " + rs2.getString("user"),
+                    rs2.getString("lastLogin")};
+                model2.addRow(row2);
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e + "\nfrom std err");
+        }
+        jRadioButton1.setSelected(false);
+        jRadioButton2.setEnabled(false);
+        jRadioButton3.setEnabled(false);
+        Component[] com1 = jPanel33.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        Component[] com2 = jPanel34.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(false);
         }
     }
 
@@ -376,18 +406,18 @@ public class Main extends javax.swing.JFrame {
         jPanel30 = new javax.swing.JPanel();
         jLabel43 = new javax.swing.JLabel();
         jLabel44 = new javax.swing.JLabel();
-        jTextField25 = new javax.swing.JTextField();
         jTextField26 = new javax.swing.JTextField();
         jButton29 = new javax.swing.JButton();
+        jComboBox13 = new javax.swing.JComboBox<>();
         jPanel31 = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
         jLabel45 = new javax.swing.JLabel();
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
-        jTextField27 = new javax.swing.JTextField();
         jTextField28 = new javax.swing.JTextField();
         jTextField29 = new javax.swing.JTextField();
         jButton30 = new javax.swing.JButton();
+        jComboBox12 = new javax.swing.JComboBox<>();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jPanel33 = new javax.swing.JPanel();
@@ -440,6 +470,11 @@ public class Main extends javax.swing.JFrame {
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(148, 100));
+        jTabbedPane1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane1MouseClicked(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -1721,7 +1756,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel39.setText("by Teacher :");
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
 
         jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -1833,6 +1868,11 @@ public class Main extends javax.swing.JFrame {
         jPanel27.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton26.setText("Verify Group via Telegram");
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
         jPanel27.setLayout(jPanel27Layout);
@@ -1888,7 +1928,7 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "User", "Username", "Password", "Last Login"
+                "ID", "Type", "Username", "Last Login"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1903,15 +1943,15 @@ public class Main extends javax.swing.JFrame {
 
         jPanel30.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Search :"));
 
-        jLabel43.setText("by User :");
+        jLabel43.setText("by Type :");
 
         jLabel44.setText("by Username :");
-
-        jTextField25.setText("---");
 
         jTextField26.setText("---");
 
         jButton29.setText("Reset");
+
+        jComboBox13.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Moderator", "Administrator" }));
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
@@ -1923,11 +1963,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel30Layout.createSequentialGroup()
                         .addComponent(jLabel43, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField25))
+                        .addComponent(jComboBox13, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel30Layout.createSequentialGroup()
                         .addComponent(jLabel44, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField26)))
+                        .addComponent(jTextField26, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton29)
                 .addContainerGap())
@@ -1940,7 +1980,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel30Layout.createSequentialGroup()
                         .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel43)
-                            .addComponent(jTextField25, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel44)
@@ -1952,13 +1992,15 @@ public class Main extends javax.swing.JFrame {
 
         jPanel32.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel45.setText("User :");
+        jLabel45.setText("Type :");
 
         jLabel46.setText("Username :");
 
         jLabel47.setText("Password :");
 
         jButton30.setText("Add");
+
+        jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "Moderator", "Administrator" }));
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -1970,11 +2012,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField27))
+                        .addComponent(jComboBox12, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField29))
+                        .addComponent(jTextField29, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1990,7 +2032,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel32Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel45)
-                    .addComponent(jTextField27, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel32Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel46)
@@ -2016,7 +2058,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel49.setText("Confirm Password :");
 
-        jButton31.setText("Reset");
+        jButton31.setText("Apply");
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -2490,7 +2532,6 @@ public class Main extends javax.swing.JFrame {
         jTextField10.setText("");
         jTextField11.setText("");
         jTextField12.setText("");
-        loadTable();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
@@ -2508,29 +2549,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // insert new student into students table
-        String fname = jTextField14.getText();
-        String lname = jTextField15.getText();
-        String gname = jTextField16.getText();
-        String gPhone = jTextField17.getText();
-        String address = jTextField18.getText();
-        String grade = jComboBox5.getSelectedItem().toString();
-        // int update = jCheckBox1.isSelected() ? 1:0; // to telegram ID Update Now
-
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = (Statement) con.createStatement();
-            String sql = "INSERT INTO students(firstName, lastName, guardianName, guardianPhone, address, grade,"
-                    + "telegramId, status) VALUES ('" + fname + "', '" + lname + "', '" + gname + "', '" + gPhone + "', '" + address + "',"
-                    + " '" + grade + "', '0', '0')";
-            stmt.execute(sql);
-            JOptionPane.showMessageDialog(this, "New Student Added!");
-            jButton5ActionPerformed(evt);
-            con.close();
-
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        jButton11ActionPerformed(evt);
+        JOptionPane.showMessageDialog(this, "Please login as a 'Moderator' to add new student!");
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -2593,7 +2612,6 @@ public class Main extends javax.swing.JFrame {
         jTextField18.setText("");
         jComboBox5.setSelectedIndex(0);
         jCheckBox2.setSelected(false);
-        loadStudentTable();
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
@@ -2729,7 +2747,6 @@ public class Main extends javax.swing.JFrame {
         jTextField9.setText("");
         jTextField13.setText("");
         jComboBox3.setSelectedIndex(0);
-        loadStudentTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
@@ -2790,6 +2807,27 @@ public class Main extends javax.swing.JFrame {
             System.out.println(e);
         }
     }//GEN-LAST:event_jButton25ActionPerformed
+
+    private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
+        // TODO add your handling code here:
+        if (jTabbedPane1.getSelectedIndex() == 1) {
+            loadTeachers();
+        }
+        if (jTabbedPane1.getSelectedIndex() == 2) {
+            loadStudents();
+        }
+        if (jTabbedPane1.getSelectedIndex() == 3) {
+            loadGroups();
+        }
+        if (jTabbedPane1.getSelectedIndex() == 4) {
+            loadAccounts();
+        }
+    }//GEN-LAST:event_jTabbedPane1MouseClicked
+
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton26ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2865,6 +2903,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox10;
     public static javax.swing.JComboBox<String> jComboBox11;
+    private javax.swing.JComboBox<String> jComboBox12;
+    private javax.swing.JComboBox<String> jComboBox13;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -3005,9 +3045,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField22;
     private javax.swing.JTextField jTextField23;
     private javax.swing.JTextField jTextField24;
-    private javax.swing.JTextField jTextField25;
     private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
     private javax.swing.JTextField jTextField28;
     private javax.swing.JTextField jTextField29;
     private javax.swing.JTextField jTextField3;
