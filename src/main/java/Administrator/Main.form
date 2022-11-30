@@ -634,8 +634,8 @@
                           <Properties>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                               <StringArray count="2">
-                                <StringItem index="0" value="Inactive"/>
-                                <StringItem index="1" value="Active"/>
+                                <StringItem index="0" value="Active"/>
+                                <StringItem index="1" value="Inactive"/>
                               </StringArray>
                             </Property>
                           </Properties>
@@ -2404,10 +2404,10 @@
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="0">
+                        <Column editable="false" title="ID" type="java.lang.Object"/>
                         <Column editable="false" title="Grade" type="java.lang.Object"/>
                         <Column editable="false" title="Subject" type="java.lang.Object"/>
                         <Column editable="false" title="Teacher" type="java.lang.Object"/>
-                        <Column editable="false" title="Group" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -2657,6 +2657,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Send"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton24ActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel40">
                       <Properties>
@@ -2670,6 +2673,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Log"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton25ActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>

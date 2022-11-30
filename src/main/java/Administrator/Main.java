@@ -18,6 +18,8 @@ import javax.swing.JOptionPane;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
+import java.io.BufferedWriter;
+import java.io.Writer;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.logging.FileHandler;
@@ -42,6 +44,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
+    String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String year = new SimpleDateFormat("yyyy").format(new Date());
     String month = new SimpleDateFormat("MM").format(new Date());
 
@@ -613,7 +616,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel10.setText("Status :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Inactive", "Active" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
 
         jLabel13.setText("Telegram ID :");
 
@@ -1697,7 +1700,7 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Grade", "Subject", "Teacher", "Group"
+                "ID", "Grade", "Subject", "Teacher"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1778,11 +1781,21 @@ public class Main extends javax.swing.JFrame {
         jScrollPane9.setViewportView(jTextArea3);
 
         jButton24.setText("Send");
+        jButton24.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton24ActionPerformed(evt);
+            }
+        });
 
         jLabel40.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel40.setText("[ Messages will send via Telegram Bot ]");
 
         jButton25.setText("Log");
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton25ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
         jPanel26.setLayout(jPanel26Layout);
@@ -2352,41 +2365,53 @@ public class Main extends javax.swing.JFrame {
         jTextField8.setText("");
         jCheckBox1.setSelected(false);
         jComboBox1.setSelectedIndex(0);
-        loadTable();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         // send message from teacher panel to telegram
-        int r = jTable1.getSelectedRow();
-        String name2 = null;
-        String id = jTable1.getValueAt(r, 0).toString();
-        java.sql.Connection con = Helper.DB.connect();
-        try {
-            Statement stmt = (Statement) con.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT name, telegramId "
-                    + "FROM teachers "
-                    + "WHERE id='" + id + "'");
+        if (jTextArea2 == null) {
+            JOptionPane.showMessageDialog(this, "Please enter message to send!");
+        } else {
+            int r = jTable1.getSelectedRow();
+            String name2 = null;
+            String id = jTable1.getValueAt(r, 0).toString();
+            Helper.TelegramBot telegram = new Helper.TelegramBot();
             SendMessage sm = new SendMessage();
-            while (rs.next()) {
-                String Teleid = rs.getString("telegramId");
-                name2 = rs.getString("name");
-                System.out.println(Teleid);
-                sm.setText(jTextArea2.getText());
-                sm.setChatId(Teleid); // to set ID
+            try {
+                Writer output = new BufferedWriter(
+                        new FileWriter(logPath + "teachersMessage.log", true));
 
-                Helper.TelegramBot telegram = new Helper.TelegramBot();
                 try {
-                    telegram.execute(sm);
-                    JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
-                } catch (TelegramApiException e) {
-                    JOptionPane.showMessageDialog(null, e + "\nFrom teachers");
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+
+                    ResultSet rs = stmt.executeQuery("SELECT id,name,telegramId "
+                            + "FROM teachers "
+                            + "WHERE id='" + id + "'");
+                    while (rs.next()) {
+                        String teacherId = rs.getString("id");
+                        String Teleid = rs.getString("telegramId");
+                        name2 = rs.getString("name");
+                        System.out.println(Teleid);
+                        sm.setText(jTextArea2.getText());
+                        sm.setChatId(Teleid);
+                        try {
+                            telegram.execute(sm);
+                            output.append("\n" + logTime + " - " + teacherId + " -\n" + jTextArea2.getText());
+                            JOptionPane.showMessageDialog(this, "Message sent success!");
+                        } catch (TelegramApiException e) {
+                            System.out.println(e);
+                            JOptionPane.showMessageDialog(this, "Error while sending message!");
+                        }
+                    }
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e);
                 }
+            } catch (IOException ex) {
+                System.out.println(ex);
             }
-            writeLog(name2, jTextArea2.getText());
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e);
+            jTextArea2.setText("");
         }
     }//GEN-LAST:event_jButton21ActionPerformed
 
@@ -2470,7 +2495,15 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton22ActionPerformed
         // to display the log file
-        jButton28ActionPerformed(evt);
+        try {
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            logPath + "teachersMessage.log");
+            processBuilder.redirectErrorStream(true);
+            processBuilder.start();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton22ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -2565,40 +2598,61 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
         // to send private message to selected student via telegram bot
-        int r = jTable3.getSelectedRow();
-        String name = null;
-        String id = jTable3.getValueAt(r, 0).toString();
-        java.sql.Connection con = Helper.DB.connect();
-        try {
-            Statement stmt = (Statement) con.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT firstName, lastName, telegramId "
-                    + "FROM students "
-                    + "WHERE id='" + id + "'");
+        if (jTextArea1 == null) {
+            JOptionPane.showMessageDialog(this, "Please enter message to send!");
+        } else {
+            int r = jTable3.getSelectedRow();
+            String id = jTable3.getValueAt(r, 0).toString();
+            Helper.TelegramBot telegram = new Helper.TelegramBot();
             SendMessage sm = new SendMessage();
-            while (rs.next()) {
-                String Teleid = rs.getString("telegramId");
-                name = rs.getString("firstName") + " " + rs.getString("lastName");
-                sm.setText(jTextArea1.getText());
-                sm.setChatId(Teleid); // to set ID
-                Helper.TelegramBot telegram = new Helper.TelegramBot();
+            try {
+                Writer output = new BufferedWriter(
+                        new FileWriter(logPath + "studentsMessage.log", true));
+
                 try {
-                    telegram.execute(sm);
-                    JOptionPane.showMessageDialog(null, "Message sent!", "Done", JOptionPane.INFORMATION_MESSAGE);
-                } catch (TelegramApiException e) {
-                    JOptionPane.showMessageDialog(null, e);
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+
+                    ResultSet rs = stmt.executeQuery("SELECT id,telegramId "
+                            + "FROM students "
+                            + "WHERE id='" + id + "'");
+                    while (rs.next()) {
+                        String studentId = rs.getString("id");
+                        String Teleid = rs.getString("telegramId");
+                        System.out.println(Teleid);
+                        sm.setText(jTextArea1.getText());
+                        sm.setChatId(Teleid);
+                        try {
+                            telegram.execute(sm);
+                            output.append("\n" + logTime + " - " + studentId + " -\n" + jTextArea1.getText());
+                            JOptionPane.showMessageDialog(this, "Message sent success!");
+                        } catch (TelegramApiException e) {
+                            System.out.println(e);
+                            JOptionPane.showMessageDialog(this, "Error while sending message!");
+                        }
+                    }
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e);
                 }
+            } catch (IOException ex) {
+                System.out.println(ex);
             }
-            writeLog(name, jTextArea1.getText());
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e);
+            jTextArea1.setText("");
         }
     }//GEN-LAST:event_jButton19ActionPerformed
 
     private void jButton20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton20ActionPerformed
         // to display the log file
-        jButton28ActionPerformed(evt);
+        try {
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            logPath + "studentsMessage.log");
+            processBuilder.redirectErrorStream(true);
+            processBuilder.start();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton20ActionPerformed
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
@@ -2677,6 +2731,65 @@ public class Main extends javax.swing.JFrame {
         jComboBox3.setSelectedIndex(0);
         loadStudentTable();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
+        // TODO add your handling code here:
+        if (jTextArea1 == null) {
+            JOptionPane.showMessageDialog(this, "Please enter message to send!");
+        } else {
+            int r = jTable6.getSelectedRow();
+            String id = jTable6.getValueAt(r, 0).toString();
+            Helper.TelegramBot telegram = new Helper.TelegramBot();
+            SendMessage sm = new SendMessage();
+            try {
+                Writer output = new BufferedWriter(
+                        new FileWriter(logPath + "groupsMessage.log", true));
+
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+
+                    ResultSet rs = stmt.executeQuery("SELECT id,telegramId "
+                            + "FROM classes "
+                            + "WHERE id='" + id + "'");
+                    while (rs.next()) {
+                        String classId = rs.getString("id");
+                        String Teleid = rs.getString("telegramId");
+                        System.out.println(Teleid);
+                        sm.setText(jTextArea3.getText());
+                        sm.setChatId(Teleid);
+                        try {
+                            telegram.execute(sm);
+                            output.append("\n" + logTime + " - " + classId + " -\n" + jTextArea3.getText());
+                            JOptionPane.showMessageDialog(this, "Message sent success!");
+                        } catch (TelegramApiException e) {
+                            System.out.println(e);
+                            JOptionPane.showMessageDialog(this, "Error while sending message!");
+                        }
+                    }
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+            } catch (IOException ex) {
+                System.out.println(ex);
+            }
+            jTextArea3.setText("");
+        }
+    }//GEN-LAST:event_jButton24ActionPerformed
+
+    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+        // TODO add your handling code here:
+        try {
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            logPath + "groupsMessage.log");
+            processBuilder.redirectErrorStream(true);
+            processBuilder.start();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton25ActionPerformed
 
     /**
      * @param args the command line arguments
