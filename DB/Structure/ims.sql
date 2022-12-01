@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2022 at 04:36 PM
+-- Generation Time: Dec 01, 2022 at 11:26 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -51,6 +51,23 @@ CREATE TABLE `classes` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `connectioncheck`
+--
+
+CREATE TABLE `connectioncheck` (
+  `cc` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `connectioncheck`
+--
+
+INSERT INTO `connectioncheck` (`cc`) VALUES
+(1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `exams`
 --
 
@@ -74,6 +91,14 @@ CREATE TABLE `login` (
   `type` varchar(20) NOT NULL,
   `lastLogin` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `login`
+--
+
+INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
+(1, 'admin', 'admin', 'Administrator', '2022-12-01 09:03:35'),
+(2, 'user', 'user', 'Moderator', '2022-11-29 22:18:18');
 
 -- --------------------------------------------------------
 
@@ -280,7 +305,7 @@ ALTER TABLE `exams`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `payments`

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2022 at 04:37 PM
+-- Generation Time: Dec 01, 2022 at 11:27 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -28,14 +28,6 @@ SET time_zone = "+00:00";
 INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `telegramId`) VALUES
 (1, 1, 1, 1000, 6, '-1001698896292'),
 (2, 2, 1, 500, 5, '4654654');
-
---
--- Dumping data for table `login`
---
-
-INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
-(1, 'admin', 'admin', 'Administrator', '2022-11-27 16:10:28'),
-(2, 'user', 'user', 'Moderator', '2022-11-28 21:03:51');
 
 --
 -- Dumping data for table `payments`
@@ -94,7 +86,7 @@ INSERT INTO `regclass` (`id`, `studentId`, `classId`) VALUES
 
 INSERT INTO `students` (`id`, `firstName`, `lastName`, `guardianName`, `guardianPhone`, `address`, `grade`, `telegramId`, `status`) VALUES
 (0, 'Naveen', 'Nirmana', 'Balasooriya', '0711716161', 'fdgdfgdf', 8, '1241006555', 0),
-(1, 'fgfdgdf', 'fgdfg', 'dfgdfgf', '1234567890', 'fgfg', 7, '1241006555', 0),
+(1, 'fgfdgdf', 'fgdfg', 'dfgdfgf', '1234567890', 'fgfg', 7, '12410065557', 0),
 (2, 'sxvf', 'dfgdf', 'dfgdf', '0147852369', 'dfgdfg', 7, '1241006555', 0);
 
 --
