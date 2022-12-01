@@ -834,6 +834,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable2);
 
         jPanel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Editing Panel :"));
@@ -852,6 +857,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton15.setText("Delete");
+        jButton15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton15ActionPerformed(evt);
+            }
+        });
 
         jButton16.setText("Reset");
         jButton16.addActionListener(new java.awt.event.ActionListener() {
@@ -2925,17 +2935,12 @@ public class Main extends javax.swing.JFrame {
 
     private void jTabbedPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane2MouseClicked
         // TODO add your handling code here:
-        teachersTabbedPane();
-    }//GEN-LAST:event_jTabbedPane2MouseClicked
-
-    private void teachersTabbedPane() {
-        jButton16ActionPerformed(evt);
         if (jTabbedPane2.getSelectedIndex() == 1) {
             Component[] com1 = jPanel7.getComponents();
             for (int a = 0; a < com1.length; a++) {
                 com1[a].setEnabled(true);
             }
-            
+
             DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
             model.setRowCount(0);
             int r = jTable1.getSelectedRow();
@@ -2960,6 +2965,24 @@ public class Main extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.out.println(e);
             }
+            jComboBox2.removeAllItems();
+            jComboBox2.addItem("Please Select...");
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT  * "
+                        + "FROM subjects "
+                        + "ORDER BY grade,subject");
+                while (rs.next()) {
+                    String settingClass = rs.getString("grade")
+                            + " - " + rs.getString("subject");
+                    jComboBox2.addItem(settingClass);
+                }
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            jComboBox2.setSelectedIndex(0);
             jButton15.setEnabled(false);
         }
         if (jTabbedPane2.getSelectedIndex() == 2) {
@@ -2971,7 +2994,7 @@ public class Main extends javax.swing.JFrame {
             }
             jTextArea2.setText("");
         }
-    }
+    }//GEN-LAST:event_jTabbedPane2MouseClicked
 
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
@@ -3010,8 +3033,31 @@ public class Main extends javax.swing.JFrame {
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
         }
-        teachersTabbedPane();
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+
+
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        // TODO add your handling code here:
+
+        int r = jTable1.getSelectedRow();
+        String id = jTable1.getValueAt(r, 0).toString();
+        int r1 = jTable1.getSelectedRow();
+        String id1 = jTable2.getValueAt(r, 0).toString();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE FROM classes "
+                    + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
+            JOptionPane.showMessageDialog(this, "Success!");
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton15ActionPerformed
 
     /**
      * @param args the command line arguments
