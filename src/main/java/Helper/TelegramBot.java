@@ -59,6 +59,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
+        
+        AutomatedMessages auto = new AutomatedMessages();
+        auto.testMessage();
+        
+        
         if (update.hasMessage() && update.getMessage().hasText()) {
             if (Moderator.NewStudent.telegram != null) {
                 if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())
