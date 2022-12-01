@@ -6,6 +6,7 @@ package Administrator;
 
 import java.awt.Component;
 import java.awt.HeadlessException;
+import java.awt.Image;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -22,6 +23,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -38,19 +40,23 @@ public class Main extends javax.swing.JFrame {
         formDetails();
         grabData();
     }
-    
+
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
     String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String year = new SimpleDateFormat("yyyy").format(new Date());
     String month = new SimpleDateFormat("MM").format(new Date());
+    String searchFrom;
+    String searchWhere;
+    String searchLike;
+    DefaultTableModel tableModel;
     TelegramUpdate telegramUpdate = new TelegramUpdate();
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-    
+
     private void grabData() {
         // grabing data from students table
         try {
@@ -136,7 +142,7 @@ public class Main extends javax.swing.JFrame {
             System.out.println(ex);
         }
     }
-    
+
     private void loadTeachers() {
         jTabbedPane2.setSelectedIndex(0);
         jTextField10.setText("");
@@ -168,8 +174,11 @@ public class Main extends javax.swing.JFrame {
             com2[a].setEnabled(false);
         }
     }
-    
+
     private void loadStudents() {
+        jTextField9.setText("");
+        jTextField13.setText("");
+        jComboBox4.setSelectedIndex(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -186,8 +195,10 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e + "\nfrom std err");
         }
-        jButton9.setEnabled(false);
-        jButton10.setEnabled(false);
+        Component[] com0 = jPanel11.getComponents();
+        for (int a = 0; a < com0.length; a++) {
+            com0[a].setEnabled(false);
+        }
         Component[] com1 = jPanel18.getComponents();
         for (int a = 0; a < com1.length; a++) {
             com1[a].setEnabled(false);
@@ -201,11 +212,11 @@ public class Main extends javax.swing.JFrame {
             com3[a].setEnabled(false);
         }
     }
-    
+
     private void loadGroups() {
-        
+
     }
-    
+
     private void loadAccounts() {
         DefaultTableModel model2 = (DefaultTableModel) jTable7.getModel();
         model2.setRowCount(0);
@@ -213,7 +224,7 @@ public class Main extends javax.swing.JFrame {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM login");
-            
+
             while (rs2.next()) {
                 Object[] row2 = {rs2.getString("id"),
                     rs2.getString("type") + " " + rs2.getString("user"),
@@ -359,9 +370,7 @@ public class Main extends javax.swing.JFrame {
         jPanel18 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
-        jPanel19 = new javax.swing.JPanel();
-        jButton12 = new javax.swing.JButton();
-        jButton18 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
         jPanel20 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
@@ -842,6 +851,9 @@ public class Main extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jTable2MouseEntered(evt);
+            }
         });
         jScrollPane2.setViewportView(jTable2);
 
@@ -1197,7 +1209,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
@@ -1248,6 +1260,12 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jTabbedPane3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane3MouseClicked(evt);
+            }
+        });
+
         jPanel11.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Editing Panel :"));
@@ -1264,7 +1282,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel24.setText("Grade :");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
 
         jLabel25.setText("Telegram ID :");
 
@@ -1288,7 +1306,7 @@ public class Main extends javax.swing.JFrame {
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
                 .addContainerGap())
@@ -1469,32 +1487,8 @@ public class Main extends javax.swing.JFrame {
         });
         jScrollPane4.setViewportView(jTable4);
 
-        jPanel19.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
-
-        jButton12.setText("Reset");
-
-        jButton18.setText("Edit");
-
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel12.setText("[ Login as a Moderator to edit classes ]");
 
         javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
         jPanel18.setLayout(jPanel18Layout);
@@ -1504,17 +1498,17 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane4)
-                    .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel18Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(260, Short.MAX_VALUE))
+                .addComponent(jLabel12)
+                .addGap(129, 129, 129))
         );
 
         jTabbedPane3.addTab("Classes", jPanel18);
@@ -1682,8 +1676,8 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5)
-                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel20Layout.setVerticalGroup(
@@ -1692,10 +1686,10 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane3.addTab("Results", jPanel20);
@@ -1830,19 +1824,18 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel25Layout.createSequentialGroup()
                         .addComponent(jLabel37, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jComboBox8, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel25Layout.createSequentialGroup()
+                        .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox9, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel25Layout.createSequentialGroup()
                         .addComponent(jLabel39, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox10, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel25Layout.createSequentialGroup()
-                        .addComponent(jLabel38, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox9, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jComboBox10, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton23, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addContainerGap())
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1957,7 +1950,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
-                    .addComponent(jPanel25, javax.swing.GroupLayout.PREFERRED_SIZE, 504, Short.MAX_VALUE))
+                    .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -2298,7 +2291,7 @@ public class Main extends javax.swing.JFrame {
             broadcast.setVisible(true);
         }
     }//GEN-LAST:event_jButton27ActionPerformed
-    
+
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
         // to open the log file
@@ -2320,7 +2313,7 @@ public class Main extends javax.swing.JFrame {
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-            
+
             ResultSet rs = stmt.executeQuery("SELECT  * "
                     + "FROM teachers "
                     + "WHERE id='" + id + "'");
@@ -2416,7 +2409,7 @@ public class Main extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // updating data in teachers table
         int r = jTable1.getSelectedRow();
-        
+
         String id = jTable1.getValueAt(r, 0).toString();
         String name = jTextField5.getName();
         String nic = jTextField6.getName();
@@ -2425,7 +2418,7 @@ public class Main extends javax.swing.JFrame {
         int update = jCheckBox1.isSelected() ? 1 : 0; // to telegram ID Update Now
         int status = jComboBox1.getSelectedIndex(); // inactive -> 0, active -> 1
         int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '" + name + "'?");
-        
+
         if (choice == 0) {
             try {
                 Connection con = Helper.DB.connect();
@@ -2433,7 +2426,7 @@ public class Main extends javax.swing.JFrame {
                 String sql = "UPDATE teachers SET name='" + name + "', nic='" + nic + "', address='" + address + "' , "
                         + ", telegramId='0', contact='" + contact + "', status='" + status + "' WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
-                
+
                 JOptionPane.showMessageDialog(this, "Data in '" + id + "' id is updating completed!");
                 jButton5ActionPerformed(evt);
                 con.close();
@@ -2442,14 +2435,14 @@ public class Main extends javax.swing.JFrame {
             }
         }
         jButton5ActionPerformed(evt);
-        
+
 
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // delete selected row
         int r = jTable1.getSelectedRow();
-        
+
         String id = jTable1.getValueAt(r, 0).toString();
         int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '" + id + "'?");
         if (choice == 0) {
@@ -2478,7 +2471,7 @@ public class Main extends javax.swing.JFrame {
         String grade = jComboBox5.getSelectedItem().toString();
         int r = jTable3.getSelectedRow();
         String id = jTable3.getValueAt(r, 0).toString();
-        
+
         int choice = JOptionPane.showConfirmDialog(this, "Do you really want to update the details of '" + fname + "'?");
         if (choice == 0) {
             try {
@@ -2488,10 +2481,10 @@ public class Main extends javax.swing.JFrame {
                         + " guardianPhone='" + gPhone + "', address='" + address + "', grade='" + grade + "', telegramId='0',"
                         + "status='0' WHERE id='" + id + "'";
                 stmt.executeUpdate(sql);
-                
+
                 JOptionPane.showMessageDialog(this, "Data in '" + id + "' id is updating completed!");
                 jButton5ActionPerformed(evt);
-                
+
                 con.close();
             } catch (SQLException e) {
                 System.out.println(e);
@@ -2523,11 +2516,11 @@ public class Main extends javax.swing.JFrame {
             try {
                 Writer output = new BufferedWriter(
                         new FileWriter(logPath + "teachersMessage.log", true));
-                
+
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-                    
+
                     ResultSet rs = stmt.executeQuery("SELECT id,name,telegramId "
                             + "FROM teachers "
                             + "WHERE id='" + id + "'");
@@ -2560,71 +2553,54 @@ public class Main extends javax.swing.JFrame {
 
     private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
         // to filter selected data by ID
-        Connection con = Helper.DB.connect();
-        String id = jTextField10.getText();
         if (!"".equals(jTextField10.getText())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM teachers "
-                        + "WHERE id='" + id + "'");
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("name"), rs.getString("nic")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            searchFrom = "teachers";
+            searchWhere = "id";
+            searchLike = jTextField10.getText();
+            tableModel = (DefaultTableModel) jTable1.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jTextField10ActionPerformed
 
+    private void searchQuery() {
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM " + searchFrom + " "
+                    + "WHERE " + searchWhere + " "
+                    + "LIKE '" + searchLike + "%'");
+            tableModel.setRowCount(0);
+            while (rs.next()) {
+                Object[] row = {rs.getString("id"),
+                    rs.getString("name"), rs.getString("nic")};
+                tableModel.addRow(row);
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
         // to filter selected data by name
-        Connection con = Helper.DB.connect();
-        String name = jTextField11.getText();
         if (!"".equals(jTextField11.getText())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
-                        + "WHERE name LIKE '%" + name + "%'");
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("name"), rs.getString("nic")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            searchFrom = "teachers";
+            searchWhere = "name";
+            searchLike = jTextField11.getText();
+            tableModel = (DefaultTableModel) jTable1.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jTextField11ActionPerformed
 
     private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
         // to filter selected data by nic
-        Connection con = Helper.DB.connect();
-        String nic = jTextField12.getText();
         if (!"".equals(jTextField12.getText())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM teachers "
-                        + "WHERE nic='" + nic + "'");
-                DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("name"), rs.getString("nic")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            searchFrom = "teachers";
+            searchWhere = "nic";
+            searchLike = jTextField12.getText();
+            tableModel = (DefaultTableModel) jTable1.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jTextField12ActionPerformed
 
@@ -2649,7 +2625,7 @@ public class Main extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // delete a student from students table
         int r = jTable3.getSelectedRow();
-        
+
         String id = jTable3.getValueAt(r, 0).toString();
         int choice = JOptionPane.showConfirmDialog(this, "Do you really want to delete the details in '" + id + "'?");
         if (choice == 0) {
@@ -2661,7 +2637,7 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Row Deleted!");
                 jButton5ActionPerformed(evt);
                 con.close();
-                
+
             } catch (HeadlessException | SQLException e) {
                 System.out.println(e);
             }
@@ -2671,53 +2647,33 @@ public class Main extends javax.swing.JFrame {
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // grabing data from selected row
-        int r = jTable3.getSelectedRow();
-        
-        String id = jTable3.getValueAt(r, 0).toString();
-        java.sql.Connection con = Helper.DB.connect();
-        try {
-            Statement stmt = (Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id FROM students WHERE id='" + id + "'");
-            
-            while (rs.next()) {
-                ResultSet rs2 = stmt.executeQuery("SELECT * FROM students WHERE id='" + rs.getString("id") + "'");
-                while (rs2.next()) {
-                    jTextField14.setText(rs2.getString("firstName"));
-                    jTextField15.setText(rs2.getString("lastName"));
-                    jTextField16.setText(rs2.getString("guardianName"));
-                    jTextField17.setText(rs2.getString("guardianPhone"));
-                    jTextField18.setText(rs2.getString("address"));
-                    jComboBox5.setSelectedItem(rs2.getString("grade"));
-                    // jCheckBox1.isSelected();
-                }
-            }
-            
-        } catch (SQLException e) {
-            System.out.println(e);
+        Component[] com0 = jPanel11.getComponents();
+        for (int a = 0; a < com0.length; a++) {
+            com0[a].setEnabled(true);
         }
-        
+        int r = jTable3.getSelectedRow();
+        String id = jTable3.getValueAt(r, 0).toString();
         try {
+            Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
-            ResultSet rs2 = stmt.executeQuery("SELECT teacherId, day FROM classes WHERE subjectId='" + id + "'");
-            while (rs2.next()) {
-                ResultSet rs3 = stmt.executeQuery("SELECT name FROM teachers WHERE id='" + rs2.getString("teacherId") + "'");
-                while (rs3.next()) {
-                    ResultSet rs4 = stmt.executeQuery("SELECT subject, grade FROM subjects WHERE id='" + rs2.getString("subjectId") + "'");
-                    while (rs3.next()) {
-                        DefaultTableModel model = (DefaultTableModel) jTable4.getModel();
-                        model.setRowCount(0);
-                        Object[] row2 = {rs4.getString("grade"), rs4.getString("subjects"), rs3.getString("name"), rs2.getString("day")};
-                        model.addRow(row2);
-                    }
-//                    DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-//                    model.setRowCount(0);
-//                    Object[] row = {rs3.getString("subject"), rs3.getString("grade")};
-//                    model.addRow(row);
-                }
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM students "
+                    + "WHERE id='" + id + "'");
+            while (rs.next()) {
+                jTextField14.setText(rs.getString("firstName"));
+                jTextField15.setText(rs.getString("lastName"));
+                jTextField16.setText(rs.getString("guardianName"));
+                jTextField17.setText(rs.getString("guardianPhone"));
+                jTextField18.setText(rs.getString("address"));
+                jComboBox5.setSelectedItem(rs.getString("grade"));
+                jLabel27.setText("");
+                ImageIcon myImage = new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + id + ".png");
+                Image newImage = myImage.getImage().getScaledInstance(136, 136, Image.SCALE_DEFAULT);
+                jLabel27.setIcon(new ImageIcon(newImage));
             }
             con.close();
-        } catch (Exception ex) {
-            System.out.println(ex);
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
@@ -2744,11 +2700,10 @@ public class Main extends javax.swing.JFrame {
             try {
                 Writer output = new BufferedWriter(
                         new FileWriter(logPath + "studentsMessage.log", true));
-                
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-                    
+
                     ResultSet rs = stmt.executeQuery("SELECT id,telegramId "
                             + "FROM students "
                             + "WHERE id='" + id + "'");
@@ -2793,77 +2748,40 @@ public class Main extends javax.swing.JFrame {
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // search for students by id
-        Connection con = Helper.DB.connect();
-        String id = jTextField9.getText();
         if (!"".equals(jTextField9.getText())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                        + "WHERE id='" + id + "'");
-                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            searchFrom = "students";
+            searchWhere = "id";
+            searchLike = jTextField9.getText();
+            tableModel = (DefaultTableModel) jTable3.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
 
     private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
         // search for students by name
-        Connection con = Helper.DB.connect();
-        String name = jTextField13.getText();
         if (!"".equals(jTextField13.getText())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                        + "WHERE firstName OR lastName LIKE '%" + name + "%'");
-                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+            searchFrom = "students";
+            searchWhere = "firstName";
+            searchLike = jTextField13.getText();
+            tableModel = (DefaultTableModel) jTable3.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jTextField13ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         // search for students by grade
-        Connection con = Helper.DB.connect();
-        String grade = jComboBox4.getSelectedItem().toString();
-        if (!"".equals(jComboBox4.getSelectedItem().toString())) {
-            try {
-                Statement stmt = (Statement) con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM students "
-                        + "WHERE grade='" + grade + "'");
-                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-                model.setRowCount(0);
-                while (rs.next()) {
-                    Object[] row = {rs.getString("id"),
-                        rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
-                    model.addRow(row);
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
+        if (jComboBox4.getSelectedIndex() != 0) {
+            searchFrom = "students";
+            searchWhere = "grade";
+            searchLike = jComboBox4.getSelectedItem().toString();
+            tableModel = (DefaultTableModel) jTable3.getModel();
+            searchQuery();
         }
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // reset all the text fields in search panel - students
-        jTextField9.setText("");
-        jTextField13.setText("");
+        loadStudents();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
@@ -2882,11 +2800,11 @@ public class Main extends javax.swing.JFrame {
             try {
                 Writer output = new BufferedWriter(
                         new FileWriter(logPath + "groupsMessage.log", true));
-                
+
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-                    
+
                     ResultSet rs = stmt.executeQuery("SELECT id,telegramId "
                             + "FROM classes "
                             + "WHERE id='" + id + "'");
@@ -2954,7 +2872,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         teacherClassesTable();
     }//GEN-LAST:event_jTabbedPane2MouseClicked
-    
+
     private void teacherClassesTable() {
         if (jTabbedPane2.getSelectedIndex() == 1) {
             Component[] com1 = jPanel7.getComponents();
@@ -3098,6 +3016,105 @@ public class Main extends javax.swing.JFrame {
         jTextField11.setText("");
     }//GEN-LAST:event_jTextField12FocusGained
 
+    private void jTabbedPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane3MouseClicked
+        // TODO add your handling code here:
+        if (jTabbedPane3.getSelectedIndex() == 1) {
+            Component[] com1 = jPanel18.getComponents();
+            for (int a = 0; a < com1.length; a++) {
+                com1[a].setEnabled(true);
+            }
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            int r = jTable3.getSelectedRow();
+            String id = jTable3.getValueAt(r, 0).toString();
+            model.setRowCount(0);
+            String convertedDay = null;
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM regclass "
+                        + "WHERE studentId='" + id + "'");
+                while (rs.next()) {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE id='" + rs.getString("id") + "'");
+                    while (rs2.next()) {
+                        int day = rs2.getInt("day");
+                        String teacherId = rs2.getString("teacherId");
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM subject "
+                                + "WHERE id='" + rs2.getString("subjectId") + "'");
+                        while (rs3.next()) {
+                            String grade = rs3.getString("grade");
+                            String subject = rs3.getString("subjectId");
+                            ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                    + "FROM teachers "
+                                    + "WHERE id='" + rs3.getString("teacherId") + "'");
+                            while (rs4.next()) {
+                                switch (day) {
+                                    case 1:
+                                        convertedDay = "Monday";
+                                        break;
+                                    case 2:
+                                        convertedDay = "Tuesday";
+                                        break;
+                                    case 3:
+                                        convertedDay = "Wednesday";
+                                        break;
+                                    case 4:
+                                        convertedDay = "Thursday";
+                                        break;
+                                    case 5:
+                                        convertedDay = "Friday";
+                                        break;
+                                    case 6:
+                                        convertedDay = "Saturday";
+                                        break;
+                                    case 7:
+                                        convertedDay = "Sunday";
+                                        break;
+                                }
+                                Object[] row = {grade, subject,
+                                    rs4.getString("name"), convertedDay};
+                                model.addRow(row);
+                            }
+                        }
+                    }
+                }
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
+        if (jTabbedPane3.getSelectedIndex() == 2) {
+            Component[] com2 = jPanel20.getComponents();
+            for (int a = 0; a < com2.length; a++) {
+                com2[a].setEnabled(true);
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+        if (jTabbedPane3.getSelectedIndex() == 3) {
+            Component[] com3 = jPanel23.getComponents();
+            for (int a = 0; a < com3.length; a++) {
+                com3[a].setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_jTabbedPane3MouseClicked
+
+    private void jTable2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable2MouseEntered
+
     /**
      * @param args the command line arguments
      */
@@ -3138,12 +3155,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton20;
@@ -3183,6 +3198,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -3244,7 +3260,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
-    private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
