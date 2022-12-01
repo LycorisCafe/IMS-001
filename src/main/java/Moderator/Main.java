@@ -39,7 +39,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory {
 

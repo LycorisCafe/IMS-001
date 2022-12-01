@@ -6,7 +6,7 @@ package Helper;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class MainDetails {
 

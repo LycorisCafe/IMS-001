@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class TelegramBroadcast extends javax.swing.JFrame {
 

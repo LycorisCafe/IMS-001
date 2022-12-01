@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class TelegramUpdate extends javax.swing.JFrame {
 

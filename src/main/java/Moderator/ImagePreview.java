@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class ImagePreview extends javax.swing.JFrame {
 

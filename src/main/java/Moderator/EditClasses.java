@@ -20,7 +20,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class EditClasses extends javax.swing.JFrame {
 

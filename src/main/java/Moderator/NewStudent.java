@@ -32,12 +32,10 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
@@ -1069,17 +1067,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         tSendStudentName.setText(fName.getText() + " " + lName.getText());
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
-//        SendMessage message = new SendMessage();
-//        message.setChatId(telegramId.getText());
-//        message.setText("Student Registration Success!\n\n"
-//                + "Student ID : " + institute + "-" + "STUDENT" + "-" + newStudent + "\n"
-//                + "Student Name : " + fName.getText() + " " + lName.getText());
-//        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
-//        try {
-//            telegramBot.execute(message);
-//        } catch (TelegramApiException ex) {
-//            System.out.println(ex);
-//        }
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {

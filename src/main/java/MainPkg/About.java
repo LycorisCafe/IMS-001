@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class About extends javax.swing.JFrame {
 

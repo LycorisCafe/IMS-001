@@ -114,7 +114,7 @@
         </plugins>
     </build>
     <description>Institute Management System
-        Developed by Lycoris Cafe</description>
+Developed by Lycoris Cafe</description>
     <repositories>
         <repository>
             <id>unknown-jars-temp-repo</id>

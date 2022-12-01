@@ -8,7 +8,7 @@ import java.awt.Toolkit;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class Welcome extends javax.swing.JFrame {
 

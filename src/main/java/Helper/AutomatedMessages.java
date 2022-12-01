@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class AutomatedMessages {
 
@@ -22,6 +22,7 @@ public class AutomatedMessages {
 
     // message designs ===============>>>>>>>>>>
     public void studentRegistrationSuccess() {
+        // @ Moderator.NewStudent.java jButton8 ActionPerformed
         String chatId = Moderator.NewStudent.telegramId.getText();
         String studentId = Moderator.NewStudent.tSendStudentId.getText();
         String studentName = Moderator.NewStudent.tSendStudentName.getText();

@@ -22,7 +22,7 @@ import oshi.hardware.HardwareAbstractionLayer;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class IMS {
 
