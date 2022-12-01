@@ -134,6 +134,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
         telegram = new javax.swing.JLabel();
         telegramId = new javax.swing.JLabel();
+        tSendStudentId = new javax.swing.JLabel();
+        tSendStudentName = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
@@ -186,6 +188,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         telegram.setText("jLabel16");
 
         telegramId.setText("jLabel16");
+
+        tSendStudentId.setText("jLabel16");
+
+        tSendStudentName.setText("jLabel16");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student Registration");
@@ -1059,17 +1065,21 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } else {
             tempImage.renameTo(imgPathSave);
         }
-        SendMessage message = new SendMessage();
-        message.setChatId(telegramId.getText());
-        message.setText("Student Registration Success!\n\n"
-                + "Student ID : " + institute + "-" + "STUDENT" + "-" + newStudent + "\n"
-                + "Student Name : " + fName.getText() + " " + lName.getText());
-        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
-        try {
-            telegramBot.execute(message);
-        } catch (TelegramApiException ex) {
-            System.out.println(ex);
-        }
+        tSendStudentId.setText(institute + "-" + "STUDENT" + "-" + newStudent);
+        tSendStudentName.setText(fName.getText() + " " + lName.getText());
+        Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
+        sendMessage.studentRegistrationSuccess();
+//        SendMessage message = new SendMessage();
+//        message.setChatId(telegramId.getText());
+//        message.setText("Student Registration Success!\n\n"
+//                + "Student ID : " + institute + "-" + "STUDENT" + "-" + newStudent + "\n"
+//                + "Student Name : " + fName.getText() + " " + lName.getText());
+//        Helper.TelegramBot telegramBot = new Helper.TelegramBot();
+//        try {
+//            telegramBot.execute(message);
+//        } catch (TelegramApiException ex) {
+//            System.out.println(ex);
+//        }
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -1180,6 +1190,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField lName;
+    public static javax.swing.JLabel tSendStudentId;
+    public static javax.swing.JLabel tSendStudentName;
     public static javax.swing.JLabel telegram;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables

@@ -59,11 +59,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        
-        AutomatedMessages auto = new AutomatedMessages();
-        auto.testMessage();
-        
-        
+
         if (update.hasMessage() && update.getMessage().hasText()) {
             if (Moderator.NewStudent.telegram != null) {
                 if (update.getMessage().getText().equals(Moderator.NewStudent.telegram.getText())
@@ -73,7 +69,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     Moderator.NewStudent.jButton6.setEnabled(true);
                 }
             }
-            
+
             if (Administrator.TelegramUpdate.jTextField10 != null) {
                 if (update.getMessage().getText().equals(Administrator.TelegramUpdate.jTextField10.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.TelegramUpdate.type.getText())) {
@@ -83,12 +79,12 @@ public class TelegramBot extends TelegramLongPollingBot {
                     // =====>>>>
                 }
             }
-            
+
         }
         if (Maintainer.Main.jTextArea1 != null) {
             Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
                     + " : " + update.getMessage().getText() + "\n");
         }
-    }
 
+    }
 }

@@ -4,9 +4,7 @@
  */
 package Helper;
 
-import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -16,23 +14,37 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author Anupama
  */
 public class AutomatedMessages {
-    
+
+    // method calling ===============>>>>>>>>>>>
+    TelegramBot bot = new TelegramBot();
+    SendMessage message = new SendMessage();
     SendPhoto photo = new SendPhoto();
-    public void testMessage (){
-        String myChat = "1241006555";
-        
-        File file = new File("C:\\Users\\Anupama\\Pictures\\92-920036_nature-top-whatsapp-dp.jpg");
-        InputFile myFile = new InputFile(file);
-        photo.setPhoto(myFile);
-        photo.setChatId(myChat);
-        photo.setCaption("hello!");
-        send();
-        
+
+    // message designs ===============>>>>>>>>>>
+    public void studentRegistrationSuccess() {
+        String chatId = Moderator.NewStudent.telegramId.getText();
+        String studentId = Moderator.NewStudent.tSendStudentId.getText();
+        String studentName = Moderator.NewStudent.tSendStudentName.getText();
+        String logo = "https://drive.google.com/uc?id=17YSyIO5gdI1A_YtgURWxTT3ArfXpYdyw";
+        photo.setChatId(chatId);
+        photo.setPhoto(new InputFile(logo));
+        photo.setCaption("Student Registration Success!\n\n"
+                + "Student ID : " + studentId + "\n"
+                + "Student Name : " + studentName);
+        photo.setProtectContent(true);
+        sendPhoto();
     }
-    
-    
-    private void send(){
-        TelegramBot bot = new TelegramBot();
+
+    // sending operations =========>>>>>>>>>>>
+    private void sendMessage() {
+        try {
+            bot.execute(message);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    private void sendPhoto() {
         try {
             bot.execute(photo);
         } catch (TelegramApiException ex) {
