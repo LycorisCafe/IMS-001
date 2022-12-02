@@ -11,7 +11,7 @@ Institute Management System
 - Target Final Date : 03.11.2022
 - Target Project Duration : 20 days
 - Target QA Duration : 3 days
-- Target Debug Duration : 1 days
+- Target Debug Duration : 3 days
 
 > Project Files :
 - [Project Folder](#)
