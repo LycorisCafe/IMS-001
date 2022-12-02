@@ -215,7 +215,99 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void loadGroups() {
+        DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+        model.setRowCount(0);
+        String convertedDay = null;
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM classes");
+            while (rs.next()) {
+                String classId = rs.getString("id");
+                int day = rs.getInt("day");
+                String subjectId = rs.getString("subjectId");
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM teachers "
+                        + "WHERE id='" + rs.getString("teacherId") + "'");
+                while (rs2.next()) {
+                    String teacher = rs2.getString("name");
+                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            + "FROM subjects "
+                            + "WHERE id='" + subjectId + "'");
+                    while (rs3.next()) {
+                        switch (day) {
+                            case 1:
+                                convertedDay = "Monday";
+                                break;
+                            case 2:
+                                convertedDay = "Tuesday";
+                                break;
+                            case 3:
+                                convertedDay = "Wednesday";
+                                break;
+                            case 4:
+                                convertedDay = "Thursday";
+                                break;
+                            case 5:
+                                convertedDay = "Friday";
+                                break;
+                            case 6:
+                                convertedDay = "Saturday";
+                                break;
+                            case 7:
+                                convertedDay = "Sunday";
+                                break;
+                        }
+                        Object[] row = {classId, rs3.getString("grade"),
+                            rs3.getString("subject"), teacher, convertedDay};
+                        model.addRow(row);
+                    }
+                }
 
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e + "\nfrom std err");
+        }
+        jComboBox8.removeAllItems();
+        jComboBox8.addItem("Please Select...");
+        jComboBox8.setSelectedIndex(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM subjects");
+            while (rs.next()) {
+                jComboBox8.addItem(rs.getString("grade")
+                        + " - " + rs.getString("subject"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        jComboBox9.removeAllItems();
+        jComboBox9.addItem("Please Select...");
+        jComboBox9.setSelectedIndex(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM teachers");
+            while (rs.next()) {
+                jComboBox8.addItem(rs.getString("id")
+                        + " - " + rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        Component[] com1 = jPanel26.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(false);
+        }
+        Component[] com2 = jPanel27.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(false);
+        }
     }
 
     private void loadAccounts() {
@@ -224,12 +316,11 @@ public class Main extends javax.swing.JFrame {
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
-            ResultSet rs2 = stmt.executeQuery("SELECT * FROM login");
-
-            while (rs2.next()) {
-                Object[] row2 = {rs2.getString("id"),
-                    rs2.getString("type") + " " + rs2.getString("user"),
-                    rs2.getString("lastLogin")};
+            ResultSet rs = stmt.executeQuery("SELECT * FROM login");
+            while (rs.next()) {
+                Object[] row2 = {rs.getString("id"),
+                    rs.getString("type") + " " + rs.getString("user"),
+                    rs.getString("lastLogin")};
                 model2.addRow(row2);
             }
             con.close();
@@ -1769,34 +1860,59 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Grade", "Subject", "Teacher"
+                "ID", "Grade", "Subject", "Teacher", "Day"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        jTable6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable6MouseClicked(evt);
+            }
+        });
         jScrollPane8.setViewportView(jTable6);
 
         jPanel25.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Search :"));
 
-        jLabel37.setText("by Grade :");
+        jLabel37.setText("by Class :");
 
-        jLabel38.setText("by Subject :");
+        jLabel38.setText("by Teacher :");
 
-        jLabel39.setText("by Teacher :");
+        jLabel39.setText("by Day :");
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox8ActionPerformed(evt);
+            }
+        });
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox9ActionPerformed(evt);
+            }
+        });
 
-        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        jComboBox10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox10ActionPerformed(evt);
+            }
+        });
 
         jButton23.setText("Reset");
+        jButton23.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton23ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
@@ -1841,6 +1957,12 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jButton23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jTabbedPane4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTabbedPane4MouseClicked(evt);
+            }
+        });
 
         jPanel26.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -2283,12 +2405,14 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
+        jButton27.setText("Sending...");
         if (jTextArea4 == null) {
             JOptionPane.showMessageDialog(this, "Please enter message to broadcast!");
         } else {
             TelegramBroadcast broadcast = new TelegramBroadcast();
             broadcast.setVisible(true);
         }
+        jButton27.setText("Send");
     }//GEN-LAST:event_jButton27ActionPerformed
 
 
@@ -2872,6 +2996,8 @@ public class Main extends javax.swing.JFrame {
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
         // TODO add your handling code here:
 
+        // telegram verification goes here!
+
     }//GEN-LAST:event_jButton26ActionPerformed
 
     private void jTabbedPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane2MouseClicked
@@ -3331,6 +3457,188 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         jComboBox6.setSelectedIndex(0);
     }//GEN-LAST:event_jTextField21FocusGained
+
+    private void jTabbedPane4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTabbedPane4MouseClicked
+
+    private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
+        // TODO add your handling code here:
+        jComboBox8.setSelectedIndex(0);
+        jComboBox9.setSelectedIndex(0);
+        jComboBox10.setSelectedIndex(0);
+        loadGroups();
+    }//GEN-LAST:event_jButton23ActionPerformed
+
+    private void jTable6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable6MouseClicked
+        // TODO add your handling code here:
+        Component[] com1 = jPanel26.getComponents();
+        for (int a = 0; a < com1.length; a++) {
+            com1[a].setEnabled(true);
+        }
+        Component[] com2 = jPanel27.getComponents();
+        for (int a = 0; a < com2.length; a++) {
+            com2[a].setEnabled(true);
+        }
+    }//GEN-LAST:event_jTable6MouseClicked
+
+    private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox8.getSelectedIndex() != 0 || jComboBox8.getSelectedItem() != null) {
+            jComboBox9.setSelectedIndex(0);
+            jComboBox10.setSelectedIndex(0);
+            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            model.setRowCount(0);
+            String convertedDay = null;
+            String[] parts = jComboBox8.getSelectedItem().toString().split(" - ");
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + parts[0] + "'"
+                        + "AND subject='" + parts[1] + "'");
+                while (rs.next()) {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE subjectId='" + rs.getString("id") + "'");
+                    while (rs2.next()) {
+                        String classId = rs2.getString("id");
+                        int day = rs2.getInt("day");
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM teachers "
+                                + "WHERE id='" + rs2.getString("teacherId") + "'");
+                        while (rs3.next()) {
+                            switch (day) {
+                                case 1:
+                                    convertedDay = "Monday";
+                                    break;
+                                case 2:
+                                    convertedDay = "Tuesday";
+                                    break;
+                                case 3:
+                                    convertedDay = "Wednesday";
+                                    break;
+                                case 4:
+                                    convertedDay = "Thursday";
+                                    break;
+                                case 5:
+                                    convertedDay = "Friday";
+                                    break;
+                                case 6:
+                                    convertedDay = "Saturday";
+                                    break;
+                                case 7:
+                                    convertedDay = "Sunday";
+                                    break;
+                            }
+                            Object[] row = {classId, parts[0], parts[1],
+                                rs3.getString("name"), convertedDay};
+                            model.addRow(row);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox8ActionPerformed
+
+    private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox9.getSelectedIndex() != 0 || jComboBox9.getSelectedItem() != null) {
+            jComboBox8.setSelectedIndex(0);
+            jComboBox10.setSelectedIndex(0);
+            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            model.setRowCount(0);
+            String convertedDay = null;
+            String[] parts = jComboBox9.getSelectedItem().toString().split(" - ");
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE teacherId='" + parts[0] + "'");
+                while (rs.next()) {
+                    String classId = rs.getString("id");
+                    int day = rs.getInt("day");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM subjects "
+                            + "WHERE id='" + rs.getString("subjectId") + "'");
+                    while (rs2.next()) {
+                        switch (day) {
+                            case 1:
+                                convertedDay = "Monday";
+                                break;
+                            case 2:
+                                convertedDay = "Tuesday";
+                                break;
+                            case 3:
+                                convertedDay = "Wednesday";
+                                break;
+                            case 4:
+                                convertedDay = "Thursday";
+                                break;
+                            case 5:
+                                convertedDay = "Friday";
+                                break;
+                            case 6:
+                                convertedDay = "Saturday";
+                                break;
+                            case 7:
+                                convertedDay = "Sunday";
+                                break;
+                        }
+                        Object[] row = {classId, rs2.getString("grade"),
+                            rs2.getString("subject"), parts[1], convertedDay};
+                        model.addRow(row);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox9ActionPerformed
+
+    private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox10.getSelectedIndex() != 0 || jComboBox10.getSelectedItem() != null) {
+            jComboBox8.setSelectedIndex(0);
+            jComboBox9.setSelectedIndex(0);
+            DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            model.setRowCount(0);
+            int day = jComboBox10.getSelectedIndex();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE day='" + day + "'");
+                while (rs.next()) {
+                    String classId = rs.getString("id");
+                    String subjectId = rs.getString("subjectId");
+                    String teacherId = rs.getString("teacherId");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM teachers "
+                            + "WHERE id='" + teacherId + "'");
+                    while (rs2.next()) {
+                        String teacher = rs2.getString("name");
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE id='" + subjectId + "'");
+                        while (rs3.next()) {
+                            Object[] row = {classId, rs3.getString("grade"),
+                                rs3.getString("subject"), teacher,
+                                jComboBox10.getSelectedItem().toString()};
+                            model.addRow(row);
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox10ActionPerformed
 
     /**
      * @param args the command line arguments
