@@ -885,6 +885,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
         // TODO add your handling code here:
         if (cr1.getSelectedIndex() == 0 || cr1.getSelectedItem() == null) {
+            cr2.setSelectedIndex(0);
+            cr3.setSelectedIndex(0);
+            cr4.setSelectedIndex(0);
             cr2.setEnabled(false);
             cr3.setEnabled(false);
             cr4.setEnabled(false);
@@ -913,6 +916,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private void cr2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr2ActionPerformed
         // TODO add your handling code here:
         if (cr2.getSelectedIndex() == 0 || cr2.getSelectedItem() == null) {
+            cr3.setSelectedIndex(0);
+            cr4.setSelectedIndex(0);
             cr3.setEnabled(false);
             cr4.setEnabled(false);
         } else {
@@ -952,6 +957,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private void cr3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr3ActionPerformed
         // TODO add your handling code here:
         if (cr3.getSelectedIndex() == 0 || cr3.getSelectedItem() == null) {
+            cr4.setSelectedIndex(0);
             cr4.setEnabled(false);
         } else {
             cr4.setEnabled(true);
