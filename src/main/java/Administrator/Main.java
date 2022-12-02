@@ -2406,7 +2406,24 @@ public class Main extends javax.swing.JFrame {
 
         jLabel51.setText("by Date :");
 
+        jTextField19.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField19ActionPerformed(evt);
+            }
+        });
+
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
+
+        jTextField20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField20ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("Reset");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -4067,8 +4084,8 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE day='" + day + "'");
                 while (rs.next()) {
                     String classId = rs.getString("id");
-                    String subjectId = rs.getString("subjectId");
-                    String teacherId = rs.getString("teacherId");
+                    subjectId = rs.getString("subjectId");
+                    teacherId = rs.getString("teacherId");
                     ResultSet rs2 = stmt.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + teacherId + "'");
@@ -4292,10 +4309,26 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
+        loadExams();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
+        int r = jTable7.getSelectedRow();
+        String id = jTable7.getValueAt(r, 0).toString();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE FROM results "
+                    + "WHERE examId='" + id + "'");
+            stmt.executeUpdate("DELETE FROM exams "
+                    + "WHERE id='" + id + "'");
+            JOptionPane.showMessageDialog(this, "Success!");
+            loadExams();
+            con.close();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
     }//GEN-LAST:event_jButton18ActionPerformed
 
     private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
@@ -4480,7 +4513,113 @@ public class Main extends javax.swing.JFrame {
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
+        int r = jTable7.getSelectedRow();
+        String id = jTable7.getValueAt(r, 0).toString();
+        examId.setText(id);
     }//GEN-LAST:event_jTable8MouseClicked
+
+    private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField19.getText().equals("")) {
+            DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            model.setRowCount(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM exams "
+                        + "WHERE name='" + jTextField19.getText() + "'");
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String name = rs.getString("name");
+                    String date = rs.getString("date");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE id='" + rs.getString("classId") + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE id='" + rs2.getString("subjectId") + "'");
+                        {
+                            while (rs3.next()) {
+                                Object[] row = {id, name, rs3.getString("grade")
+                                    + " - " + rs3.getString("subject"), date};
+                                model.addRow(row);
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField19ActionPerformed
+
+    private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField20.getText().equals("")) {
+            DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            model.setRowCount(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM exams "
+                        + "WHERE date='" + jTextField20.getText() + "'");
+                while (rs.next()) {
+                    String id = rs.getString("id");
+                    String name = rs.getString("name");
+                    String date = rs.getString("date");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE id='" + rs.getString("classId") + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE id='" + rs2.getString("subjectId") + "'");
+                        {
+                            while (rs3.next()) {
+                                Object[] row = {id, name, rs3.getString("grade")
+                                    + " - " + rs3.getString("subject"), date};
+                                model.addRow(row);
+                            }
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField20ActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox3.getSelectedIndex() != 0 && jComboBox3.getSelectedItem() != null) {
+            DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            model.setRowCount(0);
+            String[] parts = jComboBox3.getSelectedItem().toString().split(" - ");
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE grade='" + parts[0] + "' "
+                        + "AND subject='" + parts[1] + "'");
+                while (rs.next()) {
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM exams "
+                            + "WHERE subjectId='" + rs.getString("id") + "'");
+                    while (rs2.next()) {
+                        Object[] row = {rs2.getString("id"), rs2.getString("name"),
+                            jComboBox3.getSelectedItem().toString(), rs2.getString("date")};
+                        model.addRow(row);
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void examsReset() {
         cr2.setSelectedIndex(0);
@@ -4544,7 +4683,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cr2;
     private javax.swing.JComboBox<String> cr3;
     private javax.swing.JComboBox<String> cr4;
-    private javax.swing.JLabel examId;
+    public static javax.swing.JLabel examId;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;

@@ -4,6 +4,8 @@
  */
 package Administrator;
 
+import java.awt.Toolkit;
+
 /**
  *
  * @author Lycoris Cafe
@@ -15,6 +17,13 @@ public class ExamResults extends javax.swing.JFrame {
      */
     public ExamResults() {
         initComponents();
+        formDetails();
+    }
+    
+    private void formDetails() {
+        Helper.MainDetails details = new Helper.MainDetails();
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+        setExtendedState(this.MAXIMIZED_BOTH);
     }
 
     /**
@@ -33,11 +42,11 @@ public class ExamResults extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 768, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 545, Short.MAX_VALUE)
         );
 
         pack();
