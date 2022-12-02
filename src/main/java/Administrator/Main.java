@@ -2610,9 +2610,9 @@ public class Main extends javax.swing.JFrame {
                             .addComponent(jLabel43)
                             .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel30Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel44)
-                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jTextField26, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -3289,18 +3289,18 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "id";
             searchLike = jTextField10.getText();
             tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQuery();
+            searchQueryTeachers();
         }
     }//GEN-LAST:event_jTextField10ActionPerformed
 
-    private void searchQuery() {
+    private void searchQueryTeachers() {
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * "
                     + "FROM " + searchFrom + " "
                     + "WHERE " + searchWhere + " "
-                    + "LIKE '" + searchLike + "%'");
+                    + "LIKE '%" + searchLike + "%'");
             tableModel.setRowCount(0);
             while (rs.next()) {
                 Object[] row = {rs.getString("id"),
@@ -3320,7 +3320,7 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "name";
             searchLike = jTextField11.getText();
             tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQuery();
+            searchQueryTeachers();
         }
     }//GEN-LAST:event_jTextField11ActionPerformed
 
@@ -3331,7 +3331,7 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "nic";
             searchLike = jTextField12.getText();
             tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQuery();
+            searchQueryTeachers();
         }
     }//GEN-LAST:event_jTextField12ActionPerformed
 
@@ -3490,6 +3490,26 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
+    private void searchQueryStudents() {
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = (Statement) con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM " + searchFrom + " "
+                    + "WHERE " + searchWhere + " "
+                    + "LIKE '%" + searchLike + "%'");
+            tableModel.setRowCount(0);
+            while (rs.next()) {
+                Object[] row = {rs.getString("id"),
+                    rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
+                tableModel.addRow(row);
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // search for students by id
         if (!"".equals(jTextField9.getText())) {
@@ -3497,7 +3517,7 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "id";
             searchLike = jTextField9.getText();
             tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQuery();
+            searchQueryStudents();
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
 
@@ -3508,7 +3528,7 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "firstName";
             searchLike = jTextField13.getText();
             tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQuery();
+            searchQueryStudents();
         }
     }//GEN-LAST:event_jTextField13ActionPerformed
 
@@ -3519,7 +3539,7 @@ public class Main extends javax.swing.JFrame {
             searchWhere = "grade";
             searchLike = jComboBox4.getSelectedItem().toString();
             tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQuery();
+            searchQueryStudents();
         }
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
@@ -4376,7 +4396,7 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE type='" + jComboBox13.getSelectedItem() + "'");
                 while (rs.next()) {
                     Object[] row2 = {rs.getString("id"),
-                        rs.getString("type") + " " + rs.getString("user"),
+                        rs.getString("type") ,  rs.getString("user"),
                         rs.getString("lastLogin")};
                     model.addRow(row2);
                 }
@@ -4400,7 +4420,7 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE user='" + jTextField26.getText() + "'");
                 while (rs.next()) {
                     Object[] row2 = {rs.getString("id"),
-                        rs.getString("type") + " " + rs.getString("user"),
+                        rs.getString("type") ,  rs.getString("user"),
                         rs.getString("lastLogin")};
                     model.addRow(row2);
                 }
