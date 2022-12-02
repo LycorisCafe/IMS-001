@@ -311,6 +311,8 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void loadAccounts() {
+        jComboBox13.setSelectedIndex(0);
+        jTextField26.setText("");
         DefaultTableModel model2 = (DefaultTableModel) jTable7.getModel();
         model2.setRowCount(0);
         try {
@@ -327,6 +329,7 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e + "\nfrom std err");
         }
+        jLabel29.setText("");
         jRadioButton1.setSelected(false);
         jRadioButton2.setEnabled(false);
         jRadioButton3.setEnabled(false);
@@ -519,22 +522,22 @@ public class Main extends javax.swing.JFrame {
         jLabel46 = new javax.swing.JLabel();
         jLabel47 = new javax.swing.JLabel();
         jTextField28 = new javax.swing.JTextField();
-        jTextField29 = new javax.swing.JTextField();
         jButton30 = new javax.swing.JButton();
         jComboBox12 = new javax.swing.JComboBox<>();
+        jTextField29 = new javax.swing.JPasswordField();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jPanel33 = new javax.swing.JPanel();
         jLabel48 = new javax.swing.JLabel();
         jLabel49 = new javax.swing.JLabel();
-        jTextField30 = new javax.swing.JTextField();
-        jTextField31 = new javax.swing.JTextField();
         jButton31 = new javax.swing.JButton();
+        jTextField30 = new javax.swing.JPasswordField();
+        jTextField31 = new javax.swing.JPasswordField();
         jRadioButton3 = new javax.swing.JRadioButton();
         jPanel34 = new javax.swing.JPanel();
         jButton32 = new javax.swing.JButton();
-        jLabel50 = new javax.swing.JLabel();
-        jLabel51 = new javax.swing.JLabel();
+        jLabel28 = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
 
         telegramId.setText("jLabel53");
 
@@ -2109,6 +2112,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable7MouseClicked(evt);
+            }
+        });
         jScrollPane11.setViewportView(jTable7);
 
         jPanel30.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Search :"));
@@ -2117,11 +2125,25 @@ public class Main extends javax.swing.JFrame {
 
         jLabel44.setText("by Username :");
 
-        jTextField26.setText("---");
+        jTextField26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField26ActionPerformed(evt);
+            }
+        });
 
         jButton29.setText("Reset");
+        jButton29.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton29ActionPerformed(evt);
+            }
+        });
 
         jComboBox13.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Moderator", "Administrator" }));
+        jComboBox13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox13ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel30Layout = new javax.swing.GroupLayout(jPanel30);
         jPanel30.setLayout(jPanel30Layout);
@@ -2169,8 +2191,18 @@ public class Main extends javax.swing.JFrame {
         jLabel47.setText("Password :");
 
         jButton30.setText("Add");
+        jButton30.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton30ActionPerformed(evt);
+            }
+        });
 
         jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "Moderator", "Administrator" }));
+        jComboBox12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox12ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -2182,11 +2214,11 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel45, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox12, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jComboBox12, 0, 332, Short.MAX_VALUE))
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel47, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField29, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
+                        .addComponent(jTextField29))
                     .addGroup(jPanel32Layout.createSequentialGroup()
                         .addComponent(jLabel46, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2211,16 +2243,26 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel32Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel47)
                     .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jButton30, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Add New User");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("Reset Password");
+        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel33.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -2229,6 +2271,11 @@ public class Main extends javax.swing.JFrame {
         jLabel49.setText("Confirm Password :");
 
         jButton31.setText("Apply");
+        jButton31.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton31ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
         jPanel33.setLayout(jPanel33Layout);
@@ -2237,17 +2284,17 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel33Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel33Layout.createSequentialGroup()
-                        .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField30, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel33Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel33Layout.createSequentialGroup()
                         .addComponent(jLabel49, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField31))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel33Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton31, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel33Layout.createSequentialGroup()
+                        .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField30)))
                 .addContainerGap())
         );
         jPanel33Layout.setVerticalGroup(
@@ -2261,17 +2308,27 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel49)
                     .addComponent(jTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jButton31, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Delete User");
+        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton3ActionPerformed(evt);
+            }
+        });
 
         jPanel34.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton32.setText("Delete");
+        jButton32.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton32ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel34Layout = new javax.swing.GroupLayout(jPanel34);
         jPanel34.setLayout(jPanel34Layout);
@@ -2290,11 +2347,9 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jLabel50.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel50.setText("---");
+        jLabel28.setText("Account ID :");
 
-        jLabel51.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        jLabel51.setText("---");
+        jLabel29.setText("---");
 
         javax.swing.GroupLayout jPanel31Layout = new javax.swing.GroupLayout(jPanel31);
         jPanel31.setLayout(jPanel31Layout);
@@ -2308,13 +2363,14 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jPanel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel31Layout.createSequentialGroup()
-                        .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel50, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jRadioButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel31Layout.createSequentialGroup()
-                        .addComponent(jRadioButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel51, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel31Layout.setVerticalGroup(
@@ -2325,18 +2381,18 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jLabel50))
+                .addComponent(jRadioButton2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jLabel51))
+                .addComponent(jRadioButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel34, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel31Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel28)
+                    .addComponent(jLabel29))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel28Layout = new javax.swing.GroupLayout(jPanel28);
@@ -3640,6 +3696,202 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox10ActionPerformed
 
+    private void jTable7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable7MouseClicked
+        // TODO add your handling code here:
+        int r = jTable3.getSelectedRow();
+        jLabel29.setText(jTable3.getValueAt(r, 0).toString());
+        jRadioButton2.setEnabled(true);
+        jRadioButton3.setEnabled(true);
+    }//GEN-LAST:event_jTable7MouseClicked
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        // TODO add your handling code here:
+        if (jRadioButton1.isSelected()) {
+            accountsReset();
+            Component[] com1 = jPanel32.getComponents();
+            for (int a = 0; a < com1.length; a++) {
+                com1[a].setEnabled(true);
+            }
+            Component[] com2 = jPanel33.getComponents();
+            for (int a = 0; a < com2.length; a++) {
+                com2[a].setEnabled(false);
+            }
+            Component[] com3 = jPanel34.getComponents();
+            for (int a = 0; a < com3.length; a++) {
+                com3[a].setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
+
+    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
+        // TODO add your handling code here:
+        if (jRadioButton2.isSelected()) {
+            accountsReset();
+            Component[] com1 = jPanel32.getComponents();
+            for (int a = 0; a < com1.length; a++) {
+                com1[a].setEnabled(false);
+            }
+            Component[] com2 = jPanel33.getComponents();
+            for (int a = 0; a < com2.length; a++) {
+                com2[a].setEnabled(true);
+            }
+            Component[] com3 = jPanel34.getComponents();
+            for (int a = 0; a < com3.length; a++) {
+                com3[a].setEnabled(false);
+            }
+        }
+    }//GEN-LAST:event_jRadioButton2ActionPerformed
+
+    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+        // TODO add your handling code here:
+        if (jRadioButton3.isSelected()) {
+            accountsReset();
+            Component[] com1 = jPanel32.getComponents();
+            for (int a = 0; a < com1.length; a++) {
+                com1[a].setEnabled(false);
+            }
+            Component[] com2 = jPanel33.getComponents();
+            for (int a = 0; a < com2.length; a++) {
+                com2[a].setEnabled(false);
+            }
+            Component[] com3 = jPanel34.getComponents();
+            for (int a = 0; a < com3.length; a++) {
+                com3[a].setEnabled(true);
+            }
+        }
+    }//GEN-LAST:event_jRadioButton3ActionPerformed
+
+    private void jButton29ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton29ActionPerformed
+        // TODO add your handling code here:
+        loadAccounts();
+    }//GEN-LAST:event_jButton29ActionPerformed
+
+    private void jComboBox13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox13ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox13.getSelectedIndex() != 0 || jComboBox13.getSelectedItem() != null) {
+            DefaultTableModel model = (DefaultTableModel) jTable7.getModel();
+            model.setRowCount(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM login "
+                        + "WHERE type='" + jComboBox13.getSelectedItem() + "'");
+                while (rs.next()) {
+                    Object[] row2 = {rs.getString("id"),
+                        rs.getString("type") + " " + rs.getString("user"),
+                        rs.getString("lastLogin")};
+                    model.addRow(row2);
+                }
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jComboBox13ActionPerformed
+
+    private void jTextField26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField26ActionPerformed
+        // TODO add your handling code here:
+        if (!jTextField26.getText().equals("")) {
+            DefaultTableModel model = (DefaultTableModel) jTable7.getModel();
+            model.setRowCount(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = (Statement) con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM login "
+                        + "WHERE user='" + jTextField26.getText() + "'");
+                while (rs.next()) {
+                    Object[] row2 = {rs.getString("id"),
+                        rs.getString("type") + " " + rs.getString("user"),
+                        rs.getString("lastLogin")};
+                    model.addRow(row2);
+                }
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_jTextField26ActionPerformed
+
+    private void jComboBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox12ActionPerformed
+
+    private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
+        // TODO add your handling code here:
+        if (jComboBox12.getSelectedIndex() == 0
+                || jTextField28.getText().equals("") || jTextField29.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            String psw = String.valueOf(jTextField29.getPassword());
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO login "
+                        + "(user,pass,type,lastLogin) "
+                        + "VALUES "
+                        + "('" + jTextField28.getText() + "','" + psw + "',"
+                        + "'" + jComboBox12.getSelectedItem().toString() + "','0')");
+                JOptionPane.showMessageDialog(this, "Success!");
+            } catch (SQLException e) {
+            }
+            loadAccounts();
+        }
+    }//GEN-LAST:event_jButton30ActionPerformed
+
+    private void jButton31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton31ActionPerformed
+        // TODO add your handling code here:
+        if (jTextField30.getPassword().equals("") || jTextField31.getPassword().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            String psw1 = String.valueOf(jTextField30.getPassword());
+            String psw2 = String.valueOf(jTextField31.getPassword());
+            if (!psw1.equals(psw2)) {
+                JOptionPane.showMessageDialog(this, "Passwords not matched!");
+            } else {
+                int r = jTable7.getSelectedRow();
+                String id = jTable7.getValueAt(r, 0).toString();
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate("UPDATE login "
+                            + "pass='" + psw1 + "' "
+                            + "WHERE id='" + id + "'");
+                    JOptionPane.showMessageDialog(this, "Success!");
+                    loadAccounts();
+                } catch (HeadlessException | SQLException e) {
+                    System.out.println(e);
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton31ActionPerformed
+
+    private void jButton32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton32ActionPerformed
+        // TODO add your handling code here:
+        int r = jTable7.getSelectedRow();
+        String id = jTable7.getValueAt(r, 0).toString();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE "
+                    + "FROM login "
+                    + "WHERE id='" + id + "'");
+            JOptionPane.showMessageDialog(this, "Success!");
+            loadAccounts();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_jButton32ActionPerformed
+
+    private void accountsReset() {
+        jComboBox12.setSelectedIndex(0);
+        jTextField28.setText("");
+        jTextField29.setText("");
+        jTextField30.setText("");
+        jTextField31.setText("");
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -3739,6 +3991,8 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
@@ -3761,8 +4015,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
     private javax.swing.JLabel jLabel54;
@@ -3851,10 +4103,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField25;
     private javax.swing.JTextField jTextField26;
     private javax.swing.JTextField jTextField28;
-    private javax.swing.JTextField jTextField29;
+    private javax.swing.JPasswordField jTextField29;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField30;
-    private javax.swing.JTextField jTextField31;
+    private javax.swing.JPasswordField jTextField30;
+    private javax.swing.JPasswordField jTextField31;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
