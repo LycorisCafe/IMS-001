@@ -21,19 +21,15 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  *
  * @author Lycoris Cafe
  */
-public class TelegramBroadcast extends javax.swing.JFrame {
+public class TelegramReports extends javax.swing.JFrame {
 
     /**
      * Creates new form TelegramBroadcast
      */
-    public TelegramBroadcast() {
+    public TelegramReports() {
         initComponents();
         formDetails();
-        try {
-            broadcast();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
+        checkLinking();
     }
 
     private void formDetails() {
@@ -41,70 +37,15 @@ public class TelegramBroadcast extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
 
-    private void broadcast() throws IOException {
-        String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
-        Writer output = new BufferedWriter(
-                new FileWriter("C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log", true));
-
-        int waitingCount = 0;
-        int successCount = 0;
-        int unsuccessCount = 0;
-        String to = Main.jComboBox11.getSelectedItem().toString();
-        Helper.TelegramBot telegram = new Helper.TelegramBot();
-        SendMessage sm = new SendMessage();
-        String table = null;
-        switch (to) {
-            case "All Students":
-                table = "students";
-                break;
-            case "All Teachers":
-                table = "teachers";
-                break;
-            case "All Graoups":
-                table = "classes";
-                break;
+    private void checkLinking() {
+        if (Main.tReportLinking != null && Main.tReportLinking.getText().equals("1")) {
+            callPushBroadcast();
         }
-        output.append("\nStarting Broadcast...\n");
-        output.append(logTime + "\n");
-        jTextArea1.append("Starting Broadcast...\n");
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
-                    + "FROM " + table + "");
-            while (rs.next()) {
-                waitingCount = rs.getInt(1);
-                jLabel6.setText("" + waitingCount);
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
-                        + "FROM students");
-                while (rs2.next()) {
-                    String telegramId = rs2.getString("telegramId");
-                    sm.setText(Main.jTextArea4.getText());
-                    sm.setChatId(telegramId);
-                    try {
-                        telegram.execute(sm);
-                        jTextArea1.append("Message sent success to : " + telegramId + "\n");
-                        output.append("Message sent success to : " + telegramId + "\n");
-                        successCount = successCount + 1;
-                        jLabel3.setText("" + successCount);
-                    } catch (TelegramApiException e) {
-                        System.out.println(e);
-                        jTextArea1.append("Message sent unsuccess to : " + telegramId + "\n");
-                        output.append("Message sent unsuccess to : " + telegramId + "\n");
-                        unsuccessCount = unsuccessCount + 1;
-                        jLabel4.setText("" + unsuccessCount);
-                    }
-                }
+    }
 
-            }
-        } catch (SQLException e) {
-            System.out.println(e);
-        }
-        jTextArea1.append("Ending Broadcast...\n");
-        output.append("Ending Broadcast...\n\n");
-        output.close();
-        Main.jTextArea4.setText("");
-        output.close();
+    private void callPushBroadcast() {
+        Main main = new Main();
+        main.pushBroadcast();
     }
 
     /**
@@ -252,20 +193,21 @@ public class TelegramBroadcast extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelegramBroadcast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelegramReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelegramBroadcast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelegramReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelegramBroadcast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelegramReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelegramBroadcast.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TelegramReports.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new TelegramBroadcast().setVisible(true);
+                new TelegramReports().setVisible(true);
             }
         });
     }
@@ -273,13 +215,13 @@ public class TelegramBroadcast extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    public static javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    public static javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    public static javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

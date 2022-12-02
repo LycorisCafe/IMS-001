@@ -403,6 +403,7 @@ public class Main extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         telegramId = new javax.swing.JLabel();
         examId = new javax.swing.JLabel();
+        tReportLinking = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
@@ -622,6 +623,8 @@ public class Main extends javax.swing.JFrame {
         telegramId.setText("jLabel53");
 
         examId.setText("jLabel63");
+
+        tReportLinking.setText("jLabel63");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrator");
@@ -2871,16 +2874,89 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
-        jButton27.setText("Sending...");
         if (jTextArea4 == null) {
             JOptionPane.showMessageDialog(this, "Please enter message to broadcast!");
         } else {
-            TelegramBroadcast broadcast = new TelegramBroadcast();
+            jButton27.setText("Sending...");
+            tReportLinking.setText("1");
+            TelegramReports broadcast = new TelegramReports();
             broadcast.setVisible(true);
         }
-        jButton27.setText("Send");
     }//GEN-LAST:event_jButton27ActionPerformed
 
+    public void pushBroadcast() {
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+        try {
+            Writer output = new BufferedWriter(
+                    new FileWriter("C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log", true));
+            int waitingCount = 0;
+            int successCount = 0;
+            int unsuccessCount = 0;
+            String to = jComboBox11.getSelectedItem().toString();
+            Helper.TelegramBot telegram = new Helper.TelegramBot();
+            SendMessage sm = new SendMessage();
+            String table = null;
+            switch (to) {
+                case "All Students":
+                    table = "students";
+                    break;
+                case "All Teachers":
+                    table = "teachers";
+                    break;
+                case "All Graoups":
+                    table = "classes";
+                    break;
+            }
+            output.append("\nStarting Broadcast...\n");
+            output.append(time + "\n");
+            TelegramReports.jTextArea1.append("Starting Broadcast...\n");
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT COUNT(id) "
+                        + "FROM " + table + "");
+                while (rs.next()) {
+                    waitingCount = rs.getInt(1);
+                    TelegramReports.jLabel6.setText("" + waitingCount);
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM students");
+                    while (rs2.next()) {
+                        String telegramId = rs2.getString("telegramId");
+                        String sName = rs2.getString("id") + " - "
+                                + rs2.getString("firstName") + " "
+                                + rs2.getString("lastName");
+                        sm.setText(jTextArea4.getText());
+                        sm.setChatId(telegramId);
+                        try {
+                            telegram.execute(sm);
+                            TelegramReports.jTextArea1.append("Message sent success to : " + sName + "\n");
+                            output.append("Message sent success to : " + sName + "\n");
+                            successCount = successCount + 1;
+                            TelegramReports.jLabel3.setText("" + successCount);
+                        } catch (TelegramApiException e) {
+                            System.out.println(e);
+                            TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
+                            output.append("Message sent unsuccess to : " + sName + "\n");
+                            unsuccessCount = unsuccessCount + 1;
+                            TelegramReports.jLabel4.setText("" + unsuccessCount);
+                        }
+                    }
+
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            TelegramReports.jTextArea1.append("Ending Broadcast...\n");
+            output.append("Ending Broadcast...\n\n");
+            output.close();
+            jTextArea4.setText("");
+            output.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        tReportLinking.setText(null);
+        jButton27.setText("Send");
+    }
 
     private void jButton28ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton28ActionPerformed
         // to open the log file
@@ -4863,7 +4939,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    public static javax.swing.JTextArea jTextArea4;
+    private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
@@ -4895,6 +4971,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    public static javax.swing.JLabel tReportLinking;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }

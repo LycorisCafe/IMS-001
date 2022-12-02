@@ -5,6 +5,12 @@
 package Administrator;
 
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,12 +24,58 @@ public class ExamResults extends javax.swing.JFrame {
     public ExamResults() {
         initComponents();
         formDetails();
+        loadResults();
     }
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
+    }
+
+    private void loadResults() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        String examId = Main.examId.getText();
+        String rank = null;
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM results "
+                    + "WHERE examId='" + examId + "'");
+            while (rs.next()) {
+                String resultId = rs.getString("id");
+                String marks = rs.getString("marks");
+                String studentId = rs.getString("studentId");
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM students "
+                        + "WHERE id='" + studentId + "'");
+                while (rs2.next()) {
+                    if (marks.equals("N/A")) {
+                        rank = marks;
+                    } else {
+                        int marksx = Integer.parseInt(marks);
+                        if (marksx >= 75) {
+                            rank = "A";
+                        } else if (marksx >= 65) {
+                            rank = "B";
+                        } else if (marksx >= 55) {
+                            rank = "C";
+                        } else if (marksx >= 35) {
+                            rank = "S";
+                        } else {
+                            rank = "W";
+                        }
+                    }
+                    Object[] row = {resultId, studentId, rs2.getString("firstNmae")
+                        + " " + rs2.getString("lastName"), marks, rank};
+                    model.addRow(row);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -35,23 +87,211 @@ public class ExamResults extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tReportLinking = new javax.swing.JLabel();
+        marks = new javax.swing.JLabel();
+        rank = new javax.swing.JLabel();
+        studentName = new javax.swing.JLabel();
+        telegramId = new javax.swing.JLabel();
+        examName = new javax.swing.JLabel();
+        examDate = new javax.swing.JLabel();
+        teacherName = new javax.swing.JLabel();
+        className = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
+        tReportLinking.setText("jLabel2");
+
+        marks.setText("jLabel2");
+
+        rank.setText("jLabel3");
+
+        studentName.setText("jLabel4");
+
+        telegramId.setText("jLabel5");
+
+        examName.setText("jLabel6");
+
+        examDate.setText("jLabel7");
+
+        teacherName.setText("jLabel8");
+
+        className.setText("jLabel2");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exam Results");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Result Id", "Student Id", "Student Name", "Marks", "Rank"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setText("Update");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Push");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jLabel1.setText("[ Exam results will send via Telegram Bot ]");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 768, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 545, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int y = 0;
+        int count = jTable1.getRowCount();
+        for (int x = 0; x > count; x++) {
+            String resultId = jTable1.getValueAt(y, 0).toString();
+            String marks = jTable1.getValueAt(y, 3).toString();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("UPDATE INTO results "
+                        + "marks='" + marks + "'"
+                        + "WHERE id='" + resultId + "'");
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
+            y = y + 1;
+        }
+        JOptionPane.showMessageDialog(this, "Success!");
+        loadResults();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        int pushConfirm = JOptionPane.showConfirmDialog(null,
+                "Confirm that the all results added successfully.\n"
+                + "Cuz, message can't be delete after sent!\nDo you want to continue?",
+                "Warning", JOptionPane.YES_NO_OPTION);
+        if (pushConfirm == JOptionPane.YES_OPTION) {
+            tReportLinking.setText("1");
+            TelegramReports.jTextArea1.setText("Startting results release...\n");
+            Helper.AutomatedMessages pushMessage = new Helper.AutomatedMessages();
+            TelegramReports reports = new TelegramReports();
+            reports.setVisible(true);
+            int y = 0;
+            int count = jTable1.getRowCount();
+            TelegramReports.jLabel6.setText("" + count);
+            for (int x = 0; x > count; x++) {
+                String resultId = jTable1.getValueAt(y, 0).toString();
+                String studentId = jTable1.getValueAt(y, 1).toString();
+                String marksx = jTable1.getValueAt(y, 3).toString();
+                String rankx = jTable1.getValueAt(y, 4).toString();
+                marks.setText(marksx);
+                rank.setText(rankx);
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * "
+                            + "FROM students "
+                            + "WHERE id='" + studentId + "'");
+                    while (rs.next()) {
+                        String studentNamex = rs.getString("firstName") + " " + rs.getString("lastName");
+                        String telegramIdx = rs.getString("telegramId");
+                        studentName.setText(studentNamex);
+                        telegramId.setText(telegramIdx);
+                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                                + "FROM results "
+                                + "WHERE id='" + resultId + "'");
+                        while (rs2.next()) {
+                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                    + "FROM exams "
+                                    + "WHERE id='" + rs2.getString("examId") + "'");
+                            while (rs3.next()) {
+                                String examNamex = rs3.getString("name");
+                                String examDatex = rs3.getString("date");
+                                examName.setText(examNamex);
+                                examDate.setText(examDatex);
+                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                        + "FROM classes "
+                                        + "WHERE id='" + rs3.getString("classId") + "'");
+                                while (rs4.next()) {
+                                    String teacherId = rs4.getString("teacherId");
+                                    String subjectId = rs4.getString("subjectId");
+                                    ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                            + "FROM teachers "
+                                            + "WHERE id='" + teacherId + "'");
+                                    while (rs5.next()) {
+                                        String teacherNamex = rs5.getString("name");
+                                        teacherName.setText(teacherNamex);
+                                        ResultSet rs6 = stmt.executeQuery("SELECT * "
+                                                + "FROM subjects "
+                                                + "WHERE id='" + subjectId + "'");
+                                        while (rs6.next()) {
+                                            String classNamex = rs6.getString("grade")
+                                                    + " - " + rs6.getString("subject");
+                                            className.setText(classNamex);
+                                            TelegramReports.jTextArea1.setText("Sending to " + studentNamex + " : ");
+                                            pushMessage.pushExamResults();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
+                y = y + 1;
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -89,5 +329,19 @@ public class ExamResults extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JLabel className;
+    public static javax.swing.JLabel examDate;
+    public static javax.swing.JLabel examName;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    public static javax.swing.JLabel marks;
+    public static javax.swing.JLabel rank;
+    public static javax.swing.JLabel studentName;
+    public static javax.swing.JLabel tReportLinking;
+    public static javax.swing.JLabel teacherName;
+    public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }
