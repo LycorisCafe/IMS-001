@@ -102,6 +102,7 @@ public class TelegramBroadcast extends javax.swing.JFrame {
         }
         jTextArea1.append("Ending Broadcast...\n");
         output.append("Ending Broadcast...\n\n");
+        output.close();
         Main.jTextArea4.setText("");
         output.close();
     }

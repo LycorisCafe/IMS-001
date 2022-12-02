@@ -599,7 +599,7 @@ public class Main extends javax.swing.JFrame {
 
         jTextField3.setEditable(false);
 
-        jLabel4.setText("Income for this month :");
+        jLabel4.setText("Target Income :");
 
         jTextField4.setEditable(false);
 
@@ -678,21 +678,19 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField2)
-                            .addComponent(jTextField3))))
+                            .addComponent(jTextField3)
+                            .addComponent(jTextField4))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -2707,7 +2705,6 @@ public class Main extends javax.swing.JFrame {
                         String teacherId = rs.getString("id");
                         String Teleid = rs.getString("telegramId");
                         name2 = rs.getString("name");
-                        System.out.println(Teleid);
                         sm.setText(jTextArea2.getText());
                         sm.setChatId(Teleid);
                         try {
@@ -2723,6 +2720,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
+                output.close();
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -2793,7 +2791,7 @@ public class Main extends javax.swing.JFrame {
         try {
             ProcessBuilder processBuilder
                     = new ProcessBuilder("cmd.exe", "/c",
-                            logPath + "teachersMessage.log");
+                            "C:/ProgramData/LycorisCafe/IMS/Logs/teachersMessage.log");
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
@@ -2909,6 +2907,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
+                output.close();
             } catch (IOException ex) {
                 System.out.println(ex);
             }
@@ -3010,6 +3009,7 @@ public class Main extends javax.swing.JFrame {
                 } catch (SQLException e) {
                     System.out.println(e);
                 }
+                output.close();
             } catch (IOException ex) {
                 System.out.println(ex);
             }
