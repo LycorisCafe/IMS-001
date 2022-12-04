@@ -2871,10 +2871,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
-        if (broadcastMessage == null) {
+        if (broadcastMessage.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter message to broadcast!");
         } else {
-            jButton27.setText("Sending...");
             TelegramReports reports = new TelegramReports();
             reports.setVisible(true);
             String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
@@ -2895,7 +2894,7 @@ public class Main extends javax.swing.JFrame {
                     case "All Teachers":
                         table = "teachers";
                         break;
-                    case "All Graoups":
+                    case "All Groups":
                         table = "classes";
                         break;
                 }
@@ -2938,12 +2937,8 @@ public class Main extends javax.swing.JFrame {
                                 TelegramReports.jLabel3.setText("" + successCount);
                             } catch (TelegramApiException e) {
                                 System.out.println(e);
-                                String error = "" + e;
-                                String[] parts = error.split(":");
                                 TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
-                                TelegramReports.jTextArea1.append("->" + parts[2] + "\n");
                                 output.append("Message sent unsuccess to : " + sName + "\n");
-                                output.append("->" + parts[2] + "\n");
                                 unsuccessCount = unsuccessCount + 1;
                                 TelegramReports.jLabel4.setText("" + unsuccessCount);
                             }
@@ -2960,7 +2955,6 @@ public class Main extends javax.swing.JFrame {
             } catch (IOException e) {
                 System.out.println(e);
             }
-            jButton27.setText("Send");
         }
     }//GEN-LAST:event_jButton27ActionPerformed
 
