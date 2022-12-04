@@ -4,6 +4,8 @@
  */
 package Moderator;
 
+import static Moderator.NewStudent.tSendStudentId;
+import static Moderator.NewStudent.tSendStudentName;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -749,6 +751,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         } catch (SQLException e) {
             System.out.println(e);
         }
+
+       
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed

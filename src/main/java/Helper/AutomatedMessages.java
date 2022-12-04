@@ -39,23 +39,31 @@ public class AutomatedMessages {
         sendPhoto();
         //institute + "-" + "STUDENT" + "-" + 
     }
-    
-    public void studentRegistrationClasses(){
+
+    public void studentRegistrationClasses() {
         // @ Moderator.NewStudent jButton8 ActionPerformed
         // Send registed classes
         String chatId = Moderator.NewStudent.telegramId.getText();
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
-            String grade =(String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
-            String subject =(String)Moderator.NewStudent.jTable1.getValueAt(y, 2);
-            String teacher =(String)Moderator.NewStudent.jTable1.getValueAt(y, 3);
-            String day =(String)Moderator.NewStudent.jTable1.getValueAt(y, 4);
-            String payment =(String)Moderator.NewStudent.jTable1.getValueAt(y, 5);
-            
+            String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
+            String subject = (String) Moderator.NewStudent.jTable1.getValueAt(y, 2);
+            String teacher = (String) Moderator.NewStudent.jTable1.getValueAt(y, 3);
+            String day = (String) Moderator.NewStudent.jTable1.getValueAt(y, 4);
+            String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
+            String studentName = Moderator.NewStudent.tSendStudentName.getText();
+
             // message body==>>
-            
-            
-            
+            message.setChatId(chatId);
+            message.setText("Hello " + studentName + "\n"
+                    + "Welcome to " + instituteName + " Institute \n"
+                    + "You have  successfully enrolled " + subject + " Class  "  + "\n"
+                    + "Teacher " + ": " + teacher + "\n"
+                    + "Grade" + ": " + grade + "\n"
+                    + "Class scheduled day " + ": " + day + "\n"
+//                    + "Payment " + ":" + payment
+            );
+
             sendMessage();
         }
     }
