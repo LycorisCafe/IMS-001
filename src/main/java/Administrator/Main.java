@@ -4591,8 +4591,8 @@ public class Main extends javax.swing.JFrame {
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
-        int r = jTable7.getSelectedRow();
-        String id = jTable7.getValueAt(r, 0).toString();
+        int r = jTable8.getSelectedRow();
+        String id = jTable8.getValueAt(r, 0).toString();
         examId.setText(id);
     }//GEN-LAST:event_jTable8MouseClicked
 

@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -68,7 +72,7 @@ public class ExamResults extends javax.swing.JFrame {
                             rank = "W";
                         }
                     }
-                    Object[] row = {resultId, studentId, rs2.getString("firstNmae")
+                    Object[] row = {resultId, studentId, rs2.getString("firstName")
                         + " " + rs2.getString("lastName"), marks, rank};
                     model.addRow(row);
                 }
@@ -88,14 +92,6 @@ public class ExamResults extends javax.swing.JFrame {
     private void initComponents() {
 
         tReportLinking = new javax.swing.JLabel();
-        marks = new javax.swing.JLabel();
-        rank = new javax.swing.JLabel();
-        studentName = new javax.swing.JLabel();
-        telegramId = new javax.swing.JLabel();
-        examName = new javax.swing.JLabel();
-        examDate = new javax.swing.JLabel();
-        teacherName = new javax.swing.JLabel();
-        className = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -103,22 +99,6 @@ public class ExamResults extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         tReportLinking.setText("jLabel2");
-
-        marks.setText("jLabel2");
-
-        rank.setText("jLabel3");
-
-        studentName.setText("jLabel4");
-
-        telegramId.setText("jLabel5");
-
-        examName.setText("jLabel6");
-
-        examDate.setText("jLabel7");
-
-        teacherName.setText("jLabel8");
-
-        className.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exam Results");
@@ -195,14 +175,14 @@ public class ExamResults extends javax.swing.JFrame {
         // TODO add your handling code here:
         int y = 0;
         int count = jTable1.getRowCount();
-        for (int x = 0; x > count; x++) {
+        for (int x = 0; x < count; x++) {
             String resultId = jTable1.getValueAt(y, 0).toString();
             String marks = jTable1.getValueAt(y, 3).toString();
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
-                stmt.executeUpdate("UPDATE INTO results "
-                        + "marks='" + marks + "'"
+                stmt.executeUpdate("UPDATE results SET "
+                        + "marks='" + marks + "' "
                         + "WHERE id='" + resultId + "'");
             } catch (SQLException e) {
                 System.out.println(e);
@@ -220,21 +200,17 @@ public class ExamResults extends javax.swing.JFrame {
                 + "Cuz, message can't be delete after sent!\nDo you want to continue?",
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (pushConfirm == JOptionPane.YES_OPTION) {
-            tReportLinking.setText("1");
-            Helper.AutomatedMessages pushMessage = new Helper.AutomatedMessages();
-            TelegramReports reports = new TelegramReports();
-            reports.setVisible(true);
+            loadResults();
+            
+            Helper.TelegramBot bot = new Helper.TelegramBot();
+            SendPhoto message = new SendPhoto();
             int y = 0;
             int count = jTable1.getRowCount();
-            TelegramReports.jTextArea1.setText("Startting results release...\n");
-            TelegramReports.jLabel6.setText("" + count);
-            for (int x = 0; x > count; x++) {
+            for (int x = 0; x < count; x++) {
                 String resultId = jTable1.getValueAt(y, 0).toString();
                 String studentId = jTable1.getValueAt(y, 1).toString();
                 String marksx = jTable1.getValueAt(y, 3).toString();
                 String rankx = jTable1.getValueAt(y, 4).toString();
-                marks.setText(marksx);
-                rank.setText(rankx);
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
@@ -244,8 +220,6 @@ public class ExamResults extends javax.swing.JFrame {
                     while (rs.next()) {
                         String studentNamex = rs.getString("firstName") + " " + rs.getString("lastName");
                         String telegramIdx = rs.getString("telegramId");
-                        studentName.setText(studentNamex);
-                        telegramId.setText(telegramIdx);
                         ResultSet rs2 = stmt.executeQuery("SELECT * "
                                 + "FROM results "
                                 + "WHERE id='" + resultId + "'");
@@ -256,8 +230,6 @@ public class ExamResults extends javax.swing.JFrame {
                             while (rs3.next()) {
                                 String examNamex = rs3.getString("name");
                                 String examDatex = rs3.getString("date");
-                                examName.setText(examNamex);
-                                examDate.setText(examDatex);
                                 ResultSet rs4 = stmt.executeQuery("SELECT * "
                                         + "FROM classes "
                                         + "WHERE id='" + rs3.getString("classId") + "'");
@@ -269,16 +241,29 @@ public class ExamResults extends javax.swing.JFrame {
                                             + "WHERE id='" + teacherId + "'");
                                     while (rs5.next()) {
                                         String teacherNamex = rs5.getString("name");
-                                        teacherName.setText(teacherNamex);
                                         ResultSet rs6 = stmt.executeQuery("SELECT * "
                                                 + "FROM subjects "
                                                 + "WHERE id='" + subjectId + "'");
                                         while (rs6.next()) {
                                             String classNamex = rs6.getString("grade")
                                                     + " - " + rs6.getString("subject");
-                                            className.setText(classNamex);
-                                            TelegramReports.jTextArea1.setText("Sending to " + studentNamex + " : ");
-                                            pushMessage.pushExamResults();
+                                            message.setChatId(telegramIdx);
+                                            message.setPhoto(
+                                                    new InputFile("https://drive.google.com/uc?id=1uSdNx09HJQP_JcOpAlIkl8CnLXdgUEgz"));
+                                            message.setCaption("Exam Results Released!\n\n"
+                                                    + "Student Name : " + studentNamex + "\n"
+                                                    + "Class : " + classNamex + "\n"
+                                                    + "Teacher : " + teacherNamex + "\n\n"
+                                                    + "Exam Name : " + examNamex + "\n"
+                                                    + "Exam Date : " + examDatex + "\n\n"
+                                                    + "Marks : " + marksx + "\n"
+                                                    + "Rank : " + rankx);
+                                            message.setProtectContent(true);
+                                            try {
+                                                bot.execute(message);
+                                            } catch (TelegramApiException e) {
+                                                System.out.println(e);
+                                            }
                                         }
                                     }
                                 }
@@ -329,19 +314,11 @@ public class ExamResults extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel className;
-    public static javax.swing.JLabel examDate;
-    public static javax.swing.JLabel examName;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    public static javax.swing.JLabel marks;
-    public static javax.swing.JLabel rank;
-    public static javax.swing.JLabel studentName;
     public static javax.swing.JLabel tReportLinking;
-    public static javax.swing.JLabel teacherName;
-    public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }

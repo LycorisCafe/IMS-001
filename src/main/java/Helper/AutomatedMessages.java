@@ -26,6 +26,7 @@ public class AutomatedMessages {
     // message designs ===============>>>>>>>>>>
     public void studentRegistrationSuccess() {
         // @ Moderator.NewStudent jButton8 ActionPerformed
+        // Send welcome message to each reggistered student
         String chatId = Moderator.NewStudent.telegramId.getText();
         String studentId = Moderator.NewStudent.tSendStudentId.getText();
         String studentName = Moderator.NewStudent.tSendStudentName.getText();
@@ -33,17 +34,10 @@ public class AutomatedMessages {
         photo.setChatId(chatId);
         photo.setPhoto(new InputFile(logo));
         photo.setCaption("Student Registration Success!\n\n"
-                + "Student ID : " + instituteName + "-" + "STUDENT" + studentId + "\n"
+                + "Student ID : " + instituteName + "-STUDENT-" + studentId + "\n"
                 + "Student Name : " + studentName);
         photo.setProtectContent(true);
         sendPhoto();
-        //institute + "-" + "STUDENT" + "-" + 
-    }
-    
-    public void studentRegistrationClasses(){
-        // @ Moderator.NewStudent jButton8 ActionPerformed
-        // Send registed classes
-        String chatId = Moderator.NewStudent.telegramId.getText();
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade =(String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -60,72 +54,20 @@ public class AutomatedMessages {
         }
     }
 
-    public void pushExamResults() {
-        // @ Administartor.ExamResults jButton2 ActionPerformed
-        String studentName = Administrator.ExamResults.studentName.getText();
-        String telegramId = Administrator.ExamResults.telegramId.getText();
-        String teacherName = Administrator.ExamResults.teacherName.getText();
-        String className = Administrator.ExamResults.className.getText();
-        String examName = Administrator.ExamResults.examName.getText();
-        String examDate = Administrator.ExamResults.examDate.getText();
-        String marks = Administrator.ExamResults.marks.getText();
-        String rank = Administrator.ExamResults.rank.getText();
-        String image = "https://drive.google.com/uc?id=1uSdNx09HJQP_JcOpAlIkl8CnLXdgUEgz";
-        String caption
-                = "Exam Results Released!\n\n"
-                + "Student Name : " + studentName + "\n"
-                + "Class : " + className + "\n"
-                + "Teacher : " + teacherName + "\n\n"
-                + "Exam Name : " + examName + "\n"
-                + "Exam Date : " + examDate + "\n\n"
-                + "Marks : " + marks + "\n"
-                + "Rank : " + rank;
-
-        photo.setChatId(telegramId);
-        photo.setPhoto(new InputFile(image));
-        photo.setCaption(caption);
-        photo.setProtectContent(true);
-        sendPhoto();
-    }
-
     // sending operations =========>>>>>>>>>>>
     private void sendMessage() {
         try {
             bot.execute(message);
-            if (Administrator.TelegramReports.jTextArea1 != null) {
-                Administrator.TelegramReports.jTextArea1.setText("Success!\n");
-                int successCount = Integer.parseInt(Administrator.TelegramReports.jLabel3.getText());
-                successCount = successCount + 1;
-                Administrator.TelegramReports.jLabel3.setText("" + successCount);
-            }
         } catch (TelegramApiException ex) {
             System.out.println(ex);
-            if (Administrator.TelegramReports.jTextArea1 != null) {
-                Administrator.TelegramReports.jTextArea1.setText("Unuccess!\n");
-                int unsuccessCount = Integer.parseInt(Administrator.TelegramReports.jLabel4.getText());
-                unsuccessCount = unsuccessCount + 1;
-                Administrator.TelegramReports.jLabel4.setText("" + unsuccessCount);
-            }
         }
     }
 
     private void sendPhoto() {
         try {
             bot.execute(photo);
-            if (Administrator.TelegramReports.jTextArea1 != null) {
-                Administrator.TelegramReports.jTextArea1.setText("Success!\n");
-                int successCount = Integer.parseInt(Administrator.TelegramReports.jLabel3.getText());
-                successCount = successCount + 1;
-                Administrator.TelegramReports.jLabel3.setText("" + successCount);
-            }
         } catch (TelegramApiException ex) {
             System.out.println(ex);
-            if (Administrator.TelegramReports.jTextArea1 != null) {
-                Administrator.TelegramReports.jTextArea1.setText("Unuccess!\n");
-                int unsuccessCount = Integer.parseInt(Administrator.TelegramReports.jLabel4.getText());
-                unsuccessCount = unsuccessCount + 1;
-                Administrator.TelegramReports.jLabel4.setText("" + unsuccessCount);
-            }
         }
     }
 }
