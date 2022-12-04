@@ -29,23 +29,11 @@ public class TelegramReports extends javax.swing.JFrame {
     public TelegramReports() {
         initComponents();
         formDetails();
-        checkLinking();
     }
 
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
-    }
-
-    private void checkLinking() {
-        if (Main.tReportLinking != null && Main.tReportLinking.getText().equals("1")) {
-            callPushBroadcast();
-        }
-    }
-
-    private void callPushBroadcast() {
-        Main main = new Main();
-        main.pushBroadcast();
     }
 
     /**
