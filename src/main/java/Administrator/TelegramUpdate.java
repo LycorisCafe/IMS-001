@@ -43,6 +43,7 @@ public class TelegramUpdate extends javax.swing.JFrame {
 
         type = new javax.swing.JLabel();
         telegramId = new javax.swing.JLabel();
+        returnMethod = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
@@ -52,6 +53,8 @@ public class TelegramUpdate extends javax.swing.JFrame {
         type.setText("jLabel3");
 
         telegramId.setText("jLabel3");
+
+        returnMethod.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Waiting for Authontication...");
@@ -161,6 +164,7 @@ public class TelegramUpdate extends javax.swing.JFrame {
     public static javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel9;
     public static javax.swing.JTextField jTextField10;
+    public static javax.swing.JLabel returnMethod;
     public static javax.swing.JLabel telegramId;
     public static javax.swing.JLabel type;
     // End of variables declaration//GEN-END:variables

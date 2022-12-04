@@ -852,7 +852,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             System.out.println(ex);
         }
 
-        int width = 150;  // width of the QR code
+        int width = 150;
         int height = 150;
         String newStudentId = newStudent + "";
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp";
@@ -1073,7 +1073,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         tSendStudentName.setText(fName.getText() + " " + lName.getText());
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
-        sendMessage.studentRegistrationClasses();
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {
