@@ -221,12 +221,12 @@ public class ExamResults extends javax.swing.JFrame {
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (pushConfirm == JOptionPane.YES_OPTION) {
             tReportLinking.setText("1");
-            TelegramReports.jTextArea1.setText("Startting results release...\n");
             Helper.AutomatedMessages pushMessage = new Helper.AutomatedMessages();
             TelegramReports reports = new TelegramReports();
             reports.setVisible(true);
             int y = 0;
             int count = jTable1.getRowCount();
+            TelegramReports.jTextArea1.setText("Startting results release...\n");
             TelegramReports.jLabel6.setText("" + count);
             for (int x = 0; x > count; x++) {
                 String resultId = jTable1.getValueAt(y, 0).toString();

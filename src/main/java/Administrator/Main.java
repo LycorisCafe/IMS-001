@@ -421,7 +421,7 @@ public class Main extends javax.swing.JFrame {
         jLabel41 = new javax.swing.JLabel();
         jComboBox11 = new javax.swing.JComboBox<>();
         jScrollPane10 = new javax.swing.JScrollPane();
-        jTextArea4 = new javax.swing.JTextArea();
+        broadcastMessage = new javax.swing.JTextArea();
         jButton27 = new javax.swing.JButton();
         jLabel42 = new javax.swing.JLabel();
         jButton28 = new javax.swing.JButton();
@@ -694,9 +694,9 @@ public class Main extends javax.swing.JFrame {
 
         jComboBox11.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All Students", "All Teachers", "All Groups" }));
 
-        jTextArea4.setColumns(20);
-        jTextArea4.setRows(5);
-        jScrollPane10.setViewportView(jTextArea4);
+        broadcastMessage.setColumns(20);
+        broadcastMessage.setRows(5);
+        jScrollPane10.setViewportView(broadcastMessage);
 
         jButton27.setText("Send");
         jButton27.addActionListener(new java.awt.event.ActionListener() {
@@ -2874,7 +2874,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
-        if (jTextArea4 == null) {
+        if (broadcastMessage == null) {
             JOptionPane.showMessageDialog(this, "Please enter message to broadcast!");
         } else {
             jButton27.setText("Sending...");
@@ -2886,6 +2886,8 @@ public class Main extends javax.swing.JFrame {
 
     public void pushBroadcast() {
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+        String message = broadcastMessage.getText();
+        System.out.println(message);
         try {
             Writer output = new BufferedWriter(
                     new FileWriter("C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log", true));
@@ -2894,7 +2896,6 @@ public class Main extends javax.swing.JFrame {
             int unsuccessCount = 0;
             String to = jComboBox11.getSelectedItem().toString();
             Helper.TelegramBot telegram = new Helper.TelegramBot();
-            SendMessage sm = new SendMessage();
             String table = null;
             switch (to) {
                 case "All Students":
@@ -2925,7 +2926,9 @@ public class Main extends javax.swing.JFrame {
                         String sName = rs2.getString("id") + " - "
                                 + rs2.getString("firstName") + " "
                                 + rs2.getString("lastName");
-                        sm.setText(jTextArea4.getText());
+                        System.out.println(message);
+                        SendMessage sm = new SendMessage();
+                        sm.setText(message);
                         sm.setChatId(telegramId);
                         try {
                             telegram.execute(sm);
@@ -2948,8 +2951,7 @@ public class Main extends javax.swing.JFrame {
             }
             TelegramReports.jTextArea1.append("Ending Broadcast...\n");
             output.append("Ending Broadcast...\n\n");
-            output.close();
-            jTextArea4.setText("");
+            broadcastMessage.setText("");
             output.close();
         } catch (IOException e) {
             System.out.println(e);
@@ -4754,6 +4756,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea broadcastMessage;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cr1;
     private javax.swing.JComboBox<String> cr2;
@@ -4939,7 +4942,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;

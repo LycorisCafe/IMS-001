@@ -1069,10 +1069,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } else {
             tempImage.renameTo(imgPathSave);
         }
-        tSendStudentId.setText(institute + "-" + "STUDENT" + "-" + newStudent);
+        tSendStudentId.setText("" + newStudent);
         tSendStudentName.setText(fName.getText() + " " + lName.getText());
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
+        sendMessage.studentRegistrationClasses();
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -1180,7 +1181,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField lName;
     public static javax.swing.JLabel tSendStudentId;

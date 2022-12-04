@@ -15,6 +15,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  */
 public class AutomatedMessages {
 
+    // Global Variables ========>>>>>>>>
+    String instituteName = Helper.MainDetails.instituteName();
+
     // method calling ===============>>>>>>>>>>>
     TelegramBot bot = new TelegramBot();
     SendMessage message = new SendMessage();
@@ -30,10 +33,31 @@ public class AutomatedMessages {
         photo.setChatId(chatId);
         photo.setPhoto(new InputFile(logo));
         photo.setCaption("Student Registration Success!\n\n"
-                + "Student ID : " + studentId + "\n"
+                + "Student ID : " + instituteName + "-" + "STUDENT" + studentId + "\n"
                 + "Student Name : " + studentName);
         photo.setProtectContent(true);
         sendPhoto();
+        //institute + "-" + "STUDENT" + "-" + 
+    }
+    
+    public void studentRegistrationClasses(){
+        // @ Moderator.NewStudent jButton8 ActionPerformed
+        // Send registed classes
+        String chatId = Moderator.NewStudent.telegramId.getText();
+        int rowcount = Moderator.NewStudent.jTable1.getRowCount();
+        for (int y = 0; y < rowcount; y++) {
+            String grade =(String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
+            String subject =(String)Moderator.NewStudent.jTable1.getValueAt(y, 2);
+            String teacher =(String)Moderator.NewStudent.jTable1.getValueAt(y, 3);
+            String day =(String)Moderator.NewStudent.jTable1.getValueAt(y, 4);
+            String payment =(String)Moderator.NewStudent.jTable1.getValueAt(y, 5);
+            
+            // message body==>>
+            
+            
+            
+            sendMessage();
+        }
     }
 
     public void pushExamResults() {
