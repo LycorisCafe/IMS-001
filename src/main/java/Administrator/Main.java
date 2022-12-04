@@ -20,10 +20,11 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
@@ -42,6 +43,7 @@ public class Main extends javax.swing.JFrame {
         grabData();
     }
 
+    String adminTelegramId;
     String logPath = "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\";
     String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String year = new SimpleDateFormat("yyyy").format(new Date());
@@ -56,6 +58,7 @@ public class Main extends javax.swing.JFrame {
     int dayCho;
     DefaultTableModel tableModel;
     TelegramUpdate telegramUpdate = new TelegramUpdate();
+    Helper.AutomatedMessages tAutomated = new Helper.AutomatedMessages();
 
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
@@ -64,6 +67,11 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void grabData() {
+        try ( Stream<String> lines = Files.lines(Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
+            adminTelegramId = lines.skip(2).findFirst().get();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         // grabing data from students table
         try {
             Connection con = Helper.DB.connect();
@@ -406,6 +414,7 @@ public class Main extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         telegramId = new javax.swing.JLabel();
         examId = new javax.swing.JLabel();
+        tGroupId = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
@@ -627,6 +636,8 @@ public class Main extends javax.swing.JFrame {
         telegramId.setText("jLabel53");
 
         examId.setText("jLabel63");
+
+        tGroupId.setText("jLabel64");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrator");
@@ -4419,6 +4430,7 @@ public class Main extends javax.swing.JFrame {
                         + "VALUES "
                         + "('" + jTextField28.getText() + "','" + psw + "',"
                         + "'" + jComboBox12.getSelectedItem().toString() + "','0')");
+
                 JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException e) {
             }
@@ -4652,7 +4664,7 @@ public class Main extends javax.swing.JFrame {
         if (jTextField22.getText().equals("") || jTextField27.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
-
+            String classId;
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
@@ -4662,15 +4674,30 @@ public class Main extends javax.swing.JFrame {
                         + "AND teacherId='" + teacherId + "'"
                         + "AND day='" + dayCho + "'");
                 while (rs.next()) {
+                    classId = rs.getString("id");
                     stmt.executeUpdate("INSERT INTO exams "
                             + "(name,classId,date) "
                             + "VALUES "
                             + "('" + jTextField22.getText() + "',"
-                            + "'" + rs.getString("id") + "',"
+                            + "'" + classId + "',"
                             + "'" + jTextField27.getText() + "')");
-                    JOptionPane.showMessageDialog(this, "Success!");
-                    loadExams();
+                    tGroupId.setText(rs.getString("telegramId"));
+                    tAutomated.newExamAddedGroup();
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + classId + "'");
+                    while (rs2.next()) {
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs2.getString("studentId") + "'");
+                        while (rs3.next()) {
+                            telegramId.setText(rs3.getString("telegramId"));
+                            tAutomated.newExamAddedStudent();
+                        }
+                    }
                 }
+                JOptionPane.showMessageDialog(this, "Success!");
+                loadExams();
             } catch (SQLException e) {
                 System.out.println(e);
             }
@@ -5054,12 +5081,12 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField20;
     private javax.swing.JTextField jTextField21;
-    private javax.swing.JTextField jTextField22;
+    public static javax.swing.JTextField jTextField22;
     private javax.swing.JTextField jTextField23;
     private javax.swing.JTextField jTextField24;
     private javax.swing.JTextField jTextField25;
     private javax.swing.JTextField jTextField26;
-    private javax.swing.JTextField jTextField27;
+    public static javax.swing.JTextField jTextField27;
     private javax.swing.JTextField jTextField28;
     private javax.swing.JPasswordField jTextField29;
     private javax.swing.JTextField jTextField3;
@@ -5071,6 +5098,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    public static javax.swing.JLabel tGroupId;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }

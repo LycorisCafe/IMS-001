@@ -201,7 +201,6 @@ public class ExamResults extends javax.swing.JFrame {
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (pushConfirm == JOptionPane.YES_OPTION) {
             loadResults();
-            
             Helper.TelegramBot bot = new Helper.TelegramBot();
             SendPhoto message = new SendPhoto();
             int y = 0;
@@ -263,6 +262,9 @@ public class ExamResults extends javax.swing.JFrame {
                                                 bot.execute(message);
                                             } catch (TelegramApiException e) {
                                                 System.out.println(e);
+                                                JOptionPane.showMessageDialog(this, "Error while send results to :\n"
+                                                        + "Name : " + studentNamex + "\n"
+                                                        + "Class : " + classNamex);
                                             }
                                         }
                                     }
@@ -275,6 +277,7 @@ public class ExamResults extends javax.swing.JFrame {
                 }
                 y = y + 1;
             }
+            JOptionPane.showMessageDialog(this, "Success!");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

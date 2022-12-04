@@ -20,6 +20,14 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
     </Component>
+    <Component class="javax.swing.JLabel" name="tGroupId">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jLabel64"/>
+      </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+      </AuxValues>
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -3012,11 +3020,17 @@
                       </AuxValues>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextField22">
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextField27">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" value="(YYYY-MM-DD)"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="jButton12">
                       <Properties>

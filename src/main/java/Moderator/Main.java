@@ -4,8 +4,6 @@
  */
 package Moderator;
 
-import static Moderator.NewStudent.tSendStudentId;
-import static Moderator.NewStudent.tSendStudentName;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamException;
 import com.github.sarxos.webcam.WebcamPanel;
@@ -44,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Lycoris Cafe
  */
 public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory {
-
+    
     private WebcamPanel panel = null;
     private Webcam webcam = null;
     private Executor executor = Executors.newSingleThreadExecutor(this);
@@ -54,6 +52,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
     String today = new SimpleDateFormat("u").format(new Date());
     String todate = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+    Helper.AutomatedMessages tMessage = new Helper.AutomatedMessages();
 
     /**
      * Creates new form Operations
@@ -65,7 +64,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         disablePanels();
         dataGrab();
     }
-
+    
     private void dataGrab() {
         try {
             Connection con = Helper.DB.connect();
@@ -89,13 +88,13 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             System.out.println(e);
         }
     }
-
+    
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-
+    
     private void disablePanels() {
         Component[] com1 = jPanel6.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -115,7 +114,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jComboBox3.setSelectedIndex(0);
         jButton2.setEnabled(false);
     }
-
+    
     private void webcamClose() {
         try {
             webcam.close();
@@ -123,19 +122,19 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             System.out.println(e);
         }
     }
-
+    
     private void initWebCam() {
         try {
             Dimension size = WebcamResolution.QVGA.getSize();
             webcam = Webcam.getWebcams().get(0);
             webcam.setViewSize(size);
-
+            
             panel = new WebcamPanel(webcam);
             panel.setPreferredSize(size);
             panel.setFPSDisplayed(true);
-
+            
             jPanel2.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 250));
-
+            
             executor.execute(this);
         } catch (WebcamException e) {
             System.out.println(e);
@@ -151,6 +150,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        tId = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -191,6 +191,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+
+        tId.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Institute Name");
@@ -730,20 +732,23 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "AND date='" + date + "'");
                 while (rs2.next()) {
                     int count = rs2.getInt(1);
-                    if (count == 0) {
-                        stmt.executeUpdate("INSERT INTO attendance "
-                                + "(regClassId,date) "
-                                + "VALUES "
-                                + "('" + regClassId + "','" + date + "')");
-//                        SendMessage message = new SendMessage();
-//                        message.setText("test text");
-//                        message.setChatId("");
-
-                        JOptionPane.showMessageDialog(this, "Success!");
-                        disablePanels();
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Already marked the attendance!");
-                        disablePanels();
+                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            + "FROM students "
+                            + "WHERE id='" + studentId + "'");
+                    while (rs3.next()) {
+                        tId.setText(rs3.getString("telegramId"));
+                        if (count == 0) {
+                            stmt.executeUpdate("INSERT INTO attendance "
+                                    + "(regClassId,date) "
+                                    + "VALUES "
+                                    + "('" + regClassId + "','" + date + "')");
+                            tMessage.attendanceMarking();
+                            JOptionPane.showMessageDialog(this, "Success!");
+                            disablePanels();
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Already marked the attendance!");
+                            disablePanels();
+                        }
                     }
                 }
             }
@@ -751,10 +756,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         } catch (SQLException e) {
             System.out.println(e);
         }
-
-       
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -958,7 +959,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    public static javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -983,11 +984,12 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField3;
+    public static javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    public static javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
-    private javax.swing.JLabel studentIdLabel;
+    public static javax.swing.JLabel studentIdLabel;
+    public static javax.swing.JLabel tId;
     // End of variables declaration//GEN-END:variables
 
     @Override
@@ -1008,7 +1010,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             if (image != null) {
                 LuminanceSource source = new BufferedImageLuminanceSource(image);
                 BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-
+                
                 try {
                     result = new MultiFormatReader().decode(bitmap);
                 } catch (NotFoundException ex) {
@@ -1021,14 +1023,14 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             }
         } while (true);
     }
-
+    
     @Override
     public Thread newThread(Runnable r) {
         Thread t = new Thread(r, "My Thread");
         t.setDaemon(true);
         return t;
     }
-
+    
     private void qrSlice() {
         Helper.MainDetails data = new Helper.MainDetails();
         String instituteName = data.instituteName();

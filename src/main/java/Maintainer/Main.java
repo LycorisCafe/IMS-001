@@ -20,7 +20,6 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         formDetails();
         getData();
-        telegram.setText("1");
     }
     
     private void formDetails(){
@@ -39,18 +38,18 @@ public class Main extends javax.swing.JFrame {
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, ex);
             }
-            try ( Stream<String> lines2 = Files.lines(Paths.get(path))) {
-                botID.setText(lines2.skip(1).findFirst().get());
+            try ( Stream<String> lines = Files.lines(Paths.get(path))) {
+                botID.setText(lines.skip(1).findFirst().get());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
-            try ( Stream<String> lines2 = Files.lines(Paths.get(path))) {
-                adminID.setText(lines2.skip(2).findFirst().get());
+            try ( Stream<String> lines = Files.lines(Paths.get(path))) {
+                adminID.setText(lines.skip(2).findFirst().get());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
-            try ( Stream<String> lines2 = Files.lines(Paths.get(path))) {
-                groupID.setText(lines2.skip(3).findFirst().get());
+            try ( Stream<String> lines = Files.lines(Paths.get(path))) {
+                groupID.setText(lines.skip(3).findFirst().get());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e);
             }
@@ -61,7 +60,6 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        telegram = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -77,8 +75,6 @@ public class Main extends javax.swing.JFrame {
         jTextArea1 = new javax.swing.JTextArea();
         jPanel7 = new javax.swing.JPanel();
         botID = new javax.swing.JTextField();
-
-        telegram.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("System Maintainer");
@@ -380,6 +376,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextArea jTextArea1;
-    public static javax.swing.JLabel telegram;
     // End of variables declaration//GEN-END:variables
 }

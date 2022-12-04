@@ -4,6 +4,8 @@
  */
 package Helper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -34,20 +36,11 @@ public class AutomatedMessages {
         photo.setChatId(chatId);
         photo.setPhoto(new InputFile(logo));
         photo.setCaption("Student Registration Success!\n\n"
+                + "Welcome to " + instituteName + " Institute\n"
                 + "Student ID : " + instituteName + "-STUDENT-" + studentId + "\n"
                 + "Student Name : " + studentName);
         photo.setProtectContent(true);
         sendPhoto();
-<<<<<<< HEAD
-        //institute + "-" + "STUDENT" + "-" + 
-    }
-
-    public void studentRegistrationClasses() {
-        // @ Moderator.NewStudent jButton8 ActionPerformed
-        // Send registed classes
-        String chatId = Moderator.NewStudent.telegramId.getText();
-=======
->>>>>>> 6c51a3a092cb39c875f9822b0062d72b93b16e8e
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -55,21 +48,54 @@ public class AutomatedMessages {
             String teacher = (String) Moderator.NewStudent.jTable1.getValueAt(y, 3);
             String day = (String) Moderator.NewStudent.jTable1.getValueAt(y, 4);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
-            String studentName = Moderator.NewStudent.tSendStudentName.getText();
-
-            // message body==>>
             message.setChatId(chatId);
             message.setText("Hello " + studentName + "\n"
-                    + "Welcome to " + instituteName + " Institute \n"
-                    + "You have  successfully enrolled " + subject + " Class  "  + "\n"
-                    + "Teacher " + ": " + teacher + "\n"
-                    + "Grade" + ": " + grade + "\n"
-                    + "Class scheduled day " + ": " + day + "\n"
-//                    + "Payment " + ":" + payment
+                    + "You have  successfully enrolled " + subject + " Class\n"
+                    + "Teacher : " + teacher + "\n"
+                    + "Grade : " + grade + "\n"
+                    + "Class scheduled day : " + day + "\n"
+                    + "Payment : " + payment
             );
-
             sendMessage();
         }
+    }
+
+    public void attendanceMarking() {
+        // Moderator (pkg) -> Main -> Mark Ateendance (button)
+        String chatId = Moderator.Main.tId.getText();
+        String studentId = instituteName + "-STUDENT-" + Moderator.Main.studentIdLabel.getText();
+        String studentName = Moderator.Main.jTextField3.getText();
+        String atendClass = Moderator.Main.jComboBox3.getSelectedItem().toString();
+        String paymentDetails = Moderator.Main.jTextField5.getText();
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
+        // message body start
+        // message body end
+        sendMessage();
+    }
+
+    public void newExamAddedStudent() {
+        // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
+        String chatId = Administrator.Main.telegramId.getText();
+        String examName = Administrator.Main.jTextField22.getText();
+        String examDate = Administrator.Main.jTextField27.getText();
+
+        // message body start
+        // greeting msg ekakuth danna aa nikn wish you all the best wge
+        // message body end
+        sendMessage(); // or sendPhoto
+    }
+
+    public void newExamAddedGroup() {
+        // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
+        String groupId = Administrator.Main.tGroupId.getText();
+        String examName = Administrator.Main.jTextField22.getText();
+        String examDate = Administrator.Main.jTextField27.getText();
+
+        // message body start
+        // greeting msg ekakuth danna aa nikn wish you all the best wge
+        // message body end
+        sendMessage(); // or sendPhoto();
     }
 
     // sending operations =========>>>>>>>>>>>
