@@ -72,9 +72,25 @@ public class TelegramBot extends TelegramLongPollingBot {
                 if (update.getMessage().getText().equals(Administrator.TelegramUpdate.jTextField10.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.TelegramUpdate.type.getText())) {
                     Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                    Administrator.TelegramUpdate telegram = new Administrator.TelegramUpdate();
-                    telegram.dispose();
-                    // =====>>>>
+                    String returnMethod=Administrator.TelegramUpdate.returnMethod.getText();
+                    switch (returnMethod){
+                        case "teacherAdd":
+                            new Administrator.Main().teacherAdd();
+                            break;
+                        case "teacherUpdate":
+                            new Administrator.Main().teacherUpdate();
+                            break;
+                        case "groupAdd":
+                            new Administrator.Main().groupAdd();
+                            break;
+                        case "studentUpdate":
+                            new Administrator.Main().studentUpdate();
+                            break;
+                        case "groupTIdUpdate":
+                            new Administrator.Main().groupTIdUpdate();
+                            break;
+                    }
+                    new Administrator.TelegramUpdate().dispose();
                 }
             }
 
