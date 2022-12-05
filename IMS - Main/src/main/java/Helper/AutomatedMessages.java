@@ -97,7 +97,7 @@ public class AutomatedMessages {
         );
 
         // message body end
-        sendMessage(); // or sendPhoto
+//        sendMessage(); // or sendPhoto
     }
 
     public void newExamAddedGroup() {
@@ -109,7 +109,7 @@ public class AutomatedMessages {
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
         // message body end
-        sendMessage(); // or sendPhoto();
+//        sendMessage(); // or sendPhoto();
     }
 
     // sending operations =========>>>>>>>>>>>

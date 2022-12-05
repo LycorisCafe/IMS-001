@@ -6,14 +6,15 @@ package MainPkg;
 
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,6 +28,7 @@ public class SplashScreen extends javax.swing.JFrame {
     public SplashScreen() {
         initComponents();
         formDetails();
+//        checkUpdates();
     }
 
     private void formDetails() {
@@ -36,15 +38,14 @@ public class SplashScreen extends javax.swing.JFrame {
 
     private void checkUpdates() {
         jLabel6.setText("Checking Updates...");
-        String newVersionLink = Helper.MainDetails.newVersionCheck();
+        String newVersionCheck = Helper.MainDetails.newVersionCheck();
         String thisVersion = Helper.MainDetails.version();
-        String projectId = Helper.MainDetails.projectSerial();
         String newVersion = null;
-        int thisVersionx = 0;
-        int newVersionx = 0;
+        float thisVersionx = 0;
+        float newVersionx = 0;
 
         try {
-            URL url = new URL(newVersionLink);
+            URL url = new URL(newVersionCheck);
             URLConnection con = url.openConnection();
             InputStream is = con.getInputStream();
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -60,16 +61,25 @@ public class SplashScreen extends javax.swing.JFrame {
         }
 
         try {
-            thisVersionx = Integer.parseInt(thisVersion);
-            newVersionx = Integer.parseInt(newVersion);
+            thisVersionx = Float.parseFloat(thisVersion);
+            newVersionx = Float.parseFloat(newVersion);
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
 
         if (thisVersionx < newVersionx) {
-            jLabel6.setText("Downloading Updates...");
-            
+            File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\");
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            try ( PrintStream out = new PrintStream(
+                    new File(file + "newVersion.lc"))) {
+                out.println("1");
+            } catch (FileNotFoundException ex) {
+                System.out.println(ex);
+            }
         }
+        jLabel6.setText("Loading...");
     }
 
     /**

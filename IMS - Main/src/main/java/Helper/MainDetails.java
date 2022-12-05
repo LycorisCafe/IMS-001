@@ -22,13 +22,27 @@ public class MainDetails {
     }
 
     public static String newVersionCheck() {
+        // new version raw (just 0.2 or something)
         String newVerLink = "";
         return newVerLink;
     }
 
     public static String newVersionDownload() {
+        // new version download links raw
         String newVersionDownload = "";
         return newVersionDownload;
+    }
+
+    public static String unrar() {
+        // unrar.exe download link
+        String unrar = "";
+        return unrar;
+    }
+
+    public static String updater() {
+        // updater.bat download link
+        String updater = "";
+        return updater;
     }
 
     public static String instituteName() {

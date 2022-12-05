@@ -8,7 +8,12 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.stream.Stream;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -60,11 +65,11 @@ public class IMS {
                 System.out.println(e);
             }
         }
-        
+
         // ======================= Load Splash Screen ==========================
         SplashScreen splash = new SplashScreen();
         splash.setVisible(true);
-        
+
         // ================== Make Application Workspace =======================
         File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
         if (!file.exists()) {
@@ -78,13 +83,21 @@ public class IMS {
         if (!file2.exists()) {
             file2.mkdirs();
         }
-        
+
         // ===================== Register Telegram Bot =========================
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
             botsApi.registerBot((LongPollingBot) new Helper.TelegramBot());
         } catch (TelegramApiException e) {
             System.out.println(e);
+        }
+
+        // ================ Download updates when available ====================
+        String updatePath = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc";
+        File update = new File(updatePath);
+        if (update.exists()) {
+            Helper.Updates updates = new Helper.Updates();
+            updates.setVisible(true);
         }
 
 //        // ========================= Check License =============================
@@ -99,18 +112,13 @@ public class IMS {
 //        String baseboard = comsys.getBaseboard().getSerialNumber();
 //        if (processor.equals(Helper.MainDetails.cpuId()) 
 //                && baseboard.equals(Helper.MainDetails.baseBordId())) {
-//            Welcome welcome = new Welcome();
-//            splash.dispose();
-//            welcome.setVisible(true);
+            Welcome welcome = new Welcome();
+            splash.dispose();
+            welcome.setVisible(true);
 //        } else {
 //            AuthError auth = new AuthError();
 //            splash.dispose();
 //            auth.setVisible(true);
 //        }
-
-        // =================== Load Main Interface (DEMO) ======================
-        Welcome welcome = new Welcome();
-        splash.dispose();
-        welcome.setVisible(true);
     }
 }

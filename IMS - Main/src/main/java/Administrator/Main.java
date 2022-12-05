@@ -70,7 +70,7 @@ public class Main extends javax.swing.JFrame {
         try ( Stream<String> lines = Files.lines(Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
             adminTelegramId = lines.skip(2).findFirst().get();
         } catch (Exception e) {
-            System.out.println("#001"+e);
+            System.out.println("#001" + e);
         }
         // grabing data from students table
         try {
@@ -84,7 +84,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println("#002"+ex);
+            System.out.println("#002" + ex);
         }
 
         // grabing data from teachers table
@@ -99,7 +99,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println("#003"+ex);
+            System.out.println("#003" + ex);
         }
 
         // grabing data from classes table
@@ -114,7 +114,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println("#004"+ex);
+            System.out.println("#004" + ex);
         }
         // grabing and calculating the monthly income from the payments table
         String classId;
@@ -156,7 +156,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println("#005"+ex);
+            System.out.println("#005" + ex);
         }
     }
 
@@ -178,7 +178,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#006"+e);
+            System.out.println("#006" + e);
         }
         jButton7.setEnabled(false);
         jButton6.setEnabled(false);
@@ -210,7 +210,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#007"+e);
+            System.out.println("#007" + e);
         }
         Component[] com0 = jPanel11.getComponents();
         for (int a = 0; a < com0.length; a++) {
@@ -232,8 +232,7 @@ public class Main extends javax.swing.JFrame {
 
     private void loadGroups() {
         DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
-        model.setRowCount(0);
-        String convertedDay = null;
+//        model.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -254,6 +253,7 @@ public class Main extends javax.swing.JFrame {
                             + "FROM subjects "
                             + "WHERE id='" + subjectId + "'");
                     while (rs3.next()) {
+                        String convertedDay = null;
                         switch (day) {
                             case 1:
                                 convertedDay = "Monday";
@@ -286,7 +286,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#008"+e);
+            System.out.println("#008" + e);
         }
         jComboBox8.removeAllItems();
         jComboBox8.addItem("Please Select...");
@@ -302,7 +302,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#009"+e);
+            System.out.println("#009" + e);
         }
         jComboBox9.removeAllItems();
         jComboBox9.addItem("Please Select...");
@@ -318,7 +318,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#010"+e);
+            System.out.println("#010" + e);
         }
         Component[] com1 = jPanel26.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -364,7 +364,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#011"+e);
+            System.out.println("#011" + e);
         }
         Component[] com1 = jPanel38.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -393,7 +393,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#012"+e);
+            System.out.println("#012" + e);
         }
         jLabel29.setText("");
         jRadioButton1.setSelected(false);
@@ -2970,7 +2970,7 @@ public class Main extends javax.swing.JFrame {
                                 successCount = successCount + 1;
                                 TelegramReports.jLabel3.setText("" + successCount);
                             } catch (TelegramApiException e) {
-                                System.out.println("#013"+e);
+                                System.out.println("#013" + e);
                                 TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
                                 output.append("Message sent unsuccess to : " + sName + "\n");
                                 unsuccessCount = unsuccessCount + 1;
@@ -2981,14 +2981,14 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#014"+e);
+                    System.out.println("#014" + e);
                 }
                 TelegramReports.jTextArea1.append("Ending Broadcast...\n");
                 output.append("Ending Broadcast...\n\n");
                 broadcastMessage.setText("");
                 output.close();
             } catch (IOException e) {
-                System.out.println("#015"+e);
+                System.out.println("#015" + e);
             }
         }
     }//GEN-LAST:event_jButton27ActionPerformed
@@ -3002,7 +3002,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println("#016"+e);
+            System.out.println("#016" + e);
         }
     }//GEN-LAST:event_jButton28ActionPerformed
 
@@ -3030,7 +3030,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#017"+e);
+            System.out.println("#017" + e);
         }
         jButton7.setEnabled(true);
         jButton6.setEnabled(true);
@@ -3070,7 +3070,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadTeachers();
         } catch (SQLException e) {
-            System.out.println("#018"+e);
+            System.out.println("#018" + e);
         }
     }
 
@@ -3102,7 +3102,7 @@ public class Main extends javax.swing.JFrame {
                 con.close();
                 loadTeachers();
             } catch (SQLException e) {
-                System.out.println("#019"+e);
+                System.out.println("#019" + e);
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -3130,7 +3130,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadTeachers();
         } catch (SQLException e) {
-            System.out.println("#020"+e);
+            System.out.println("#020" + e);
         }
     }
 
@@ -3145,7 +3145,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
-            System.out.println("#021"+e);
+            System.out.println("#021" + e);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -3180,7 +3180,7 @@ public class Main extends javax.swing.JFrame {
                 stmt.executeUpdate(sql);
                 con.close();
             } catch (SQLException e) {
-                System.out.println("#022"+e);
+                System.out.println("#022" + e);
             }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
@@ -3211,7 +3211,7 @@ public class Main extends javax.swing.JFrame {
             stmt.executeUpdate(sql);
             con.close();
         } catch (SQLException e) {
-            System.out.println("#023"+e);
+            System.out.println("#023" + e);
         }
     }
 
@@ -3258,17 +3258,17 @@ public class Main extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                             jTextArea2.setText("");
                         } catch (TelegramApiException e) {
-                            System.out.println("#024"+e);
+                            System.out.println("#024" + e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#025"+e);
+                    System.out.println("#025" + e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println("#026"+ex);
+                System.out.println("#026" + ex);
             }
         }
     }//GEN-LAST:event_jButton21ActionPerformed
@@ -3300,7 +3300,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#027"+e);
+            System.out.println("#027" + e);
         }
     }
 
@@ -3340,7 +3340,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println("#028"+e);
+            System.out.println("#028" + e);
         }
     }//GEN-LAST:event_jButton22ActionPerformed
 
@@ -3355,7 +3355,7 @@ public class Main extends javax.swing.JFrame {
                     + "WHERE studentId='" + id + "'");
             con.close();
         } catch (SQLException e) {
-            System.out.println("#029"+e);
+            System.out.println("#029" + e);
         }
         try {
             Connection con = Helper.DB.connect();
@@ -3366,7 +3366,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadStudents();
         } catch (SQLException e) {
-            System.out.println("#030"+e);
+            System.out.println("#030" + e);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -3405,7 +3405,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#031"+e);
+            System.out.println("#031" + e);
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
@@ -3453,17 +3453,17 @@ public class Main extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                             jTextArea1.setText("");
                         } catch (TelegramApiException e) {
-                            System.out.println("#032"+e);
+                            System.out.println("#032" + e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#033"+e);
+                    System.out.println("#033" + e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println("#034"+ex);
+                System.out.println("#034" + ex);
             }
         }
     }//GEN-LAST:event_jButton19ActionPerformed
@@ -3477,7 +3477,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println("#035"+e);
+            System.out.println("#035" + e);
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
@@ -3497,7 +3497,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#036"+e);
+            System.out.println("#036" + e);
         }
     }
 
@@ -3573,17 +3573,17 @@ public class Main extends javax.swing.JFrame {
                             output.append("\n" + logTime + " - " + classId + " -\n" + jTextArea3.getText());
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                         } catch (TelegramApiException e) {
-                            System.out.println("#037"+e);
+                            System.out.println("#037" + e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#038"+e);
+                    System.out.println("#038" + e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println("#039"+ex);
+                System.out.println("#039" + ex);
             }
             jTextArea3.setText("");
         }
@@ -3598,7 +3598,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println("#040"+e);
+            System.out.println("#040" + e);
         }
     }//GEN-LAST:event_jButton25ActionPerformed
 
@@ -3638,7 +3638,7 @@ public class Main extends javax.swing.JFrame {
                     + "telegramId='" + telegramId.getText() + "'");
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
-            System.out.println("#041"+e);
+            System.out.println("#041" + e);
         }
     }
 
@@ -3678,7 +3678,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#042"+e);
+                    System.out.println("#042" + e);
                 }
                 jComboBox2.removeAllItems();
                 jComboBox2.addItem("Please Select...");
@@ -3695,7 +3695,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println("#043"+e);
+                    System.out.println("#043" + e);
                 }
                 jComboBox2.setSelectedIndex(0);
                 jButton15.setEnabled(false);
@@ -3753,7 +3753,7 @@ public class Main extends javax.swing.JFrame {
                 teacherClassesTable();
             }
         } catch (SQLException e) {
-            System.out.println("#044"+e);
+            System.out.println("#044" + e);
         }
     }
 
@@ -3780,7 +3780,7 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE classId='" + rs.getString("id") + "'");
             }
         } catch (SQLException e) {
-            System.out.println("#045"+e);
+            System.out.println("#045" + e);
         }
         try {
             Connection con = Helper.DB.connect();
@@ -3789,7 +3789,7 @@ public class Main extends javax.swing.JFrame {
                     + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
-            System.out.println("#046"+e);
+            System.out.println("#046" + e);
         }
         teacherClassesTable();
     }//GEN-LAST:event_jButton15ActionPerformed
@@ -3884,7 +3884,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException ex) {
-                    System.out.println("#047"+ex);
+                    System.out.println("#047" + ex);
                 }
             }
             if (jTabbedPane3.getSelectedIndex() == 2) {
@@ -3934,7 +3934,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException ex) {
-                    System.out.println("#048"+ex);
+                    System.out.println("#048" + ex);
                 }
                 jComboBox6.removeAllItems();
                 jComboBox6.addItem("Please Select...");
@@ -3956,7 +3956,7 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
                 } catch (SQLException e) {
-                    System.out.println("#049"+e);
+                    System.out.println("#049" + e);
                 }
             }
             if (jTabbedPane3.getSelectedIndex() == 3) {
@@ -4004,7 +4004,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("#050"+e);
+            System.out.println("#050" + e);
         }
     }//GEN-LAST:event_jTable5MouseClicked
 
@@ -4126,7 +4126,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#051"+e);
+                System.out.println("#051" + e);
             }
         }
     }//GEN-LAST:event_jTextField21ActionPerformed
@@ -4224,7 +4224,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#052"+e);
+                System.out.println("#052" + e);
             }
         }
     }//GEN-LAST:event_jComboBox8ActionPerformed
@@ -4281,7 +4281,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#053"+e);
+                System.out.println("#053" + e);
             }
         }
     }//GEN-LAST:event_jComboBox9ActionPerformed
@@ -4323,7 +4323,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#054"+e);
+                System.out.println("#054" + e);
             }
         }
     }//GEN-LAST:event_jComboBox10ActionPerformed
@@ -4417,7 +4417,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException e) {
-                System.out.println("#055"+e);
+                System.out.println("#055" + e);
             }
         }
     }//GEN-LAST:event_jComboBox13ActionPerformed
@@ -4441,7 +4441,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException e) {
-                System.out.println("#056"+e);
+                System.out.println("#056" + e);
             }
         }
     }//GEN-LAST:event_jTextField26ActionPerformed
@@ -4494,7 +4494,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Success!");
                     loadAccounts();
                 } catch (HeadlessException | SQLException e) {
-                    System.out.println("#057"+e);
+                    System.out.println("#057" + e);
                 }
             }
         }
@@ -4513,7 +4513,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Success!");
             loadAccounts();
         } catch (HeadlessException | SQLException e) {
-            System.out.println("#058"+e);
+            System.out.println("#058" + e);
         }
     }//GEN-LAST:event_jButton32ActionPerformed
 
@@ -4549,7 +4549,7 @@ public class Main extends javax.swing.JFrame {
             loadExams();
             con.close();
         } catch (HeadlessException | SQLException e) {
-            System.out.println("#059"+e);
+            System.out.println("#059" + e);
         }
     }//GEN-LAST:event_jButton18ActionPerformed
 
@@ -4580,7 +4580,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#060"+ex);
+                System.out.println("#060" + ex);
             }
         }
     }//GEN-LAST:event_cr1ActionPerformed
@@ -4625,7 +4625,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#061"+ex);
+                System.out.println("#061" + ex);
             }
         }
     }//GEN-LAST:event_cr2ActionPerformed
@@ -4679,7 +4679,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#062"+ex);
+                System.out.println("#062" + ex);
             }
         }
     }//GEN-LAST:event_cr3ActionPerformed
@@ -4695,8 +4695,8 @@ public class Main extends javax.swing.JFrame {
             jTextField22.setEnabled(true);
             jTextField27.setEnabled(true);
         }
-        
-        
+
+
     }//GEN-LAST:event_cr4ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -4742,12 +4742,9 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Success!");
                 loadExams();
             } catch (SQLException e) {
-                System.out.println("#063"+e);
+                System.out.println("#063" + e);
             }
         }
-        String  ExDate = cr1.getSelectedItem().toString();
-        System.out.println(ExDate);
-        
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jTable8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable8MouseClicked
@@ -4799,7 +4796,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#064"+e);
+                System.out.println("#064" + e);
             }
         }
     }//GEN-LAST:event_jTextField19ActionPerformed
@@ -4836,7 +4833,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#065"+e);
+                System.out.println("#065" + e);
             }
         }
     }//GEN-LAST:event_jTextField20ActionPerformed
@@ -4866,7 +4863,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println("#066"+e);
+                System.out.println("#066" + e);
             }
         }
     }//GEN-LAST:event_jComboBox3ActionPerformed
