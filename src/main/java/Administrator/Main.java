@@ -4657,6 +4657,8 @@ public class Main extends javax.swing.JFrame {
             jTextField22.setEnabled(true);
             jTextField27.setEnabled(true);
         }
+        
+        
     }//GEN-LAST:event_cr4ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -4702,6 +4704,9 @@ public class Main extends javax.swing.JFrame {
                 System.out.println(e);
             }
         }
+        String  ExDate = cr1.getSelectedItem().toString();
+        System.out.println(ExDate);
+        
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jTable8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable8MouseClicked

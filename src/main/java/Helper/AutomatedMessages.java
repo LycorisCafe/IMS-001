@@ -67,10 +67,19 @@ public class AutomatedMessages {
         String studentName = Moderator.Main.jTextField3.getText();
         String atendClass = Moderator.Main.jComboBox3.getSelectedItem().toString();
         String paymentDetails = Moderator.Main.jTextField5.getText();
-        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String time = new SimpleDateFormat("yyyy-MM-dd hh:mm a ").format(new Date());
 
         // message body start
         // message body end
+        message.setChatId(chatId);
+        message.setText("Student Attendance Marked! \n\n"
+                + "Studnt Id " + ":" + studentId + "\n"
+                + "Student Name " + ":" + studentName + "\n"
+                + "Atend Class " + ":" + atendClass + "\n"
+                + "Payments "+ ":" + paymentDetails + "\n"
+                + "Time "+ ":" + time
+        );
+
         sendMessage();
     }
 
@@ -82,6 +91,11 @@ public class AutomatedMessages {
 
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
+        message.setChatId(chatId);
+        message.setText("Dear Student " + examName + " Will be held on " + examDate + "\n"
+                + "Wish you all the best and "
+        );
+
         // message body end
         sendMessage(); // or sendPhoto
     }
