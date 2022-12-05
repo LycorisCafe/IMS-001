@@ -5,6 +5,15 @@
 package MainPkg;
 
 import java.awt.Toolkit;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -19,10 +28,48 @@ public class SplashScreen extends javax.swing.JFrame {
         initComponents();
         formDetails();
     }
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+    }
+
+    private void checkUpdates() {
+        jLabel6.setText("Checking Updates...");
+        String newVersionLink = Helper.MainDetails.newVersionCheck();
+        String thisVersion = Helper.MainDetails.version();
+        String projectId = Helper.MainDetails.projectSerial();
+        String newVersion = null;
+        int thisVersionx = 0;
+        int newVersionx = 0;
+
+        try {
+            URL url = new URL(newVersionLink);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    newVersion = line;
+                }
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+        try {
+            thisVersionx = Integer.parseInt(thisVersion);
+            newVersionx = Integer.parseInt(newVersion);
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+
+        if (thisVersionx < newVersionx) {
+            jLabel6.setText("Downloading Updates...");
+            
+        }
     }
 
     /**
@@ -39,6 +86,7 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Institute Management System");
@@ -59,6 +107,9 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/Loding(100x25).gif"))); // NOI18N
 
+        jLabel6.setFont(new java.awt.Font("Consolas", 0, 10)); // NOI18N
+        jLabel6.setText("Loading...");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -72,7 +123,8 @@ public class SplashScreen extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2)))
+                        .addComponent(jLabel2))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -85,7 +137,9 @@ public class SplashScreen extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addGap(69, 69, 69)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
+                        .addGap(56, 56, 56)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -152,6 +206,7 @@ public class SplashScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

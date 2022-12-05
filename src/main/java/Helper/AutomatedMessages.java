@@ -88,7 +88,7 @@ public class AutomatedMessages {
         String chatId = Administrator.Main.telegramId.getText();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-
+        System.out.println("ok");
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
         message.setChatId(chatId);
@@ -105,7 +105,7 @@ public class AutomatedMessages {
         String groupId = Administrator.Main.tGroupId.getText();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-
+        System.out.println("ok");
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
         // message body end

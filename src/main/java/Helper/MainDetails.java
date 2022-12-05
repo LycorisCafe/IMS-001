@@ -11,14 +11,24 @@ package Helper;
 public class MainDetails {
 
     public static String projectSerial() {
-        // ProjectName-PrijectId-StartDate(MMDDYY)
-        String projectSerial = "IMS-001-111122";
+        // ProjectName-PrijectId
+        String projectSerial = "IMS-001";
         return projectSerial;
     }
 
     public static String version() {
         String version = "0.1";
         return version;
+    }
+
+    public static String newVersionCheck() {
+        String newVerLink = "";
+        return newVerLink;
+    }
+
+    public static String newVersionDownload() {
+        String newVersionDownload = "";
+        return newVersionDownload;
     }
 
     public static String instituteName() {

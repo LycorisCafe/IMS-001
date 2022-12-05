@@ -70,7 +70,7 @@ public class Main extends javax.swing.JFrame {
         try ( Stream<String> lines = Files.lines(Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
             adminTelegramId = lines.skip(2).findFirst().get();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("#001"+e);
         }
         // grabing data from students table
         try {
@@ -84,7 +84,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#002"+ex);
         }
 
         // grabing data from teachers table
@@ -99,7 +99,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#003"+ex);
         }
 
         // grabing data from classes table
@@ -114,7 +114,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#004"+ex);
         }
         // grabing and calculating the monthly income from the payments table
         String classId;
@@ -128,16 +128,19 @@ public class Main extends javax.swing.JFrame {
                     + "FROM classes");
             while (rs.next()) {
                 classId = rs.getString("id");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
                         + "WHERE id='" + classId + "'");
                 while (rs2.next()) {
                     payment = rs2.getInt("payment");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM regclass "
                             + "WHERE classId='" + classId + "'");
                     while (rs3.next()) {
-                        ResultSet rs4 = stmt.executeQuery("SELECT COUNT(id) "
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT COUNT(id) "
                                 + "FROM payments "
                                 + "WHERE studentId='" + rs3.getString("studentId") + "' "
                                 + "AND classId='" + classId + "' "
@@ -153,7 +156,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#005"+ex);
         }
     }
 
@@ -175,7 +178,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#006"+e);
         }
         jButton7.setEnabled(false);
         jButton6.setEnabled(false);
@@ -207,7 +210,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e + "\nfrom std err");
+            System.out.println("#007"+e);
         }
         Component[] com0 = jPanel11.getComponents();
         for (int a = 0; a < com0.length; a++) {
@@ -240,12 +243,14 @@ public class Main extends javax.swing.JFrame {
                 String classId = rs.getString("id");
                 int day = rs.getInt("day");
                 String subjectId = rs.getString("subjectId");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM teachers "
                         + "WHERE id='" + rs.getString("teacherId") + "'");
                 while (rs2.next()) {
                     String teacher = rs2.getString("name");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + subjectId + "'");
                     while (rs3.next()) {
@@ -281,7 +286,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e + "\nfrom std err");
+            System.out.println("#008"+e);
         }
         jComboBox8.removeAllItems();
         jComboBox8.addItem("Please Select...");
@@ -297,7 +302,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#009"+e);
         }
         jComboBox9.removeAllItems();
         jComboBox9.addItem("Please Select...");
@@ -313,7 +318,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#010"+e);
         }
         Component[] com1 = jPanel26.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -341,11 +346,13 @@ public class Main extends javax.swing.JFrame {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String date = rs.getString("date");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
-                        + "WHERE id='" + rs.getString("classId") + "'");
+                        + "WHERE id='" + id + "'");
                 while (rs2.next()) {
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + rs2.getString("subjectId") + "'");
                     while (rs3.next()) {
@@ -357,7 +364,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#011"+e);
         }
         Component[] com1 = jPanel38.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -386,7 +393,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e + "\nfrom std err");
+            System.out.println("#012"+e);
         }
         jLabel29.setText("");
         jRadioButton1.setSelected(false);
@@ -2935,7 +2942,8 @@ public class Main extends javax.swing.JFrame {
                     while (rs.next()) {
                         waitingCount = rs.getInt(1);
                         TelegramReports.jLabel6.setText("" + waitingCount);
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM " + table + "");
                         while (rs2.next()) {
                             String telegramId = rs2.getString("telegramId");
@@ -2962,7 +2970,7 @@ public class Main extends javax.swing.JFrame {
                                 successCount = successCount + 1;
                                 TelegramReports.jLabel3.setText("" + successCount);
                             } catch (TelegramApiException e) {
-                                System.out.println(e);
+                                System.out.println("#013"+e);
                                 TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
                                 output.append("Message sent unsuccess to : " + sName + "\n");
                                 unsuccessCount = unsuccessCount + 1;
@@ -2973,14 +2981,14 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#014"+e);
                 }
                 TelegramReports.jTextArea1.append("Ending Broadcast...\n");
                 output.append("Ending Broadcast...\n\n");
                 broadcastMessage.setText("");
                 output.close();
             } catch (IOException e) {
-                System.out.println(e);
+                System.out.println("#015"+e);
             }
         }
     }//GEN-LAST:event_jButton27ActionPerformed
@@ -2994,7 +3002,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("#016"+e);
         }
     }//GEN-LAST:event_jButton28ActionPerformed
 
@@ -3022,7 +3030,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#017"+e);
         }
         jButton7.setEnabled(true);
         jButton6.setEnabled(true);
@@ -3034,23 +3042,6 @@ public class Main extends javax.swing.JFrame {
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
-
-//        try {
-//            Statement stmt = (Statement) con.createStatement();
-//            ResultSet rs2 = stmt.executeQuery("SELECT subjectId FROM classes WHERE teacherId='" + id + "'");
-//            while (rs2.next()) {
-//                ResultSet rs3 = stmt.executeQuery("SELECT subject, grade FROM subjects WHERE id='" + rs2.getString("subjectId") + "'");
-//                while (rs3.next()) {
-//                    DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-//                    model.setRowCount(0);
-//                    Object[] row = {rs3.getString("subject"), rs3.getString("grade")};
-//                    model.addRow(row);
-//                }
-//            }
-//            con.close();
-//        } catch (Exception e) {
-//            System.out.println(e);
-//        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -3079,7 +3070,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadTeachers();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#018"+e);
         }
     }
 
@@ -3111,7 +3102,7 @@ public class Main extends javax.swing.JFrame {
                 con.close();
                 loadTeachers();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#019"+e);
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -3139,7 +3130,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadTeachers();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#020"+e);
         }
     }
 
@@ -3154,7 +3145,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#021"+e);
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -3189,7 +3180,7 @@ public class Main extends javax.swing.JFrame {
                 stmt.executeUpdate(sql);
                 con.close();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#022"+e);
             }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
@@ -3220,7 +3211,7 @@ public class Main extends javax.swing.JFrame {
             stmt.executeUpdate(sql);
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#023"+e);
         }
     }
 
@@ -3267,17 +3258,17 @@ public class Main extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                             jTextArea2.setText("");
                         } catch (TelegramApiException e) {
-                            System.out.println(e);
+                            System.out.println("#024"+e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#025"+e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println(ex);
+                System.out.println("#026"+ex);
             }
         }
     }//GEN-LAST:event_jButton21ActionPerformed
@@ -3309,7 +3300,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#027"+e);
         }
     }
 
@@ -3349,7 +3340,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("#028"+e);
         }
     }//GEN-LAST:event_jButton22ActionPerformed
 
@@ -3364,7 +3355,7 @@ public class Main extends javax.swing.JFrame {
                     + "WHERE studentId='" + id + "'");
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#029"+e);
         }
         try {
             Connection con = Helper.DB.connect();
@@ -3375,7 +3366,7 @@ public class Main extends javax.swing.JFrame {
             con.close();
             loadStudents();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#030"+e);
         }
     }//GEN-LAST:event_jButton10ActionPerformed
 
@@ -3414,7 +3405,7 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#031"+e);
         }
     }//GEN-LAST:event_jTable3MouseClicked
 
@@ -3462,17 +3453,17 @@ public class Main extends javax.swing.JFrame {
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                             jTextArea1.setText("");
                         } catch (TelegramApiException e) {
-                            System.out.println(e);
+                            System.out.println("#032"+e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#033"+e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println(ex);
+                System.out.println("#034"+ex);
             }
         }
     }//GEN-LAST:event_jButton19ActionPerformed
@@ -3486,7 +3477,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("#035"+e);
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
@@ -3506,10 +3497,10 @@ public class Main extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#036"+e);
         }
     }
-    
+
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         // search for students by id
         if (!"".equals(jTextField9.getText())) {
@@ -3575,7 +3566,6 @@ public class Main extends javax.swing.JFrame {
                     while (rs.next()) {
                         String classId = rs.getString("id");
                         String Teleid = rs.getString("telegramId");
-                        System.out.println(Teleid);
                         sm.setText(jTextArea3.getText());
                         sm.setChatId(Teleid);
                         try {
@@ -3583,17 +3573,17 @@ public class Main extends javax.swing.JFrame {
                             output.append("\n" + logTime + " - " + classId + " -\n" + jTextArea3.getText());
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                         } catch (TelegramApiException e) {
-                            System.out.println(e);
+                            System.out.println("#037"+e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
                         }
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#038"+e);
                 }
                 output.close();
             } catch (IOException ex) {
-                System.out.println(ex);
+                System.out.println("#039"+ex);
             }
             jTextArea3.setText("");
         }
@@ -3608,7 +3598,7 @@ public class Main extends javax.swing.JFrame {
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("#040"+e);
         }
     }//GEN-LAST:event_jButton25ActionPerformed
 
@@ -3648,7 +3638,7 @@ public class Main extends javax.swing.JFrame {
                     + "telegramId='" + telegramId.getText() + "'");
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
-            System.out.println(e);
+            System.out.println("#041"+e);
         }
     }
 
@@ -3676,7 +3666,8 @@ public class Main extends javax.swing.JFrame {
                             + "FROM classes "
                             + "WHERE teacherId='" + id + "'");
                     while (rs.next()) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + rs.getString("subjectId") + "'");
                         while (rs2.next()) {
@@ -3687,7 +3678,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#042"+e);
                 }
                 jComboBox2.removeAllItems();
                 jComboBox2.addItem("Please Select...");
@@ -3704,7 +3695,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#043"+e);
                 }
                 jComboBox2.setSelectedIndex(0);
                 jButton15.setEnabled(false);
@@ -3752,7 +3743,8 @@ public class Main extends javax.swing.JFrame {
                     + "FROM subjects "
                     + "WHERE grade='" + grade + "' AND subject='" + subject + "'");
             while (rs.next()) {
-                stmt.executeUpdate("INSERT INTO classes "
+                Statement stmt2 = con.createStatement();
+                stmt2.executeUpdate("INSERT INTO classes "
                         + "(subjectId,teacherId,payment,day,telegramId)"
                         + "VALUES "
                         + "('" + rs.getString("id") + "','" + id + "',"
@@ -3761,7 +3753,7 @@ public class Main extends javax.swing.JFrame {
                 teacherClassesTable();
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#044"+e);
         }
     }
 
@@ -3783,11 +3775,12 @@ public class Main extends javax.swing.JFrame {
                     + "FROM classes "
                     + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
             while (rs.next()) {
-                stmt.executeUpdate("DELETE FROM regclass "
+                Statement stmt2 = con.createStatement();
+                stmt2.executeUpdate("DELETE FROM regclass "
                         + "WHERE classId='" + rs.getString("id") + "'");
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#045"+e);
         }
         try {
             Connection con = Helper.DB.connect();
@@ -3796,7 +3789,7 @@ public class Main extends javax.swing.JFrame {
                     + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#046"+e);
         }
         teacherClassesTable();
     }//GEN-LAST:event_jButton15ActionPerformed
@@ -3840,19 +3833,22 @@ public class Main extends javax.swing.JFrame {
                             + "FROM regclass "
                             + "WHERE studentId='" + id + "'");
                     while (rs.next()) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM classes "
                                 + "WHERE id='" + rs.getString("id") + "'");
                         while (rs2.next()) {
                             int day = rs2.getInt("day");
                             String teacherId = rs2.getString("teacherId");
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM subject "
                                     + "WHERE id='" + rs2.getString("subjectId") + "'");
                             while (rs3.next()) {
                                 String grade = rs3.getString("grade");
                                 String subject = rs3.getString("subjectId");
-                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                Statement stmt4 = con.createStatement();
+                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM teachers "
                                         + "WHERE id='" + rs3.getString("teacherId") + "'");
                                 while (rs4.next()) {
@@ -3888,7 +3884,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException ex) {
-                    System.out.println(ex);
+                    System.out.println("#047"+ex);
                 }
             }
             if (jTabbedPane3.getSelectedIndex() == 2) {
@@ -3911,17 +3907,20 @@ public class Main extends javax.swing.JFrame {
                     while (rs.next()) {
                         String resultId = rs.getString("id");
                         int marks = rs.getInt("marks");
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM exams "
                                 + "WHERE id='" + rs.getString("examId") + "'");
                         while (rs2.next()) {
                             String examName = rs2.getString("name");
                             String examDate = rs2.getString("date");
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + rs2.getString("classId") + "'");
                             while (rs3.next()) {
-                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                Statement stmt4 = con.createStatement();
+                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM subjects "
                                         + "WHERE id='" + rs3.getString("subjectId") + "'");
                                 while (rs4.next()) {
@@ -3935,7 +3934,7 @@ public class Main extends javax.swing.JFrame {
                     }
                     con.close();
                 } catch (SQLException ex) {
-                    System.out.println(ex);
+                    System.out.println("#048"+ex);
                 }
                 jComboBox6.removeAllItems();
                 jComboBox6.addItem("Please Select...");
@@ -3947,7 +3946,8 @@ public class Main extends javax.swing.JFrame {
                             + "FROM regclass "
                             + "WHERE studentId='" + id + "'");
                     while (rs.next()) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + rs.getString("subjectId") + "'");
                         while (rs2.next()) {
@@ -3955,7 +3955,8 @@ public class Main extends javax.swing.JFrame {
                                     + " - " + rs2.getString("subject"));
                         }
                     }
-                } catch (Exception e) {
+                } catch (SQLException e) {
+                    System.out.println("#049"+e);
                 }
             }
             if (jTabbedPane3.getSelectedIndex() == 3) {
@@ -4003,7 +4004,7 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println("#050"+e);
         }
     }//GEN-LAST:event_jTable5MouseClicked
 
@@ -4037,21 +4038,25 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE grade='" + parts[0] + "'"
                         + "AND subject='" + parts[1] + "'");
                 while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE subjectId='" + rs.getString("id") + "'");
                     while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM exams "
                                 + "WHERE classId='" + rs2.getString("id") + "'");
                         while (rs3.next()) {
-                            ResultSet rs4 = stmt.executeQuery("SELECT * "
+                            Statement stmt4 = con.createStatement();
+                            ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                     + "FROM results "
                                     + "WHERE examId='" + rs3.getString("id") + "'"
                                     + "AND studentId='" + id + "'");
                             while (rs4.next()) {
                                 String resultId = rs4.getString("id");
-                                ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                Statement stmt5 = con.createStatement();
+                                ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                         + "FROM exams "
                                         + "WHERE id='" + rs4.getString("examId") + "'");
                                 while (rs5.next()) {
@@ -4087,22 +4092,26 @@ public class Main extends javax.swing.JFrame {
                         + "FROM exams "
                         + "WHERE date='" + jTextField21.getText() + "'");
                 while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM results "
                             + "WHERE examId='" + rs.getString("id") + "'"
                             + "AND studentId='" + id + "'");
                     while (rs2.next()) {
                         String resultId = rs2.getString("id");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM exams "
                                 + "WHERE id='" + rs2.getString("examId") + "'");
                         while (rs3.next()) {
                             String examName = rs3.getString("name");
-                            ResultSet rs4 = stmt.executeQuery("SELECT * "
+                            Statement stmt4 = con.createStatement();
+                            ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + rs3.getString("classId") + "'");
                             while (rs4.next()) {
-                                ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                Statement stmt5 = con.createStatement();
+                                ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                         + "FROM subjects "
                                         + "WHERE id='" + rs4.getString("subjectId") + "'");
                                 while (rs5.next()) {
@@ -4116,7 +4125,8 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
+                System.out.println("#051"+e);
             }
         }
     }//GEN-LAST:event_jTextField21ActionPerformed
@@ -4172,13 +4182,15 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE grade='" + parts[0] + "'"
                         + "AND subject='" + parts[1] + "'");
                 while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE subjectId='" + rs.getString("id") + "'");
                     while (rs2.next()) {
                         String classId = rs2.getString("id");
                         int day = rs2.getInt("day");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + rs2.getString("teacherId") + "'");
                         while (rs3.next()) {
@@ -4212,7 +4224,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#052"+e);
             }
         }
     }//GEN-LAST:event_jComboBox8ActionPerformed
@@ -4235,7 +4247,8 @@ public class Main extends javax.swing.JFrame {
                 while (rs.next()) {
                     String classId = rs.getString("id");
                     int day = rs.getInt("day");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + rs.getString("subjectId") + "'");
                     while (rs2.next()) {
@@ -4268,7 +4281,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#053"+e);
             }
         }
     }//GEN-LAST:event_jComboBox9ActionPerformed
@@ -4291,12 +4304,14 @@ public class Main extends javax.swing.JFrame {
                     String classId = rs.getString("id");
                     subjectId = rs.getString("subjectId");
                     teacherId = rs.getString("teacherId");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + teacherId + "'");
                     while (rs2.next()) {
                         String teacher = rs2.getString("name");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + subjectId + "'");
                         while (rs3.next()) {
@@ -4308,7 +4323,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#054"+e);
             }
         }
     }//GEN-LAST:event_jComboBox10ActionPerformed
@@ -4396,13 +4411,13 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE type='" + jComboBox13.getSelectedItem() + "'");
                 while (rs.next()) {
                     Object[] row2 = {rs.getString("id"),
-                        rs.getString("type") ,  rs.getString("user"),
+                        rs.getString("type"), rs.getString("user"),
                         rs.getString("lastLogin")};
                     model.addRow(row2);
                 }
                 con.close();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#055"+e);
             }
         }
     }//GEN-LAST:event_jComboBox13ActionPerformed
@@ -4420,13 +4435,13 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE user='" + jTextField26.getText() + "'");
                 while (rs.next()) {
                     Object[] row2 = {rs.getString("id"),
-                        rs.getString("type") ,  rs.getString("user"),
+                        rs.getString("type"), rs.getString("user"),
                         rs.getString("lastLogin")};
                     model.addRow(row2);
                 }
                 con.close();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#056"+e);
             }
         }
     }//GEN-LAST:event_jTextField26ActionPerformed
@@ -4479,7 +4494,7 @@ public class Main extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Success!");
                     loadAccounts();
                 } catch (HeadlessException | SQLException e) {
-                    System.out.println(e);
+                    System.out.println("#057"+e);
                 }
             }
         }
@@ -4498,7 +4513,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Success!");
             loadAccounts();
         } catch (HeadlessException | SQLException e) {
-            System.out.println(e);
+            System.out.println("#058"+e);
         }
     }//GEN-LAST:event_jButton32ActionPerformed
 
@@ -4527,13 +4542,14 @@ public class Main extends javax.swing.JFrame {
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM results "
                     + "WHERE examId='" + id + "'");
-            stmt.executeUpdate("DELETE FROM exams "
+            Statement stmt2 = con.createStatement();
+            stmt2.executeUpdate("DELETE FROM exams "
                     + "WHERE id='" + id + "'");
             JOptionPane.showMessageDialog(this, "Success!");
             loadExams();
             con.close();
         } catch (HeadlessException | SQLException e) {
-            System.out.println(e);
+            System.out.println("#059"+e);
         }
     }//GEN-LAST:event_jButton18ActionPerformed
 
@@ -4564,7 +4580,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#060"+ex);
             }
         }
     }//GEN-LAST:event_cr1ActionPerformed
@@ -4592,12 +4608,14 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE grade='" + cr1x + "' AND subject='" + cr2x + "'");
                 while (rs.next()) {
                     subjectId = rs.getString("id");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE subjectId='" + subjectId + "'");
                     while (rs2.next()) {
                         teacherId = rs2.getString("teacherId");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + teacherId + "'");
                         while (rs3.next()) {
@@ -4607,7 +4625,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#061"+ex);
             }
         }
     }//GEN-LAST:event_cr2ActionPerformed
@@ -4661,7 +4679,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#062"+ex);
             }
         }
     }//GEN-LAST:event_cr3ActionPerformed
@@ -4697,7 +4715,8 @@ public class Main extends javax.swing.JFrame {
                         + "AND day='" + dayCho + "'");
                 while (rs.next()) {
                     classId = rs.getString("id");
-                    stmt.executeUpdate("INSERT INTO exams "
+                    Statement stmt2 = con.createStatement();
+                    stmt2.executeUpdate("INSERT INTO exams "
                             + "(name,classId,date) "
                             + "VALUES "
                             + "('" + jTextField22.getText() + "',"
@@ -4705,11 +4724,13 @@ public class Main extends javax.swing.JFrame {
                             + "'" + jTextField27.getText() + "')");
                     tGroupId.setText(rs.getString("telegramId"));
                     tAutomated.newExamAddedGroup();
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs2 = stmt3.executeQuery("SELECT * "
                             + "FROM regclass "
                             + "WHERE classId='" + classId + "'");
                     while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs3 = stmt4.executeQuery("SELECT * "
                                 + "FROM students "
                                 + "WHERE id='" + rs2.getString("studentId") + "'");
                         while (rs3.next()) {
@@ -4721,7 +4742,7 @@ public class Main extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Success!");
                 loadExams();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#063"+e);
             }
         }
         String  ExDate = cr1.getSelectedItem().toString();
@@ -4759,11 +4780,13 @@ public class Main extends javax.swing.JFrame {
                     String id = rs.getString("id");
                     String name = rs.getString("name");
                     String date = rs.getString("date");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE id='" + rs.getString("classId") + "'");
                     while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + rs2.getString("subjectId") + "'");
                         {
@@ -4776,7 +4799,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#064"+e);
             }
         }
     }//GEN-LAST:event_jTextField19ActionPerformed
@@ -4796,24 +4819,24 @@ public class Main extends javax.swing.JFrame {
                     String id = rs.getString("id");
                     String name = rs.getString("name");
                     String date = rs.getString("date");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE id='" + rs.getString("classId") + "'");
                     while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + rs2.getString("subjectId") + "'");
-                        {
-                            while (rs3.next()) {
-                                Object[] row = {id, name, rs3.getString("grade")
-                                    + " - " + rs3.getString("subject"), date};
-                                model.addRow(row);
-                            }
+                        while (rs3.next()) {
+                            Object[] row = {id, name, rs3.getString("grade")
+                                + " - " + rs3.getString("subject"), date};
+                            model.addRow(row);
                         }
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#065"+e);
             }
         }
     }//GEN-LAST:event_jTextField20ActionPerformed
@@ -4832,7 +4855,8 @@ public class Main extends javax.swing.JFrame {
                         + "WHERE grade='" + parts[0] + "' "
                         + "AND subject='" + parts[1] + "'");
                 while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM exams "
                             + "WHERE subjectId='" + rs.getString("id") + "'");
                     while (rs2.next()) {
@@ -4842,7 +4866,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#066"+e);
             }
         }
     }//GEN-LAST:event_jComboBox3ActionPerformed
