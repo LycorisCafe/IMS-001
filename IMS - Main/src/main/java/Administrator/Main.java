@@ -335,8 +335,8 @@ public class Main extends javax.swing.JFrame {
         jComboBox3.setSelectedIndex(0);
         jTextField20.setText("");
         examsReset();
-        DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
-        model.setRowCount(0);
+        DefaultTableModel model5 = (DefaultTableModel) jTable8.getModel();
+        model5.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -349,16 +349,16 @@ public class Main extends javax.swing.JFrame {
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
-                        + "WHERE id='" + id + "'");
+                        + "WHERE id='" + rs.getString("classId") + "'");
                 while (rs2.next()) {
                     Statement stmt3 = con.createStatement();
                     ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + rs2.getString("subjectId") + "'");
                     while (rs3.next()) {
-                        Object[] row = {id, name, rs3.getString("grade")
+                        Object[] row5 = {id, name, rs3.getString("grade")
                             + " - " + rs3.getString("subject"), date};
-                        model.addRow(row);
+                        model5.addRow(row5);
                     }
                 }
             }
