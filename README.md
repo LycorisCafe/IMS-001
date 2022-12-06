@@ -17,3 +17,4 @@ Institute Management System
 > Project Files :
 - [Project Folder](#)
 pending...
+- [PasteBin](https://pastebin.com/u/LycorisCafe/1/Xtzpd54Z)
