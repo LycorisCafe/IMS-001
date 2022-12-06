@@ -28,58 +28,11 @@ public class SplashScreen extends javax.swing.JFrame {
     public SplashScreen() {
         initComponents();
         formDetails();
-//        checkUpdates();
     }
 
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
-    }
-
-    private void checkUpdates() {
-        jLabel6.setText("Checking Updates...");
-        String newVersionCheck = Helper.MainDetails.newVersionCheck();
-        String thisVersion = Helper.MainDetails.version();
-        String newVersion = null;
-        float thisVersionx = 0;
-        float newVersionx = 0;
-
-        try {
-            URL url = new URL(newVersionCheck);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    newVersion = line;
-                }
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-
-        try {
-            thisVersionx = Float.parseFloat(thisVersion);
-            newVersionx = Float.parseFloat(newVersion);
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-        }
-
-        if (thisVersionx < newVersionx) {
-            File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\");
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            try ( PrintStream out = new PrintStream(
-                    new File(file + "newVersion.lc"))) {
-                out.println("1");
-            } catch (FileNotFoundException ex) {
-                System.out.println(ex);
-            }
-        }
-        jLabel6.setText("Loading...");
     }
 
     /**
@@ -96,7 +49,6 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Institute Management System");
@@ -117,9 +69,6 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/Loding(100x25).gif"))); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Consolas", 0, 10)); // NOI18N
-        jLabel6.setText("Loading...");
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -133,8 +82,7 @@ public class SplashScreen extends javax.swing.JFrame {
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel2))
-                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel2)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -147,9 +95,7 @@ public class SplashScreen extends javax.swing.JFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addGap(56, 56, 56)
+                        .addGap(71, 71, 71)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -216,7 +162,6 @@ public class SplashScreen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

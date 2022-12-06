@@ -9,11 +9,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.stream.Stream;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -93,12 +89,8 @@ public class IMS {
         }
 
         // ================ Download updates when available ====================
-        String updatePath = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc";
-        File update = new File(updatePath);
-        if (update.exists()) {
-            Helper.Updates updates = new Helper.Updates();
-            updates.setVisible(true);
-        }
+        Helper.AppUpdate updates = new Helper.AppUpdate();
+        updates.checkUpdates();
 
 //        // ========================= Check License =============================
 //        SystemInfo systemInfo = new SystemInfo();
@@ -112,13 +104,31 @@ public class IMS {
 //        String baseboard = comsys.getBaseboard().getSerialNumber();
 //        if (processor.equals(Helper.MainDetails.cpuId()) 
 //                && baseboard.equals(Helper.MainDetails.baseBordId())) {
-            Welcome welcome = new Welcome();
-            splash.dispose();
-            welcome.setVisible(true);
+        Welcome welcome = new Welcome();
+        splash.dispose();
+        welcome.setVisible(true);
 //        } else {
 //            AuthError auth = new AuthError();
 //            splash.dispose();
 //            auth.setVisible(true);
 //        }
+
+        // ================ Install updates when downloaded ====================
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
+                if (downloadedUpdate.exists()) {
+                    try {
+                        ProcessBuilder processBuilder
+                                = new ProcessBuilder("cmd.exe", "/c",
+                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
+                        processBuilder.redirectErrorStream(true);
+                        processBuilder.start();
+                    } catch (IOException e) {
+                        System.out.println("#016" + e);
+                    }
+                }
+            }
+        }, "Shutdown-thread"));
     }
 }

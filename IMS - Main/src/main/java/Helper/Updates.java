@@ -32,7 +32,7 @@ public class Updates extends javax.swing.JFrame {
     public Updates() {
         initComponents();
         formDetails();
-//        downloadUpdates();
+        downloadUpdates();
     }
     
     private void formDetails() {
@@ -43,9 +43,9 @@ public class Updates extends javax.swing.JFrame {
     private void downloadUpdates() {
         jLabel1.setText("Preparing Update for Download...");
         jProgressBar1.setStringPainted(true);
-        String newVersionDownload = MainDetails.newVersionDownload();
-        String unrarDownload = MainDetails.unrar();
-        String updaterDownload = MainDetails.updater();
+        String newVersionDownload = AppUpdate.newVersionDownload();
+        String unrarDownload = AppUpdate.unrar();
+        String updaterDownload = AppUpdate.updater();
         TelegramBot bot = new TelegramBot();
         try {
             URL url = new URL(newVersionDownload);
