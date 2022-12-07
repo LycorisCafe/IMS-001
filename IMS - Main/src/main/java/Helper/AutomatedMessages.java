@@ -79,7 +79,6 @@ public class AutomatedMessages {
                 + "Payments " + ":" + paymentDetails + "\n"
                 + "Time " + ":" + time
         );
-
         sendMessage();
     }
 
@@ -95,7 +94,6 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
-        System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(chatId);
         photo.setParseMode("html");
         photo.setCaption("Dear Student " + teacher + " has called an exam\n "
@@ -119,7 +117,6 @@ public class AutomatedMessages {
         // message body start
        
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
-        System.out.println(grade + " " + subject + " " + teacher + " " + day + groupId);
         photo.setChatId(groupId);
         photo.setCaption("Dear Student " + teacher + " has called an exam\n "
                 + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
