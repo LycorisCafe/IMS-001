@@ -105,7 +105,7 @@ public class Payments extends javax.swing.JFrame {
 
         jLabel3.setText("jLabel3");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Payments");
         setResizable(false);
 
@@ -228,8 +228,8 @@ public class Payments extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Main main = new Main();
-        main.setVisible(true);
+//        Main main = new Main();
+//        main.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
