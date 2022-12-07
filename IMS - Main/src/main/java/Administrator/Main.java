@@ -4927,10 +4927,10 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea broadcastMessage;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JComboBox<String> cr1;
-    private javax.swing.JComboBox<String> cr2;
-    private javax.swing.JComboBox<String> cr3;
-    private javax.swing.JComboBox<String> cr4;
+    public static javax.swing.JComboBox<String> cr1;
+    public static javax.swing.JComboBox<String> cr2;
+    public static javax.swing.JComboBox<String> cr3;
+    public static javax.swing.JComboBox<String> cr4;
     public static javax.swing.JLabel examId;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;

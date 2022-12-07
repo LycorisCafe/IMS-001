@@ -76,8 +76,8 @@ public class AutomatedMessages {
                 + "Studnt Id " + ":" + studentId + "\n"
                 + "Student Name " + ":" + studentName + "\n"
                 + "Atend Class " + ":" + atendClass + "\n"
-                + "Payments "+ ":" + paymentDetails + "\n"
-                + "Time "+ ":" + time
+                + "Payments " + ":" + paymentDetails + "\n"
+                + "Time " + ":" + time
         );
 
         sendMessage();
@@ -86,14 +86,19 @@ public class AutomatedMessages {
     public void newExamAddedStudent() {
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
         String chatId = Administrator.Main.telegramId.getText();
+        String grade = Administrator.Main.cr1.getSelectedItem().toString();
+        String subject = Administrator.Main.cr2.getSelectedItem().toString();
+        String teacher = Administrator.Main.cr3.getSelectedItem().toString();
+        String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        System.out.println("ok");
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
+        System.out.println(grade+" "+subject+" "+teacher+" "+day);
         message.setChatId(chatId);
-        message.setText("Dear Student " + examName + " Will be held on " + examDate + "\n"
-                + "Wish you all the best and "
+        message.setText("Dear Student,\n\n"
+                + examName + " Will be held on " + examDate + "\n"
+                + "Wish you all the best for the Exam! "
         );
 
         // message body end
@@ -105,7 +110,6 @@ public class AutomatedMessages {
         String groupId = Administrator.Main.tGroupId.getText();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        System.out.println("ok");
         // message body start
         // greeting msg ekakuth danna aa nikn wish you all the best wge
         // message body end
