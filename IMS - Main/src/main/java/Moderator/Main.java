@@ -659,8 +659,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         // TODO add your handling code here:
         Payments payments = new Payments();
         payments.setVisible(true);
-        webcam.close();
-        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
