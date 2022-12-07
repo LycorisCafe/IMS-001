@@ -84,6 +84,7 @@ public class AutomatedMessages {
     }
 
     public void newExamAddedStudent() {
+        System.out.println("Hello");
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
         String chatId = Administrator.Main.telegramId.getText();
         String grade = Administrator.Main.cr1.getSelectedItem().toString();
@@ -92,28 +93,39 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        // message body start
-        // greeting msg ekakuth danna aa nikn wish you all the best wge
-        System.out.println(grade+" "+subject+" "+teacher+" "+day);
-        message.setChatId(chatId);
-        message.setText("Dear Student,\n\n"
-                + examName + " Will be held on " + examDate + "\n"
-                + "Wish you all the best for the Exam! "
+        
+        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
+        System.out.println(grade + " " + subject + " " + teacher + " " + day);
+        photo.setChatId(chatId);
+        photo.setParseMode("html");
+        photo.setCaption("Dear Student " + teacher + " has called an exam\n "
+                + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
+                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!! "
         );
+        sendPhoto();
 
-        // message body end
-//        sendMessage(); // or sendPhoto
+
     }
 
     public void newExamAddedGroup() {
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
         String groupId = Administrator.Main.tGroupId.getText();
+        String grade = Administrator.Main.cr1.getSelectedItem().toString();
+        String subject = Administrator.Main.cr2.getSelectedItem().toString();
+        String teacher = Administrator.Main.cr3.getSelectedItem().toString();
+        String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
         // message body start
-        // greeting msg ekakuth danna aa nikn wish you all the best wge
-        // message body end
-//        sendMessage(); // or sendPhoto();
+       
+        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
+        System.out.println(grade + " " + subject + " " + teacher + " " + day + groupId);
+        photo.setChatId(groupId);
+        photo.setCaption("Dear Student " + teacher + " has called an exam\n "
+                + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
+                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!! "
+        );
+        sendPhoto();
     }
 
     // sending operations =========>>>>>>>>>>>
