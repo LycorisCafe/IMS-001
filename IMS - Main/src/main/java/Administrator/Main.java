@@ -3765,10 +3765,10 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 Statement stmt2 = con.createStatement();
                 stmt2.executeUpdate("INSERT INTO classes "
-                        + "(subjectId,teacherId,payment,day,telegramId)"
+                        + "(subjectId,teacherId,payment,day,time,duration,telegramId)"
                         + "VALUES "
                         + "('" + rs.getString("id") + "','" + id + "',"
-                        + "'" + payment + "','" + day + "','" + telegramId.getText() + "')");
+                        + "'" + payment + "','" + day + "','0','0'," + telegramId.getText() + "')");
                 JOptionPane.showMessageDialog(this, "Success!");
                 teacherClassesTable();
             }
@@ -3788,20 +3788,6 @@ public class Main extends javax.swing.JFrame {
         String id = jTable1.getValueAt(r, 0).toString();
         int r1 = jTable1.getSelectedRow();
         String id1 = jTable2.getValueAt(r, 0).toString();
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM classes "
-                    + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
-            while (rs.next()) {
-                Statement stmt2 = con.createStatement();
-                stmt2.executeUpdate("DELETE FROM regclass "
-                        + "WHERE classId='" + rs.getString("id") + "'");
-            }
-        } catch (SQLException e) {
-            System.out.println("#045" + e);
-        }
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -4481,10 +4467,10 @@ public class Main extends javax.swing.JFrame {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate("INSERT INTO login "
-                        + "(user,pass,type,lastLogin) "
+                        + "(user,pass,type,lastLogin,status) "
                         + "VALUES "
                         + "('" + jTextField28.getText() + "','" + psw + "',"
-                        + "'" + jComboBox12.getSelectedItem().toString() + "','0')");
+                        + "'" + jComboBox12.getSelectedItem().toString() + "','0','0')");
 
                 JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException e) {
@@ -4560,10 +4546,7 @@ public class Main extends javax.swing.JFrame {
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("DELETE FROM results "
-                    + "WHERE examId='" + id + "'");
-            Statement stmt2 = con.createStatement();
-            stmt2.executeUpdate("DELETE FROM exams "
+            stmt.executeUpdate("DELETE FROM exams "
                     + "WHERE id='" + id + "'");
             JOptionPane.showMessageDialog(this, "Success!");
             loadExams();
@@ -4738,12 +4721,12 @@ public class Main extends javax.swing.JFrame {
                     classId = rs.getString("id");
                     Statement stmt2 = con.createStatement();
                     stmt2.executeUpdate("INSERT INTO exams "
-                            + "(name,classId,date,time) "
+                            + "(name,classId,date,time,duration) "
                             + "VALUES "
                             + "('" + jTextField22.getText() + "',"
                             + "'" + classId + "',"
                             + "'" + jTextField27.getText() + "',"
-                            + "'" + examTime + "')");
+                            + "'" + examTime + "','0')");
                     tGroupId.setText(rs.getString("telegramId"));
                     tAutomated.newExamAddedGroup();
                     Statement stmt3 = con.createStatement();

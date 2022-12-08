@@ -1049,15 +1049,16 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
+            String today = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate("INSERT INTO payments "
-                        + "(studentId,classId,year,month,status) "
+                        + "(studentId,classId,year,month,status,paymentDate) "
                         + "VALUES ('" + newStudent + "',"
                         + "'" + jTable1.getValueAt(y, 0) + "',"
                         + "'" + year + "',"
-                        + "'" + month + "','1')");
+                        + "'" + month + "','1','" + today + "')");
                 con.close();
             } catch (SQLException ex) {
                 System.out.println(ex);

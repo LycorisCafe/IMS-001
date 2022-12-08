@@ -496,15 +496,16 @@ public class EditClasses extends javax.swing.JFrame {
         }
         String year = new SimpleDateFormat("yyyy").format(new Date());
         String month = new SimpleDateFormat("MM").format(new Date());
+        String today = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO payments "
-                    + "(studentId,classId,year,month,status) "
+                    + "(studentId,classId,year,month,status,paymentDate) "
                     + "VALUES ('" + jTextField1.getText() + "',"
                     + "'" + classId + "',"
                     + "'" + year + "',"
-                    + "'" + month + "','0')");
+                    + "'" + month + "','0','" + today + "')");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex);

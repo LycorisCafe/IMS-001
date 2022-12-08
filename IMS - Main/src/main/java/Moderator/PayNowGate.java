@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,7 +27,7 @@ public class PayNowGate extends javax.swing.JFrame {
         formDetails();
         dataGrab();
     }
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
@@ -216,12 +218,13 @@ public class PayNowGate extends javax.swing.JFrame {
                             year = year + 1;
                             month = 1;
                         }
+                        String today = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
                         stmt.executeUpdate("INSERT INTO payments "
-                                + "(studentId,classId,year,month,status) "
+                                + "(studentId,classId,year,month,status,paymentDate) "
                                 + "VALUES ('" + jTextField1.getText() + "',"
                                 + "'" + jTextField2.getText() + "',"
                                 + "'" + year + "',"
-                                + "'" + month + "','1')");
+                                + "'" + month + "','1','" + today + "')");
                     } else {
                         stmt.executeUpdate("UPDATE payments "
                                 + "SET status='1' "
