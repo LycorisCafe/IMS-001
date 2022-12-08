@@ -92,14 +92,11 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-<<<<<<< HEAD
 
         photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawhhjkailyDqig3uSn5KyAYCD1ONotwACQbExG-XLiVSSFmc_l8QlGQEAAwIAA3kAAysE"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
-=======
         
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
->>>>>>> ad44a3695b2efa2b45dda25c1af327ce05d38d0b
         photo.setChatId(chatId);
         photo.setParseMode("html");
         photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
