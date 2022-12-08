@@ -12,7 +12,6 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -40,7 +38,6 @@ public class CardGenerator {
         String studentName = Moderator.NewStudent.tSendStudentName.getText();
 
         // if for student name length
-        
         try ( Stream<String> lines = Files.lines(
                 Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\files.lc"))) {
             defFileLocation = lines.skip(0).findFirst().get();
@@ -61,7 +58,8 @@ public class CardGenerator {
         }
         try {
             Document doc = new Document(PageSize.B8);
-            PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(defFileLocation + "\\.pdf"));
+            PdfWriter writer = PdfWriter.getInstance(doc,
+                    new FileOutputStream(defFileLocation + "\\" + studentId + ".pdf"));
             doc.open();
             FixText(studentName, 30, 60, writer, 13);
             FixText(institute + "-STUDENT-" + studentId, 55, 23, writer, 6);
