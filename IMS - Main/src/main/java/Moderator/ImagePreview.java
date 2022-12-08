@@ -23,6 +23,7 @@ public class ImagePreview extends javax.swing.JFrame {
     }
     
     private void getImage(){
+        jLabel1.setIcon(null);
         jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
     }
     
