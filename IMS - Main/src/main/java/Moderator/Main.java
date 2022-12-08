@@ -42,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Lycoris Cafe
  */
 public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory {
-    
+
     private WebcamPanel panel = null;
     private Webcam webcam = null;
     private Executor executor = Executors.newSingleThreadExecutor(this);
@@ -64,7 +64,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         disablePanels();
         dataGrab();
     }
-    
+
     private void dataGrab() {
         try {
             Connection con = Helper.DB.connect();
@@ -88,13 +88,13 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             System.out.println(e);
         }
     }
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-    
+
     private void disablePanels() {
         Component[] com1 = jPanel6.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -114,7 +114,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jComboBox3.setSelectedIndex(0);
         jButton2.setEnabled(false);
     }
-    
+
     private void webcamClose() {
         try {
             webcam.close();
@@ -122,19 +122,19 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             System.out.println(e);
         }
     }
-    
+
     private void initWebCam() {
         try {
             Dimension size = WebcamResolution.QVGA.getSize();
             webcam = Webcam.getWebcams().get(0);
             webcam.setViewSize(size);
-            
+
             panel = new WebcamPanel(webcam);
             panel.setPreferredSize(size);
             panel.setFPSDisplayed(true);
-            
+
             jPanel2.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 250));
-            
+
             executor.execute(this);
         } catch (WebcamException e) {
             System.out.println(e);
@@ -169,7 +169,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel4 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
@@ -275,13 +274,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             }
         });
 
-        jButton3.setText("Check");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
         jButton2.setText("Payments");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -303,11 +295,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addComponent(jTextField5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jComboBox3, 0, 284, Short.MAX_VALUE)
+                            .addComponent(jTextField5)))
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -321,8 +310,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -663,11 +651,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        if (jComboBox3.getSelectedIndex() != 0) {
+        if (jComboBox3.getSelectedIndex() != 0 && jComboBox3.getSelectedItem() != null) {
             String selectedClass = jComboBox3.getSelectedItem().toString();
             String thisYear = new SimpleDateFormat("yyyy").format(new Date());
             String thisMonth = new SimpleDateFormat("MM").format(new Date());
@@ -711,7 +695,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 jButton1.setEnabled(false);
             }
         }
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
@@ -950,7 +934,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -1009,7 +992,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             if (image != null) {
                 LuminanceSource source = new BufferedImageLuminanceSource(image);
                 BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                
+
                 try {
                     result = new MultiFormatReader().decode(bitmap);
                 } catch (NotFoundException ex) {
@@ -1022,14 +1005,14 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             }
         } while (true);
     }
-    
+
     @Override
     public Thread newThread(Runnable r) {
         Thread t = new Thread(r, "My Thread");
         t.setDaemon(true);
         return t;
     }
-    
+
     private void qrSlice() {
         Helper.MainDetails data = new Helper.MainDetails();
         String instituteName = data.instituteName();
