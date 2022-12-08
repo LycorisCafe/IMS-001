@@ -92,6 +92,8 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
+        String examTime = Administrator.Main.jTextField32.getText() + " "
+                + Administrator.Main.jComboBox15.getSelectedItem().toString();
 
         photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
@@ -118,6 +120,8 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
+        String examTime = Administrator.Main.jTextField32.getText() + " "
+                + Administrator.Main.jComboBox15.getSelectedItem().toString();
         // message body start
 
         photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
@@ -131,7 +135,6 @@ public class AutomatedMessages {
                 + "Exam Date " + "- <b>" + examDate + "\n"
                 + "</b>Time " + "- " + "TIme\n\n"
                 + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!\n "
-                
         );
         sendPhoto();
     }
