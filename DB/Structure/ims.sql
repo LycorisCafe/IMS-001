@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 01, 2022 at 11:26 AM
+-- Host: localhost
+-- Generation Time: Dec 08, 2022 at 11:55 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -75,7 +75,8 @@ CREATE TABLE `exams` (
   `id` int(20) NOT NULL,
   `name` varchar(50) NOT NULL,
   `classId` int(20) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `time` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -97,8 +98,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
-(1, 'admin', 'admin', 'Administrator', '2022-12-01 09:03:35'),
-(2, 'user', 'user', 'Moderator', '2022-11-29 22:18:18');
+(1, 'admin', 'admin', 'Administrator', '2022-12-08 16:04:16'),
+(2, 'user', 'user', 'Moderator', '2022-12-08 15:39:28');
 
 -- --------------------------------------------------------
 
@@ -137,7 +138,7 @@ CREATE TABLE `results` (
   `id` int(20) NOT NULL,
   `examId` int(20) NOT NULL,
   `studentId` int(20) NOT NULL,
-  `marks` int(3) NOT NULL
+  `marks` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -305,7 +306,7 @@ ALTER TABLE `exams`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `payments`

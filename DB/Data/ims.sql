@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 01, 2022 at 11:27 AM
+-- Host: localhost
+-- Generation Time: Dec 08, 2022 at 11:56 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -26,50 +26,22 @@ SET time_zone = "+00:00";
 --
 
 INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `telegramId`) VALUES
-(1, 1, 1, 1000, 6, '-1001698896292'),
-(2, 2, 1, 500, 5, '4654654');
+(1, 1, 1, 1000, 6, '-1001698896292');
+
+--
+-- Dumping data for table `exams`
+--
+
+INSERT INTO `exams` (`id`, `name`, `classId`, `date`, `time`) VALUES
+(13, 'jhfgjhffgf', 1, '2022-11-02', '0'),
+(14, 'හෙහ් හේ', 1, '2022-12-12', '0');
 
 --
 -- Dumping data for table `payments`
 --
 
 INSERT INTO `payments` (`id`, `studentId`, `classId`, `year`, `month`, `status`) VALUES
-(7, 0, 1, '2022', '11', 1),
-(8, 1, 1, '2022', '11', 1),
-(9, 2, 1, '2022', '11', 1),
-(10, 0, 1, '2022', '12', 1),
-(11, 0, 1, '2023', '1', 1),
-(12, 0, 1, '2023', '2', 1),
-(13, 0, 1, '2023', '3', 1),
-(14, 0, 1, '2023', '4', 1),
-(15, 0, 1, '2023', '5', 1),
-(16, 0, 1, '2023', '6', 1),
-(17, 0, 1, '2023', '7', 1),
-(18, 0, 1, '2023', '8', 1),
-(19, 0, 1, '2023', '9', 1),
-(20, 0, 1, '2023', '10', 1),
-(21, 0, 1, '2023', '10', 1),
-(22, 0, 1, '2023', '10', 1),
-(23, 0, 1, '2023', '10', 1),
-(24, 0, 1, '2023', '10', 1),
-(25, 0, 1, '2023', '10', 1),
-(26, 0, 1, '2023', '10', 1),
-(27, 0, 1, '2023', '10', 1),
-(28, 0, 1, '2023', '10', 1),
-(29, 0, 1, '2023', '10', 1),
-(30, 0, 1, '2023', '10', 1),
-(31, 0, 1, '2023', '10', 1),
-(32, 0, 1, '2023', '10', 1),
-(33, 0, 1, '2023', '10', 1),
-(34, 0, 1, '2023', '10', 1),
-(35, 0, 1, '2023', '10', 1),
-(36, 0, 1, '2023', '10', 1),
-(37, 0, 1, '2023', '10', 1),
-(38, 0, 1, '2023', '10', 1),
-(39, 0, 1, '2023', '10', 1),
-(40, 0, 1, '2023', '10', 1),
-(41, 0, 1, '2023', '10', 1),
-(42, 0, 1, '2023', '10', 1);
+(44, 4, 1, '2022', '12', 1);
 
 --
 -- Dumping data for table `regclass`
@@ -78,7 +50,9 @@ INSERT INTO `payments` (`id`, `studentId`, `classId`, `year`, `month`, `status`)
 INSERT INTO `regclass` (`id`, `studentId`, `classId`) VALUES
 (17, 0, 1),
 (18, 1, 1),
-(19, 2, 1);
+(19, 2, 1),
+(20, 3, 1),
+(21, 4, 1);
 
 --
 -- Dumping data for table `students`
@@ -87,7 +61,9 @@ INSERT INTO `regclass` (`id`, `studentId`, `classId`) VALUES
 INSERT INTO `students` (`id`, `firstName`, `lastName`, `guardianName`, `guardianPhone`, `address`, `grade`, `telegramId`, `status`) VALUES
 (0, 'Naveen', 'Nirmana', 'Balasooriya', '0711716161', 'fdgdfgdf', 8, '1241006555', 0),
 (1, 'fgfdgdf', 'fgdfg', 'dfgdfgf', '1234567890', 'fgfg', 7, '12410065557', 0),
-(2, 'sxvf', 'dfgdf', 'dfgdf', '0147852369', 'dfgdfg', 7, '1241006555', 0);
+(2, 'sxvf', 'dfgdf', 'dfgdf', '0147852369', 'dfgdfg', 7, '1241006555', 0),
+(3, 'Naveen', 'Balasooriya', 'Anupama Balasooriya', '0711716616', 'No. 109, Diddeliya, Meetiyagoda', 8, '1241006555', 0),
+(4, 'jdfgf', 'gfjfg', 'gjgjfg', '0123456789', 'fgfgh', 7, '1241006555', 0);
 
 --
 -- Dumping data for table `subjects`
