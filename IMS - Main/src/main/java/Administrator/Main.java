@@ -4692,11 +4692,14 @@ public class Main extends javax.swing.JFrame {
         if (cr4.getSelectedIndex() == 0) {
             jTextField22.setText("");
             jTextField27.setText("");
+            jTextField32.setText("");
             jTextField22.setEnabled(false);
             jTextField27.setEnabled(false);
+            jTextField32.setEnabled(false);
         } else {
             jTextField22.setEnabled(true);
             jTextField27.setEnabled(true);
+            jTextField32.setEnabled(true);
         }
         
 
