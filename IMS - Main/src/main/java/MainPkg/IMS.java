@@ -9,7 +9,11 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
+import java.util.stream.Stream;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -28,6 +32,8 @@ import oshi.hardware.HardwareAbstractionLayer;
 public class IMS {
 
     public static void main(String[] args) {
+        Helper.AppUpdate updates = new Helper.AppUpdate();
+
         // =========================== Set Theme ===============================
         File theme = new File("C:\\ProgramData\\LycorisCafe\\IMS\\theme.lc");
         if (theme.exists()) {
@@ -79,6 +85,11 @@ public class IMS {
         if (!file2.exists()) {
             file2.mkdirs();
         }
+        File file3 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\frontPage.png");
+        File file4 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\backPage.png");
+        if (!file3.exists() && !file4.exists()) {
+            updates.firstRunDownloads();
+        }
 
         // ===================== Register Telegram Bot =========================
         try {
@@ -89,7 +100,6 @@ public class IMS {
         }
 
         // ================ Download updates when available ====================
-        Helper.AppUpdate updates = new Helper.AppUpdate();
         updates.checkUpdates();
 
 //        // ========================= Check License =============================

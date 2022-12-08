@@ -1049,7 +1049,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             } catch (SQLException ex) {
                 System.out.println(ex);
             }
-            String today = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+            String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
@@ -1064,6 +1064,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 System.out.println(ex);
             }
         }
+        
+        
+        tSendStudentId.setText("" + newStudent);
+        tSendStudentName.setText(fName.getText() + " " + lName.getText());
+        
+        Helper.CardGenerator card = new Helper.CardGenerator();
+        card.cardGenerator();
 
         File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
         File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
@@ -1074,19 +1081,9 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             tempImage.renameTo(imgPathSave);
             tempImage.delete();
         }
-        tSendStudentId.setText("" + newStudent);
-        tSendStudentName.setText(fName.getText() + " " + lName.getText());
+        
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
-
-        // student card making==>>
-        String fileLocation;
-        try ( Stream<String> lines = Files.lines(
-                Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\files.lc"))) {
-            fileLocation = lines.skip(0).findFirst().get();
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, ex);
-        }
 
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();

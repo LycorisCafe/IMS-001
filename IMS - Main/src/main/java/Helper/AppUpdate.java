@@ -5,12 +5,15 @@
 package Helper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import org.telegram.telegrambots.meta.api.methods.GetFile;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -40,6 +43,12 @@ public class AppUpdate {
         // updater.bat download link
         String updater = "https://pastebin.com/raw/7x8pwcrv";
         return updater;
+    }
+
+    public static String firstRun() {
+        // first run downloads
+        String firstRun = "https://pastebin.com/raw/GZqrmR50";
+        return firstRun;
     }
 
     public void checkUpdates() {
@@ -75,6 +84,41 @@ public class AppUpdate {
         if (thisVersionx < newVersionx) {
             Updates update = new Updates();
             update.setVisible(true);
+        }
+    }
+
+    public void firstRunDownloads() {
+        String firstRun = firstRun();
+        TelegramBot bot = new TelegramBot();
+        String fileName;
+        try {
+            URL url = new URL(firstRun);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                int count = 0;
+                while ((line = br.readLine()) != null) {
+                    count = count + 1;
+                    if (count == 1) {
+                        fileName = "frontPage.png";
+                    } else {
+                        fileName = "backPage.png";
+                    }
+                    try {
+                        GetFile getFile = new GetFile();
+                        getFile.setFileId(line);
+                        String filePath = bot.execute(getFile).getFilePath();
+                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\" + fileName));
+                    } catch (TelegramApiException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
 }
