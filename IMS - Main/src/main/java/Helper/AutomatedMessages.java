@@ -93,17 +93,21 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
+
+        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawhhjkailyDqig3uSn5KyAYCD1ONotwACQbExG-XLiVSSFmc_l8QlGQEAAwIAA3kAAysE"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(chatId);
         photo.setParseMode("html");
-        photo.setCaption("Dear Student " + teacher + " has called an exam\n "
-                + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
-                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!! "
+        photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
+                + teacher + " has called an exam<b> " + examName + "\n\n"
+                + "</b>Exam Name " + "- " + examName + "\n"
+                + "Subjet " + "- " + subject + "\n"
+                + "Grade " + "- " + grade + "\n"
+                + "Exam Date " + "- <b>" + examDate + "\n"
+                + "</b>Time " + "- " + "TIme\n\n"
+                + "<code>Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!</code>  "
         );
         sendPhoto();
-
 
     }
 
@@ -117,7 +121,7 @@ public class AutomatedMessages {
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
         // message body start
-       
+
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day + groupId);
         photo.setChatId(groupId);
@@ -125,7 +129,7 @@ public class AutomatedMessages {
                 + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
                 + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!! "
         );
-        sendPhoto();
+//        sendPhoto();
     }
 
     // sending operations =========>>>>>>>>>>>
