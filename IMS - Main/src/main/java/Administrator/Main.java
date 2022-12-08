@@ -346,6 +346,7 @@ public class Main extends javax.swing.JFrame {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String date = rs.getString("date");
+                String time = rs.getString("time");
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
@@ -357,7 +358,7 @@ public class Main extends javax.swing.JFrame {
                             + "WHERE id='" + rs2.getString("subjectId") + "'");
                     while (rs3.next()) {
                         Object[] row5 = {id, name, rs3.getString("grade")
-                            + " - " + rs3.getString("subject"), date};
+                            + " - " + rs3.getString("subject"), date, time};
                         model5.addRow(row5);
                     }
                 }
