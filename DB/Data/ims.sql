@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 08, 2022 at 12:16 PM
+-- Generation Time: Dec 08, 2022 at 12:47 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -25,23 +25,23 @@ SET time_zone = "+00:00";
 -- Dumping data for table `classes`
 --
 
-INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `telegramId`) VALUES
-(1, 1, 1, 1000, 6, '-1001698896292');
+INSERT INTO `classes` (`id`, `subjectId`, `teacherId`, `payment`, `day`, `time`, `duration`, `telegramId`) VALUES
+(1, 1, 1, 1000, 6, '0', 0, '-1001698896292');
 
 --
 -- Dumping data for table `exams`
 --
 
-INSERT INTO `exams` (`id`, `name`, `classId`, `date`, `time`) VALUES
-(13, 'jhfgjhffgf', 1, '2022-11-02', '0'),
-(14, 'හෙහ් හේ', 1, '2022-12-12', '0');
+INSERT INTO `exams` (`id`, `name`, `classId`, `date`, `time`, `duration`) VALUES
+(13, 'jhfgjhffgf', 1, '2022-11-02', '0', 0),
+(14, 'හෙහ් හේ', 1, '2022-12-12', '0', 0);
 
 --
 -- Dumping data for table `payments`
 --
 
-INSERT INTO `payments` (`id`, `studentId`, `classId`, `year`, `month`, `status`) VALUES
-(44, 4, 1, '2022', '12', 1);
+INSERT INTO `payments` (`id`, `studentId`, `classId`, `year`, `month`, `status`, `paymentDate`) VALUES
+(44, 4, 1, '2022', '12', 1, '2022-11-12');
 
 --
 -- Dumping data for table `regclass`

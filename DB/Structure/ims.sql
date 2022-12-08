@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 08, 2022 at 12:16 PM
+-- Generation Time: Dec 08, 2022 at 12:46 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -30,7 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `attendance` (
   `id` int(20) NOT NULL,
   `regClassId` int(20) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `time` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -45,6 +46,8 @@ CREATE TABLE `classes` (
   `teacherId` int(20) NOT NULL,
   `payment` int(4) NOT NULL,
   `day` int(1) NOT NULL,
+  `time` varchar(8) NOT NULL,
+  `duration` int(2) NOT NULL,
   `telegramId` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -76,7 +79,8 @@ CREATE TABLE `exams` (
   `name` varchar(50) NOT NULL,
   `classId` int(20) NOT NULL,
   `date` date NOT NULL,
-  `time` varchar(8) NOT NULL
+  `time` varchar(8) NOT NULL,
+  `duration` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -90,16 +94,17 @@ CREATE TABLE `login` (
   `user` varchar(20) NOT NULL,
   `pass` varchar(30) NOT NULL,
   `type` varchar(20) NOT NULL,
-  `lastLogin` varchar(50) NOT NULL
+  `lastLogin` varchar(50) NOT NULL,
+  `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `login`
 --
 
-INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`) VALUES
-(1, 'admin', 'admin', 'Administrator', '2022-12-08 16:04:16'),
-(2, 'user', 'user', 'Moderator', '2022-12-08 15:39:28');
+INSERT INTO `login` (`id`, `user`, `pass`, `type`, `lastLogin`, `status`) VALUES
+(1, 'admin', 'admin', 'Administrator', '2022-12-08 16:04:16', 0),
+(2, 'user', 'user', 'Moderator', '2022-12-08 15:39:28', 0);
 
 -- --------------------------------------------------------
 
@@ -113,7 +118,8 @@ CREATE TABLE `payments` (
   `classId` int(20) NOT NULL,
   `year` varchar(4) NOT NULL,
   `month` varchar(2) NOT NULL,
-  `status` int(1) NOT NULL
+  `status` int(1) NOT NULL,
+  `paymentDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -150,7 +156,9 @@ CREATE TABLE `results` (
 CREATE TABLE `specialclasses` (
   `id` int(20) NOT NULL,
   `classId` int(20) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `time` varchar(8) NOT NULL,
+  `duration` int(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
