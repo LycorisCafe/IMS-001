@@ -19,6 +19,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.stream.Stream;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -732,25 +735,24 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png";
+        File file = new File(path);
         if (jButton2.getText().equals("Get Camera View")) {
-            File file = new File(path);
             if (file.exists()) {
                 file.delete();
             }
             try {
-                Webcam webcam = Webcam.getDefault();
+                webcam = Webcam.getDefault();
                 webcam.open();
-            } catch (Exception e) {
+            } catch (WebcamException e) {
                 System.out.println(e);
             }
             jButton2.setText("Capture");
         } else {
-            File file = new File(path);
             if (file.exists()) {
                 file.delete();
             }
             try {
-                Webcam webcam = Webcam.getDefault();
+                webcam = Webcam.getDefault();
                 webcam.open();
                 BufferedImage img = webcam.getImage();
                 BufferedImage newImg = img.getSubimage(img.getNumXTiles() / 2, img.getNumYTiles() / 2, img.getHeight(), img.getHeight());
@@ -1066,13 +1068,25 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
         if (imgPathSave.exists()) {
             imgPathSave.delete();
+            tempImage.renameTo(imgPathSave);
         } else {
             tempImage.renameTo(imgPathSave);
+            tempImage.delete();
         }
         tSendStudentId.setText("" + newStudent);
         tSendStudentName.setText(fName.getText() + " " + lName.getText());
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
+
+        // student card making==>>
+        String fileLocation;
+        try ( Stream<String> lines = Files.lines(
+                Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\files.lc"))) {
+            fileLocation = lines.skip(0).findFirst().get();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex);
+        }
+
         JOptionPane.showMessageDialog(this, "Success!");
         Component[] com1 = jPanel9.getComponents();
         for (int a = 0; a < com1.length; a++) {

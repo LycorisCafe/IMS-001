@@ -4535,8 +4535,8 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
-        int r = jTable7.getSelectedRow();
-        String id = jTable7.getValueAt(r, 0).toString();
+        int r = jTable8.getSelectedRow();
+        String id = jTable8.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
