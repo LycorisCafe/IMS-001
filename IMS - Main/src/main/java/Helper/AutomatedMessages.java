@@ -93,17 +93,14 @@ public class AutomatedMessages {
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
 
-        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawhhjkailyDqig3uSn5KyAYCD1ONotwACQbExG-XLiVSSFmc_l8QlGQEAAwIAA3kAAysE"));
+        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
-        
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
         photo.setChatId(chatId);
         photo.setParseMode("html");
         photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
-                + teacher + " has called an exam<b> " + examName + "\n\n"
+                + teacher + " has called an exam<b> " + "\n\n"
                 + "</b>Exam Name " + "- " + examName + "\n"
-                + "Subjet " + "- " + subject + "\n"
-                + "Grade " + "- " + grade + "\n"
+                + "Subject " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
                 + "</b>Time " + "- " + "TIme\n\n"
                 + "<code>Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!</code>  "
@@ -123,13 +120,20 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         // message body start
 
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADJWOQu1s0v-FOwfh8rNTKhv2xUsGlAAJBsTEb5cuJVKqRfyj1EdxMAQADAgADbQADKwQ"));
+        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
+        System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(groupId);
-        photo.setCaption("Dear Student " + teacher + " has called an exam\n "
-                + examName + "this  will be held on <b>" + examDate + "</b>\n\n"
-                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!! "
+        photo.setParseMode("html");
+        photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
+                + teacher + " has called an exam<b> " + "\n\n"
+                + "</b>Exam Name " + "- " + examName + "\n"
+                + "Subject " + "- " + grade + " " + subject + "\n"
+                + "Exam Date " + "- <b>" + examDate + "\n"
+                + "</b>Time " + "- " + "TIme\n\n"
+                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!\n "
+                
         );
-//        sendPhoto();
+        sendPhoto();
     }
 
     // sending operations =========>>>>>>>>>>>
