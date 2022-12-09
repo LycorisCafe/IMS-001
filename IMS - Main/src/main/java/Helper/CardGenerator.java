@@ -4,19 +4,36 @@
  */
 package Helper;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.io.font.PdfEncodings;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.element.AreaBreak;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.IBlockElement;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.properties.AreaBreakType;
+import static com.itextpdf.layout.properties.Property.FONT;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
@@ -28,18 +45,14 @@ import javax.imageio.ImageIO;
  */
 public class CardGenerator {
 
-    String studentName = Moderator.NewStudent.tSendStudentName.getText();
-    int studentX;
-
     public void cardGenerator() {
         String defFileLocation = null;
+        String studentName = Moderator.NewStudent.tSendStudentName.getText();
         String tempStudentPic = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png";
         String tempQr = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempQR.png";
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\";
         String institute = Helper.MainDetails.instituteName();
         String studentId = Moderator.NewStudent.tSendStudentId.getText();
-
-        studentLength();
 
         try ( Stream<String> lines = Files.lines(
                 Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\files.lc"))) {
@@ -62,130 +75,70 @@ public class CardGenerator {
         }
 
         try {
-            Document doc = new Document(PageSize.B8);
-            PdfWriter writer = PdfWriter.getInstance(doc,
-                    new FileOutputStream(defFileLocation + "\\" + studentId + ".pdf"));
+            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(studentId + defFileLocation + ".pdf"));
+            PageSize pageSize = PageSize.B8;
+            Document doc = new Document(pdfDoc, pageSize);
+            doc.setMargins(0, 0, 0, 0);
 
-            doc.open();
-            FixText(studentName, studentX, 60, writer, 13);
-            FixText(institute + "-STUDENT-" + studentId, 55, 23, writer, 6);
-            PdfContentByte canvas = writer.getDirectContentUnder();
-            Image frontPage = Image.getInstance(path + "frontPage.png");
-            frontPage.scaleAbsolute(PageSize.B8);
-            frontPage.setAbsolutePosition(0, 0);
-            canvas.addImage(frontPage);
+            PdfCanvas canvas = new PdfCanvas(pdfDoc.addNewPage());
+            canvas.addImageFittedIntoRectangle(ImageDataFactory.create(
+                    path + "frontPage.png"),
+                    pageSize, false);
+            Table table = new Table(1);
+            Cell c0 = new Cell()
+                    .setWidth(170)
+                    .setBorder(Border.NO_BORDER)
+                    .add(new Paragraph("\n\n\n\n\n\n\n\n\n\n\n"))
+                    .setFontSize(10)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE);
+            table.addCell(c0);
+            Cell c1 = new Cell()
+                    .setWidth(170)
+                    .setBorder(Border.NO_BORDER)
+                    .add(new Paragraph(studentName))
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE);
+            table.addCell(c1);
+            Cell c2 = new Cell()
+                    .setWidth(170)
+                    .setBorder(Border.NO_BORDER)
+                    .add(new Paragraph("\n\n\n\n"))
+                    .setFontSize(4)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE);
+            table.addCell(c2);
+            Cell c3 = new Cell()
+                    .setWidth(170)
+                    .setBorder(Border.NO_BORDER)
+                    .add(new Paragraph(institute + "-STUDENT-" + studentId))
+                    .setFontSize(8)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setVerticalAlignment(VerticalAlignment.MIDDLE);
+            table.addCell(c3);
 
-            PdfContentByte canvas1 = writer.getDirectContentUnder();
-            Image studentPic = Image.getInstance(tempStudentPic);
-            studentPic.setAbsolutePosition(44, 94);
-            float scaler1 = ((doc.getPageSize().getWidth() - doc.leftMargin()
-                    - doc.rightMargin()) / studentPic.getWidth()) * 85;
-            studentPic.scalePercent(scaler1);
-            canvas1.addImage(studentPic);
+            doc.add(table);
 
-            doc.newPage();
-            PdfContentByte canvas2 = writer.getDirectContentUnder();
-            Image backPage = Image.getInstance(path + "backPage.png");
-            backPage.scaleAbsolute(PageSize.B8);
-            backPage.setAbsolutePosition(0, 0);
-            canvas2.addImage(backPage);
+            ImageData image = ImageDataFactory.create(tempStudentPic);
+            Image img = new Image(image);
+            img.scaleAbsolute(88, 88);
+            img.setFixedPosition(44, 94);
+            doc.add(img);
 
-            PdfContentByte canvas3 = writer.getDirectContentUnder();
-            Image qr = Image.getInstance(tempQr);
-            qr.setAbsolutePosition(20, 55);
-            float scaler = ((doc.getPageSize().getWidth() - doc.leftMargin()
-                    - doc.rightMargin()) / qr.getWidth()) * 130;
-            qr.scalePercent(scaler);
-            canvas3.addImage(qr);
+            doc.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+            PdfCanvas canvas1 = new PdfCanvas(doc.getPdfDocument().getPage(2));
+            canvas1.addImageFittedIntoRectangle(ImageDataFactory.create(
+                    path + "backPage.png"),
+                    pageSize, false);
+            ImageData image1 = ImageDataFactory.create(tempQr);
+            Image img1 = new Image(image1);
+            img1.scaleAbsolute(135, 135);
+            img1.setFixedPosition(20, 54);
+            doc.add(img1);
             doc.close();
-        } catch (DocumentException | IOException e) {
+        } catch (FileNotFoundException | MalformedURLException e) {
             System.out.println(e);
-        }
-    }
-
-    private static void FixText(String text, int x, int y, PdfWriter writer, int size) {
-        try {
-            PdfContentByte cb = writer.getDirectContent();
-            BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA,
-                    BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-            cb.saveState();
-            cb.beginText();
-            cb.moveText(x, y);
-            cb.setFontAndSize(bf, size);
-            cb.showText(text);
-            cb.endText();
-            cb.restoreState();
-        } catch (DocumentException | IOException e) {
-            System.out.println(e);
-        }
-    }
-
-    private void studentLength() {
-        int length = studentName.length();
-        if (length > 24) {
-            String[] parts = studentName.split(" ");
-            studentName = parts[0];
-            studentLength();
-        } else {
-            switch (length) {
-                case 5:
-                    studentX = 70;
-                    break;
-                case 6:
-                    studentX = 66;
-                    break;
-                case 7:
-                    studentX = 62;
-                    break;
-                case 8:
-                    studentX = 59;
-                    break;
-                case 9:
-                    studentX = 55;
-                    break;
-                case 10:
-                    studentX = 51;
-                    break;
-                case 11:
-                    studentX = 48;
-                    break;
-                case 12:
-                    studentX = 44;
-                    break;
-                case 13:
-                    studentX = 41;
-                    break;
-                case 14:
-                    studentX = 37;
-                    break;
-                case 15:
-                    studentX = 34;
-                    break;
-                case 16:
-                    studentX = 30;
-                    break;
-                case 17:
-                    studentX = 26;
-                    break;
-                case 18:
-                    studentX = 23;
-                    break;
-                case 19:
-                    studentX = 19;
-                    break;
-                case 20:
-                    studentX = 16;
-                    break;
-                case 21:
-                    studentX = 12;
-                    break;
-                case 22:
-                    studentX = 9;
-                    break;
-                case 23:
-                    studentX = 5;
-                    break;
-            }
         }
     }
 }
