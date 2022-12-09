@@ -75,7 +75,8 @@ public class CardGenerator {
         }
 
         try {
-            PdfDocument pdfDoc = new PdfDocument(new PdfWriter(studentId + defFileLocation + ".pdf"));
+            PdfDocument pdfDoc = new PdfDocument(
+                    new PdfWriter(defFileLocation + "\\" + studentId + ".pdf"));
             PageSize pageSize = PageSize.B8;
             Document doc = new Document(pdfDoc, pageSize);
             doc.setMargins(0, 0, 0, 0);

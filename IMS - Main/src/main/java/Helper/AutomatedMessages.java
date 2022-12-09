@@ -49,11 +49,11 @@ public class AutomatedMessages {
             String day = (String) Moderator.NewStudent.jTable1.getValueAt(y, 4);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
             message.setChatId(chatId);
-            message.setText("Hello " + studentName + "\n"
-                    + "You have  successfully enrolled " + subject + " Class\n"
+            message.setText("Hello, " + studentName + "!\n\n"
+                    + "You have successfully enrolled to :\n"
+                    + "Class : " + grade + " - " + subject + "\n"
                     + "Teacher : " + teacher + "\n"
-                    + "Grade : " + grade + "\n"
-                    + "Class scheduled day : " + day + "\n"
+                    + "Schedule : " + day + "\n"
                     + "Payment : " + payment
             );
             sendMessage();
@@ -104,7 +104,7 @@ public class AutomatedMessages {
                 + "</b>Exam Name " + "- " + examName + "\n"
                 + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- "  + examTime + "\n\n"
+                + "</b>Time " + "- " + examTime + "\n\n"
                 + "<code>Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!</code>  "
         );
         sendPhoto();

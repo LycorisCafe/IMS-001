@@ -721,11 +721,12 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             + "WHERE id='" + studentId + "'");
                     while (rs3.next()) {
                         tId.setText(rs3.getString("telegramId"));
+                        String logtime = new SimpleDateFormat("HH:mm:ss").format(new Date());
                         if (count == 0) {
                             stmt.executeUpdate("INSERT INTO attendance "
-                                    + "(regClassId,date) "
+                                    + "(regClassId,date,time) "
                                     + "VALUES "
-                                    + "('" + regClassId + "','" + date + "')");
+                                    + "('" + regClassId + "','" + date + "','" + logtime + "')");
                             tMessage.attendanceMarking();
                             JOptionPane.showMessageDialog(this, "Success!");
                             disablePanels();
@@ -765,6 +766,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             jComboBox2.setEnabled(false);
             jComboBox4.setEnabled(false);
         } else {
+            jComboBox2.setEnabled(true);
+            jComboBox2.removeAllItems();
+            jComboBox2.addItem("Please Select...");
+            jComboBox2.setSelectedIndex(0);
             String grade = jComboBox1.getSelectedItem().toString();
             try {
                 Connection con = Helper.DB.connect();
@@ -773,10 +778,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "FROM subjects "
                         + "WHERE grade='" + grade + "'");
                 while (rs.next()) {
-                    jComboBox2.setEnabled(true);
-                    jComboBox2.removeAllItems();
-                    jComboBox2.addItem("Please Select...");
-                    jComboBox2.setSelectedIndex(0);
                     jComboBox2.addItem(rs.getString("subject"));
                 }
                 con.close();
@@ -790,6 +791,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         if (jComboBox2.getSelectedIndex() == 0 || jComboBox2.getSelectedItem() == null) {
             jComboBox4.setEnabled(false);
         } else {
+            jComboBox4.setEnabled(true);
+            jComboBox4.removeAllItems();
+            jComboBox4.addItem("Please Select...");
+            jComboBox4.setSelectedIndex(0);
             String subject = jComboBox2.getSelectedItem().toString();
             try {
                 Connection con = Helper.DB.connect();
@@ -799,18 +804,17 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "WHERE grade='" + jComboBox1.getSelectedItem().toString() + "' "
                         + "AND subject='" + subject + "'");
                 while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
-                            + "WHERE subjectId='" + rs.getString("id") + "'");
+                            + "WHERE subjectId='" + rs.getString("id") + "'"
+                            + "AND day='" + today + "'");
                     while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + rs2.getString("teacherId") + "'");
                         while (rs3.next()) {
-                            jComboBox4.setEnabled(true);
-                            jComboBox4.removeAllItems();
-                            jComboBox4.addItem("Please Select...");
-                            jComboBox4.setSelectedIndex(0);
                             jComboBox4.addItem(rs3.getString("name"));
                         }
                     }
