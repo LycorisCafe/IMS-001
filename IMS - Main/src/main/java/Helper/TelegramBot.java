@@ -72,8 +72,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 if (update.getMessage().getText().equals(Administrator.TelegramUpdate.jTextField10.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.TelegramUpdate.type.getText())) {
                     Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                    String returnMethod=Administrator.TelegramUpdate.returnMethod.getText();
-                    switch (returnMethod){
+                    String returnMethod = Administrator.TelegramUpdate.returnMethod.getText();
+                    switch (returnMethod) {
                         case "teacherAdd":
                             new Administrator.Main().teacherAdd();
                             break;
@@ -96,7 +96,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         }
         if (Maintainer.Main.jTextArea1 != null) {
-            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
+            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString() + " " + "@" + update.getMessage().getFrom().getUserName()
                     + " : " + update.getMessage().getText() + "\n");
         }
 

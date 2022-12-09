@@ -102,9 +102,9 @@ public class AutomatedMessages {
         photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
                 + teacher + " has called an exam<b> " + "\n\n"
                 + "</b>Exam Name " + "- " + examName + "\n"
-                + "Subject " + "- " + grade + " " + subject + "\n"
+                + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- " + "TIme\n\n"
+                + "</b>Time " + "- "  + examTime + "\n\n"
                 + "<code>Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!</code>  "
         );
         sendPhoto();
@@ -131,9 +131,9 @@ public class AutomatedMessages {
         photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
                 + teacher + " has called an exam<b> " + "\n\n"
                 + "</b>Exam Name " + "- " + examName + "\n"
-                + "Subject " + "- " + grade + " " + subject + "\n"
+                + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- " + "TIme\n\n"
+                + "</b>Time " + "- " + examTime + "\n\n"
                 + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!\n "
         );
         sendPhoto();
