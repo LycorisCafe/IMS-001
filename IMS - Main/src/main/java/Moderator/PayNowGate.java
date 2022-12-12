@@ -222,7 +222,8 @@ public class PayNowGate extends javax.swing.JFrame {
                         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                         stmt.executeUpdate("INSERT INTO payments "
                                 + "(studentId,classId,year,month,status,paymentDate) "
-                                + "VALUES ('" + jTextField1.getText() + "',"
+                                + "VALUES "
+                                + "('" + jTextField1.getText() + "',"
                                 + "'" + jTextField2.getText() + "',"
                                 + "'" + year + "',"
                                 + "'" + month + "','1','" + today + "')");
