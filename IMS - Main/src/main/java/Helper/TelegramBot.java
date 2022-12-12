@@ -68,11 +68,29 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
 
-            if (Administrator.TelegramUpdate.jTextField10 != null) {
-                if (update.getMessage().getText().equals(Administrator.Main.tupdatelabel.getText())
+            if (Administrator.Main.fakeNumber != null && !Administrator.Main.fakeNumber.getText().equals("")) {
+                if (update.getMessage().getText().equals(Administrator.Main.fakeNumber.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.Main.type.getText())) {
                     Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                    Administrator.Main.tupdatelabel.setText("Success!");
+                    Administrator.Main.success.setText("0");
+                    switch (Administrator.Main.returnMethod.getText()) {
+                        case "teacherAdd":
+//                            teacherAdd();
+                            break;
+                        case "teacherUpdate":
+//                            teacherUpdate();
+                            break;
+                        case "groupAdd":
+//                            groupAdd();
+                            break;
+                        case "studentUpdate":
+                            Administrator.Main.tupdatelabel.setText("");
+                            Administrator.Main.jLabel65.setIcon(null);
+                            break;
+                        case "groupTIdUpdate":
+//                            groupTIdUpdate();
+                            break;
+                    }
                 }
             }
 
