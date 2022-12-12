@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -67,6 +68,49 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
     private void dataGrab() {
         try {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM attendance "
+                    + "WHERE day='" + todate + "'");
+            while (rs.next()) {
+                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        + "FROM regclass "
+                        + "WHERE id='" + rs.getString("regClassId") + "'");
+                while (rs2.next()) {
+                    String studentId = rs2.getString("studentId");
+                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE id='" + rs2.getString("classId") + "'");
+                    while (rs3.next()) {
+                        ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE id='" + rs3.getString("subjectId") + "'");
+                        while (rs4.next()) {
+                            String grade = rs4.getString("grade");
+                            String subject = rs4.getString("subject");
+                            ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                    + "FROM students "
+                                    + "WHERE id='" + studentId + "'");
+                            while (rs5.next()) {
+                                Object[] row = {studentId, rs5.getString("firstName")
+                                    + " " + rs5.getString("lastName"),
+                                    grade + " - " + subject, rs5.getString("guardianPhone")};
+                                model.addRow(row);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        try {
+            jComboBox1.removeAllItems();
+            jComboBox1.addItem("Please Select...");
+            jComboBox1.setSelectedIndex(0);
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * "
@@ -77,10 +121,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "FROM subjects "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
-                    jComboBox1.removeAllItems();
-                    jComboBox1.addItem("Please Select...");
-                    jComboBox1.setSelectedIndex(0);
-                    jComboBox1.addItem(rs2.getString("grade"));
+                    jComboBox1.addItem(rs2.getString("grade") + " - "
+                            + rs2.getString("subject"));
                 }
             }
             con.close();
@@ -175,17 +217,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jButton2 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jLabel11 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jButton8 = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
@@ -418,28 +459,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Students Count (Today) :"));
 
-        jLabel3.setText("Grade :");
-
-        jLabel8.setText("Subject :");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        jLabel14.setText("Total :");
-
-        jLabel15.setText("---");
-
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -447,11 +466,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
 
             },
             new String [] {
-                "Student ID", "Name", "Guardian Contact"
+                "Student ID", "Name", "Class", "Guardian Contact"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -462,25 +481,89 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         if (jTable1.getColumnModel().getColumnCount() > 0) {
             jTable1.getColumnModel().getColumn(0).setMinWidth(150);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(150);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(150);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(150);
+            jTable1.getColumnModel().getColumn(3).setMinWidth(150);
+            jTable1.getColumnModel().getColumn(3).setMaxWidth(150);
         }
 
-        jLabel11.setText("Teacher :");
+        jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Filter :"));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+        jLabel1.setText("by Student ID :");
+
+        jLabel3.setText("by Name :");
+
+        jLabel8.setText("by Class :");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
+                jTextField1ActionPerformed(evt);
             }
         });
 
-        jButton8.setText("Reset");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                jTextField2ActionPerformed(evt);
             }
         });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Reset");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField1))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextField2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                        .addGap(1, 1, 1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7))
+        );
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -490,52 +573,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel8)
-                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel11)
-                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel15))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -741,6 +788,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         } catch (SQLException e) {
             System.out.println(e);
         }
+        dataGrab();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -748,157 +796,87 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         disablePanels();
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jComboBox1.setSelectedIndex(0);
         dataGrab();
-        jComboBox2.setSelectedIndex(0);
-        jComboBox4.setSelectedIndex(0);
-        jComboBox2.setEnabled(false);
-        jComboBox4.setEnabled(false);
-        jLabel15.setText("---");
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.setRowCount(0);
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox1.getSelectedIndex() == 0 || jComboBox1.getSelectedItem() == null) {
-            jComboBox2.setEnabled(false);
-            jComboBox4.setEnabled(false);
-        } else {
-            jComboBox2.setEnabled(true);
-            jComboBox2.removeAllItems();
-            jComboBox2.addItem("Please Select...");
-            jComboBox2.setSelectedIndex(0);
-            String grade = jComboBox1.getSelectedItem().toString();
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + grade + "'");
-                while (rs.next()) {
-                    jComboBox2.addItem(rs.getString("subject"));
+        if (jComboBox1.getSelectedIndex() != 0 && jComboBox1.getSelectedItem() != null) {
+            String studentClassx = jComboBox1.getSelectedItem().toString();
+            ArrayList<String> studentId = new ArrayList<>();
+            ArrayList<String> studentName = new ArrayList<>();
+            ArrayList<String> studentClass = new ArrayList<>();
+            ArrayList<String> studentGc = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int count = 0; count <= model.getRowCount(); count++) {
+                studentId.add(model.getValueAt(count, 0).toString());
+                studentName.add(model.getValueAt(count, 1).toString());
+                studentClass.add(model.getValueAt(count, 2).toString());
+                studentGc.add(model.getValueAt(count, 3).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count <= studentId.size(); count++) {
+                if (studentClassx.equals(studentClass.get(count))) {
+                    Object[] row = {studentId.get(count), studentName.get(count),
+                        studentClass.get(count), studentGc.get(count)};
+                    model.addRow(row);
                 }
-                con.close();
-            } catch (SQLException e) {
             }
         }
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox2.getSelectedIndex() == 0 || jComboBox2.getSelectedItem() == null) {
-            jComboBox4.setEnabled(false);
-        } else {
-            jComboBox4.setEnabled(true);
-            jComboBox4.removeAllItems();
-            jComboBox4.addItem("Please Select...");
-            jComboBox4.setSelectedIndex(0);
-            String subject = jComboBox2.getSelectedItem().toString();
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + jComboBox1.getSelectedItem().toString() + "' "
-                        + "AND subject='" + subject + "'");
-                while (rs.next()) {
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE subjectId='" + rs.getString("id") + "'"
-                            + "AND day='" + today + "'");
-                    while (rs2.next()) {
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM teachers "
-                                + "WHERE id='" + rs2.getString("teacherId") + "'");
-                        while (rs3.next()) {
-                            jComboBox4.addItem(rs3.getString("name"));
-                        }
-                    }
-                }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
+        String studentIdx = jTextField1.getText();
+        ArrayList<String> studentId = new ArrayList<>();
+        ArrayList<String> studentName = new ArrayList<>();
+        ArrayList<String> studentClass = new ArrayList<>();
+        ArrayList<String> studentGc = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        for (int count = 0; count <= model.getRowCount(); count++) {
+            studentId.add(model.getValueAt(count, 0).toString());
+            studentName.add(model.getValueAt(count, 1).toString());
+            studentClass.add(model.getValueAt(count, 2).toString());
+            studentGc.add(model.getValueAt(count, 3).toString());
+        }
+        model.setRowCount(0);
+        for (int count = 0; count <= studentId.size(); count++) {
+            if (studentIdx.equals(studentId.get(count))) {
+                Object[] row = {studentId.get(count), studentName.get(count),
+                    studentClass.get(count), studentGc.get(count)};
+                model.addRow(row);
             }
         }
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox4.getSelectedIndex() == 0 || jComboBox4.getSelectedItem() == null) {
-            jLabel15.setText("---");
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
-        } else {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
-            String grade = jComboBox1.getSelectedItem().toString();
-            String subject = jComboBox2.getSelectedItem().toString();
-            String teacher = jComboBox4.getSelectedItem().toString();
-            String subjectId;
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + grade + "' "
-                        + "AND subject='" + subject + "'");
-                while (rs.next()) {
-                    subjectId = rs.getString("id");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
-                            + "FROM teachers "
-                            + "WHERE name='" + teacher + "'");
-                    while (rs2.next()) {
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
-                                + "FROM classes "
-                                + "WHERE subjectId='" + subjectId + "' "
-                                + "AND teacherId='" + rs2.getString("id") + "'");
-                        while (rs3.next()) {
-                            ResultSet rs4 = stmt.executeQuery("SELECT * "
-                                    + "FROM regclass "
-                                    + "WHERE classId='" + rs3.getString("id") + "'");
-                            while (rs4.next()) {
-                                String todayLong = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
-                                ResultSet rs5 = stmt.executeQuery("SELECT * "
-                                        + "FROM attendance "
-                                        + "WHERE regClassId='" + rs4.getString("id") + "' "
-                                        + "AND date='" + todayLong + "'");
-                                while (rs5.next()) {
-                                    ResultSet rs6 = stmt.executeQuery("SELECT * "
-                                            + "FROM attendance "
-                                            + "WHERE id='" + rs5.getString("id") + "'");
-                                    while (rs6.next()) {
-                                        ResultSet rs7 = stmt.executeQuery("SELECT * "
-                                                + "FROM regclass "
-                                                + "WHERE id='" + rs6.getString("regClassId") + "'");
-                                        while (rs7.next()) {
-                                            ResultSet rs8 = stmt.executeQuery("SELECT * "
-                                                    + "FROM students "
-                                                    + "WHERE id='" + rs7.getString("studentId") + "' "
-                                                    + "ORDER BY id ASC");
-                                            while (rs8.next()) {
-                                                Object[] row = {rs8.getString("id"),
-                                                    rs8.getString("firstName") + " " + rs8.getString("lastName"),
-                                                    rs8.getString("guardianPhone")};
-                                                model.addRow(row);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                con.close();
-                jLabel15.setText("" + model.getRowCount());
-            } catch (SQLException e) {
-                System.out.println(e);
+        String studentNamex = jTextField2.getText();
+        ArrayList<String> studentId = new ArrayList<>();
+        ArrayList<String> studentName = new ArrayList<>();
+        ArrayList<String> studentClass = new ArrayList<>();
+        ArrayList<String> studentGc = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        for (int count = 0; count <= model.getRowCount(); count++) {
+            studentId.add(model.getValueAt(count, 0).toString());
+            studentName.add(model.getValueAt(count, 1).toString());
+            studentClass.add(model.getValueAt(count, 2).toString());
+            studentGc.add(model.getValueAt(count, 3).toString());
+        }
+        model.setRowCount(0);
+        for (int count = 0; count <= studentId.size(); count++) {
+            if (studentNamex.equalsIgnoreCase(studentName.get(count))) {
+                Object[] row = {studentId.get(count), studentName.get(count),
+                    studentClass.get(count), studentGc.get(count)};
+                model.addRow(row);
             }
         }
-    }//GEN-LAST:event_jComboBox4ActionPerformed
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -939,20 +917,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     public static javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -969,8 +943,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     public static javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     public static javax.swing.JTextField jTextField5;

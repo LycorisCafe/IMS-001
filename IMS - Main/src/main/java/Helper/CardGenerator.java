@@ -49,6 +49,7 @@ public class CardGenerator {
         String defFileLocation = null;
         String studentName = Moderator.NewStudent.tSendStudentName.getText();
         String tempStudentPic = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png";
+        String tempStudentPicR = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudentR.png";
         String tempQr = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempQR.png";
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\";
         String institute = Helper.MainDetails.instituteName();
@@ -63,13 +64,14 @@ public class CardGenerator {
 
         try {
             File file = new File(tempStudentPic);
+            File file1 = new File(tempStudentPicR);
             BufferedImage bufferedImage = ImageIO.read(file);
             int width = bufferedImage.getWidth();
             BufferedImage circleBuffer = new BufferedImage(width, width, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = circleBuffer.createGraphics();
             g2.setClip(new Ellipse2D.Float(0, 0, width, width));
             g2.drawImage(bufferedImage, 0, 0, width, width, null);
-            ImageIO.write(circleBuffer, "PNG", file);
+            ImageIO.write(circleBuffer, "PNG", file1);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -121,7 +123,7 @@ public class CardGenerator {
 
             doc.add(table);
 
-            ImageData image = ImageDataFactory.create(tempStudentPic);
+            ImageData image = ImageDataFactory.create(tempStudentPicR);
             Image img = new Image(image);
             img.scaleAbsolute(88, 88);
             img.setFixedPosition(44, 94);

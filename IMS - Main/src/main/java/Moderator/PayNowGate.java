@@ -214,6 +214,7 @@ public class PayNowGate extends javax.swing.JFrame {
                     id = rs2.getInt("id");
                     if (status == 1) {
                         month = month + 1;
+                        System.out.println(month);
                         if (month == 13) {
                             year = year + 1;
                             month = 1;
