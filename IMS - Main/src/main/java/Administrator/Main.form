@@ -36,22 +36,6 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="returnMethod">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel65"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
-      </AuxValues>
-    </Component>
-    <Component class="javax.swing.JLabel" name="tableSelection">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel65"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
-      </AuxValues>
-    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -1560,7 +1544,7 @@
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel19" min="-2" pref="120" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTextField14" max="32767" attributes="0"/>
+                                          <Component id="jTextField14" pref="302" max="32767" attributes="0"/>
                                       </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Component id="jLabel20" min="-2" pref="120" max="-2" attributes="0"/>
@@ -1592,12 +1576,15 @@
                                           <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
                                               <Component id="jComboBox5" max="32767" attributes="0"/>
-                                              <Component id="jCheckBox2" max="32767" attributes="0"/>
-                                              <Group type="102" attributes="0">
-                                                  <Component id="jPanel17" min="-2" max="-2" attributes="0"/>
-                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                              </Group>
                                               <Component id="jComboBox7" max="32767" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                      <Component id="jCheckBox2" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="jPanel17" alignment="0" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="tupdatelabel" max="32767" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -1642,6 +1629,7 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jCheckBox2" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="tupdatelabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -1787,6 +1775,14 @@
                           </Properties>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="tupdatelabel">
+                          <Events>
+                            <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="tupdatelabelPropertyChange"/>
+                          </Events>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>

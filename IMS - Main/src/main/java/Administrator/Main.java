@@ -4,6 +4,7 @@
  */
 package Administrator;
 
+import com.github.javafaker.Faker;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -55,10 +56,32 @@ public class Main extends javax.swing.JFrame {
     String cr2x;
     String subjectId;
     String teacherId;
+    String tableSelection;
     int dayCho;
     DefaultTableModel tableModel;
     TelegramUpdate telegramUpdate = new TelegramUpdate();
     Helper.AutomatedMessages tAutomated = new Helper.AutomatedMessages();
+
+//    public void returnMethodCall() {
+//        System.out.println(returnMethod.getText());
+//        switch (returnMethod.getText()) {
+//            case "teacherAdd":
+//                teacherAdd();
+//                break;
+//            case "teacherUpdate":
+//                teacherUpdate();
+//                break;
+//            case "groupAdd":
+//                groupAdd();
+//                break;
+//            case "studentUpdate":
+//                studentUpdate();
+//                break;
+//            case "groupTIdUpdate":
+//                groupTIdUpdate();
+//                break;
+//        }
+//    }
 
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
@@ -424,8 +447,6 @@ public class Main extends javax.swing.JFrame {
         examId = new javax.swing.JLabel();
         tGroupId = new javax.swing.JLabel();
         type = new javax.swing.JLabel();
-        returnMethod = new javax.swing.JLabel();
-        tableSelection = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
@@ -531,6 +552,7 @@ public class Main extends javax.swing.JFrame {
         jLabel27 = new javax.swing.JLabel();
         jLabel63 = new javax.swing.JLabel();
         jComboBox7 = new javax.swing.JComboBox<>();
+        tupdatelabel = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
@@ -654,10 +676,6 @@ public class Main extends javax.swing.JFrame {
         tGroupId.setText("jLabel64");
 
         type.setText("jLabel65");
-
-        returnMethod.setText("jLabel65");
-
-        tableSelection.setText("jLabel65");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrator");
@@ -1521,6 +1539,12 @@ public class Main extends javax.swing.JFrame {
 
         jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Active", "Inactive" }));
 
+        tupdatelabel.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tupdatelabelPropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
@@ -1531,7 +1555,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField14))
+                        .addComponent(jTextField14, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE))
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1557,11 +1581,13 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jCheckBox2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox7, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jComboBox7, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jCheckBox2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel17, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tupdatelabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
@@ -1594,7 +1620,8 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel25)
-                    .addComponent(jCheckBox2))
+                    .addComponent(jCheckBox2)
+                    .addComponent(tupdatelabel, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel26)
@@ -3078,7 +3105,6 @@ public class Main extends javax.swing.JFrame {
         telegramUpdate.setVisible(true);
         jCheckBox1.setSelected(true);
         type.setText("private");
-        returnMethod.setText("teacherAdd");
     }//GEN-LAST:event_jButton8ActionPerformed
 
     public void teacherAdd() {
@@ -3108,7 +3134,6 @@ public class Main extends javax.swing.JFrame {
         if (jCheckBox1.isSelected()) {
             telegramUpdate.setVisible(true);
             type.setText("private");
-            returnMethod.setText("teacherUpdate");
         } else {
             int r = jTable1.getSelectedRow();
             String id = jTable1.getValueAt(r, 0).toString();
@@ -3182,12 +3207,11 @@ public class Main extends javax.swing.JFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // to update data of the selected row
         int r = jTable3.getSelectedRow();
-        tableSelection.setText(jTable3.getValueAt(r, 0).toString());
-        System.out.println(tableSelection.getText());
+        tableSelection=jTable3.getValueAt(r, 0).toString();
         if (jCheckBox2.isSelected()) {
-            telegramUpdate.setVisible(true);
+            Faker faker = new Faker();
+            tupdatelabel.setText(faker.number().digits(5));
             type.setText("private");
-            returnMethod.setText("studentUpdate");
         } else {
             String fname = jTextField14.getText();
             String lname = jTextField15.getText();
@@ -3207,7 +3231,7 @@ public class Main extends javax.swing.JFrame {
                         + "address='" + address + "', "
                         + "grade='" + grade + "', "
                         + "status='" + jComboBox7.getSelectedIndex() + "' "
-                        + "WHERE id='" + tableSelection.getText() + "'";
+                        + "WHERE id='" + tableSelection + "'";
                 stmt.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this, "Success!");
                 loadStudents();
@@ -3225,20 +3249,20 @@ public class Main extends javax.swing.JFrame {
         String gPhone = jTextField17.getText();
         String address = jTextField18.getText();
         String grade = jComboBox5.getSelectedItem().toString();
-        System.out.println(tableSelection.getText());
+        String status = String.valueOf(jComboBox7.getSelectedIndex());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
-            stmt.executeUpdate("UPDATE students SET "
-                    + "firstName='" + fname + "', "
+            stmt.executeUpdate("UPDATE students "
+                    + "SET firstName='" + fname + "', "
                     + "lastName='" + lname + "', "
                     + "guardianName='" + gname + "', "
                     + "guardianPhone='" + gPhone + "', "
                     + "address='" + address + "', "
                     + "grade='" + grade + "', "
-                    + "telegramId='" + telegramId.getText() + "' "
-                    + "status='" + jComboBox7.getSelectedIndex() + "' "
-                    + "WHERE id='" + tableSelection.getText() + "'");
+                    + "telegramId='" + telegramId.getText() + "', "
+                    + "status='" + status + "' "
+                    + "WHERE id='" + tableSelection + "'");
             System.out.println("oook");
             con.close();
             JOptionPane.showMessageDialog(this, "Success!");
@@ -3658,7 +3682,6 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         telegramUpdate.setVisible(true);
         type.setText("supergroup");
-        returnMethod.setText("groupTIdUpdate");
     }//GEN-LAST:event_jButton26ActionPerformed
 
     public void groupTIdUpdate() {
@@ -3759,7 +3782,6 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         telegramUpdate.setVisible(true);
         type.setText("supergroup");
-        returnMethod.setText("groupAdd");
     }//GEN-LAST:event_jButton13ActionPerformed
 
     public void groupAdd() {
@@ -3845,6 +3867,7 @@ public class Main extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 int r = jTable3.getSelectedRow();
                 String id = jTable3.getValueAt(r, 0).toString();
+                System.out.println(id);
                 DefaultTableModel model1 = (DefaultTableModel) jTable4.getModel();
                 model1.setRowCount(0);
                 String convertedDay = null;
@@ -4893,6 +4916,13 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
+    private void tupdatelabelPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tupdatelabelPropertyChange
+        // TODO add your handling code here:
+        if (tupdatelabel.getText().equals("Success!")){
+            studentUpdate();
+        }
+    }//GEN-LAST:event_tupdatelabelPropertyChange
+
     private void examsReset() {
         cr2.setSelectedIndex(0);
         cr3.setSelectedIndex(0);
@@ -5174,10 +5204,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
-    public static javax.swing.JLabel returnMethod;
     public static javax.swing.JLabel tGroupId;
-    private static javax.swing.JLabel tableSelection;
     public static javax.swing.JLabel telegramId;
+    public static javax.swing.JLabel tupdatelabel;
     public static javax.swing.JLabel type;
     // End of variables declaration//GEN-END:variables
 }
