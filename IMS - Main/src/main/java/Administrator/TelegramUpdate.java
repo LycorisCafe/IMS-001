@@ -32,6 +32,15 @@ public class TelegramUpdate extends javax.swing.JFrame {
         jTextField10.setText(faker.number().digits(5));
     }
 
+    public void disposeOp() {
+        System.out.println("aw");
+        try {
+            this.dispose();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,20 +50,11 @@ public class TelegramUpdate extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        type = new javax.swing.JLabel();
-        telegramId = new javax.swing.JLabel();
-        returnMethod = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-
-        type.setText("jLabel3");
-
-        telegramId.setText("jLabel3");
-
-        returnMethod.setText("jLabel3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Waiting for Authontication...");
@@ -164,8 +164,5 @@ public class TelegramUpdate extends javax.swing.JFrame {
     public static javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel9;
     public static javax.swing.JTextField jTextField10;
-    public static javax.swing.JLabel returnMethod;
-    public static javax.swing.JLabel telegramId;
-    public static javax.swing.JLabel type;
     // End of variables declaration//GEN-END:variables
 }
