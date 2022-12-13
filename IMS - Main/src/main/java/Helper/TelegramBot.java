@@ -72,32 +72,46 @@ public class TelegramBot extends TelegramLongPollingBot {
                 if (update.getMessage().getText().equals(Administrator.Main.fakeNumber.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.Main.type.getText())) {
                     Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                    Administrator.Main.success.setText("0");
                     switch (Administrator.Main.returnMethod.getText()) {
-                        case "teacherAdd":
-//                            teacherAdd();
-                            break;
-                        case "teacherUpdate":
-//                            teacherUpdate();
-                            break;
-                        case "groupAdd":
-//                            groupAdd();
-                            break;
-                        case "studentUpdate":
+                        case "teacherAdd" -> {
+                            Administrator.Main.success.setText("teacherAdd");
+                            Administrator.Main.jLabel67.setText("");
+                            Administrator.Main.jLabel66.setIcon(null);
+                        }
+                        case "teacherUpdate" -> {
+                            Administrator.Main.success.setText("teacherUpdate");
+                            Administrator.Main.jLabel67.setText("");
+                            Administrator.Main.jLabel66.setIcon(null);
+                        }
+                        case "groupAdd" -> {
+                            Administrator.Main.success.setText("groupAdd");
+                            Administrator.Main.jLabel72.setText("");
+                            Administrator.Main.jLabel71.setIcon(null);
+                        }
+                        case "studentUpdate" -> {
+                            Administrator.Main.success.setText("studentUpdate");
                             Administrator.Main.tupdatelabel.setText("");
                             Administrator.Main.jLabel65.setIcon(null);
-                            break;
-                        case "groupTIdUpdate":
-//                            groupTIdUpdate();
-                            break;
+                        }
+                        case "groupTIdUpdate" -> {
+                            Administrator.Main.success.setText("groupTIdUpdate");
+                            Administrator.Main.jLabel68.setText("");
+                            Administrator.Main.jLabel69.setIcon(null);
+                        }
                     }
                 }
             }
 
         }
         if (Maintainer.Main.jTextArea1 != null) {
-            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString() + " " + "@" + update.getMessage().getFrom().getUserName()
-                    + " : " + update.getMessage().getText() + "\n");
+            String user;
+            if (update.getMessage().getFrom().getUserName() == null) {
+                user = update.getMessage().getFrom().getFirstName();
+            } else {
+                user = update.getMessage().getFrom().getUserName();
+            }
+            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
+                    + " " + "@" + user + " : " + update.getMessage().getText() + "\n");
         }
 
     }
