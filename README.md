@@ -1,6 +1,6 @@
 # IMS
 Institute Management System
-[ IMS-001-111122 ]
+[ IMS-001 ]
 
 > Coding :
 - Language : Java (JDK 17)
