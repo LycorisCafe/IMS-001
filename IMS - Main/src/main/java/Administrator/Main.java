@@ -3857,10 +3857,8 @@ public class Main extends javax.swing.JFrame {
                 for (int a = 0; a < com1.length; a++) {
                     com1[a].setEnabled(true);
                 }
-                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 int r = jTable3.getSelectedRow();
                 String id = jTable3.getValueAt(r, 0).toString();
-                System.out.println(id);
                 DefaultTableModel model1 = (DefaultTableModel) jTable4.getModel();
                 model1.setRowCount(0);
                 String convertedDay = null;
@@ -3874,44 +3872,30 @@ public class Main extends javax.swing.JFrame {
                         Statement stmt2 = con.createStatement();
                         ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM classes "
-                                + "WHERE id='" + rs.getString("id") + "'");
+                                + "WHERE id='" + rs.getString("classId") + "'");
                         while (rs2.next()) {
                             int day = rs2.getInt("day");
-                            String teacherId = rs2.getString("teacherId");
+                            String teacher = rs2.getString("teacherId");
+                            String subject = rs2.getString("subjectId");
                             Statement stmt3 = con.createStatement();
                             ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                    + "FROM subject "
-                                    + "WHERE id='" + rs2.getString("subjectId") + "'");
+                                    + "FROM subjects "
+                                    + "WHERE id='" + subject + "'");
                             while (rs3.next()) {
                                 String grade = rs3.getString("grade");
-                                String subject = rs3.getString("subjectId");
                                 Statement stmt4 = con.createStatement();
                                 ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM teachers "
-                                        + "WHERE id='" + rs3.getString("teacherId") + "'");
+                                        + "WHERE id='" + teacher + "'");
                                 while (rs4.next()) {
                                     switch (day) {
-                                        case 1:
-                                            convertedDay = "Monday";
-                                            break;
-                                        case 2:
-                                            convertedDay = "Tuesday";
-                                            break;
-                                        case 3:
-                                            convertedDay = "Wednesday";
-                                            break;
-                                        case 4:
-                                            convertedDay = "Thursday";
-                                            break;
-                                        case 5:
-                                            convertedDay = "Friday";
-                                            break;
-                                        case 6:
-                                            convertedDay = "Saturday";
-                                            break;
-                                        case 7:
-                                            convertedDay = "Sunday";
-                                            break;
+                                        case 1 -> convertedDay = "Monday";
+                                        case 2 -> convertedDay = "Tuesday";
+                                        case 3 -> convertedDay = "Wednesday";
+                                        case 4 -> convertedDay = "Thursday";
+                                        case 5 -> convertedDay = "Friday";
+                                        case 6 -> convertedDay = "Saturday";
+                                        case 7 -> convertedDay = "Sunday";
                                     }
                                     Object[] row = {grade, subject,
                                         rs4.getString("name"), convertedDay};
