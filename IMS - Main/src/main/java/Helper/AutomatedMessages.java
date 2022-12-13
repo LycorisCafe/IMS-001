@@ -32,7 +32,7 @@ public class AutomatedMessages {
         String chatId = Moderator.NewStudent.telegramId.getText();
         String studentId = Moderator.NewStudent.tSendStudentId.getText();
         String studentName = Moderator.NewStudent.tSendStudentName.getText();
-        String logo = "https://drive.google.com/uc?id=1XgoNzTsqpcvCLI790ICyb6XpsgO4uyVQ";
+        String logo = "AgACAgUAAx0CaCw0FAADNmOYwc-PNveRzCO8zv_aiRPWQQJMAAKMtDEbfIXJVKJWQtEZKVQ6AQADAgADbQADLAQ";
         photo.setChatId(chatId);
         photo.setPhoto(new InputFile(logo));
         photo.setCaption("Student Registration Success!\n\n"
@@ -67,17 +67,17 @@ public class AutomatedMessages {
         String studentName = Moderator.Main.jTextField3.getText();
         String atendClass = Moderator.Main.jComboBox3.getSelectedItem().toString();
         String paymentDetails = Moderator.Main.jTextField5.getText();
-        String time = new SimpleDateFormat("yyyy-MM-dd hh:mm a ").format(new Date());
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         // message body start
         // message body end
         message.setChatId(chatId);
         message.setText("Student Attendance Marked! \n\n"
-                + "Studnt Id " + ":" + studentId + "\n"
-                + "Student Name " + ":" + studentName + "\n"
-                + "Atend Class " + ":" + atendClass + "\n"
-                + "Payments " + ":" + paymentDetails + "\n"
-                + "Time " + ":" + time
+                + "Studnt Id : " + studentId + "\n"
+                + "Student Name : " + studentName + "\n"
+                + "Attend Class : " + atendClass + "\n"
+                + "Payments : " + paymentDetails + "\n"
+                + "Time : " + time
         );
         sendMessage();
     }
@@ -95,7 +95,7 @@ public class AutomatedMessages {
         String examTime = Administrator.Main.jTextField32.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
 
-        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
+        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(chatId);
         photo.setParseMode("html");
@@ -124,7 +124,7 @@ public class AutomatedMessages {
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
         // message body start
 
-        photo.setPhoto(new InputFile("AgACAgUAAxkBAAEawoBjkbnq-SSxbZp1jbYPNyCVhAnyOwACt7MxG-D_iFQkpjuPnxXbgAEAAwIAA3kAAysE"));
+        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ"));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(groupId);
         photo.setParseMode("html");
@@ -137,6 +137,18 @@ public class AutomatedMessages {
                 + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!\n "
         );
         sendPhoto();
+    }
+
+    public void paymentSuccess() {
+        String telegramId = Moderator.PayNowGate.telegramId.getText();
+        String studentId = instituteName + "-STUDENT-" + Moderator.PayNowGate.jTextField1.getText();
+        String studentName = Moderator.PayNowGate.studentName.getText();
+        String className = Moderator.PayNowGate.className.getText();
+        String classTeacher = Moderator.PayNowGate.classTeacher.getText();
+        String classDay = Moderator.PayNowGate.classDay.getText();
+        String paymentId = Moderator.PayNowGate.paymentId.getText();
+        String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
+        String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
     }
 
     // sending operations =========>>>>>>>>>>>
