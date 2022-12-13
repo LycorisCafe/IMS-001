@@ -233,7 +233,7 @@ public class Main extends javax.swing.JFrame {
 
     private void loadGroups() {
         DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
-//        model.setRowCount(0);
+        model.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -314,7 +314,7 @@ public class Main extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery("SELECT * "
                     + "FROM teachers");
             while (rs.next()) {
-                jComboBox8.addItem(rs.getString("id")
+                jComboBox9.addItem(rs.getString("id")
                         + " - " + rs.getString("name"));
             }
             con.close();
@@ -3234,10 +3234,10 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     public void teacherUpdate() {
-        String name = jTextField5.getName();
-        String nic = jTextField6.getName();
-        String contact = jTextField7.getName();
-        String address = jTextField8.getName();
+        String name = jTextField5.getText();
+        String nic = jTextField6.getText();
+        String contact = jTextField7.getText();
+        String address = jTextField8.getText();
         int status = jComboBox1.getSelectedIndex();
         try {
             Connection con = Helper.DB.connect();
@@ -3765,13 +3765,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton26ActionPerformed
 
     public void groupTIdUpdate() {
-        int r = jTable6.getSelectedRow();
-        String id = jTable6.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE classes SET "
-                    + "telegramId='" + telegramId.getText() + "'");
+                    + "telegramId='" + telegramId.getText() + "' "
+                    + "WHERE id='" + tableSelection + "'");
             JOptionPane.showMessageDialog(this, "Success!");
             loadGroups();
         } catch (HeadlessException | SQLException e) {
@@ -3887,10 +3886,10 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 Statement stmt2 = con.createStatement();
                 stmt2.executeUpdate("INSERT INTO classes "
-                        + "(subjectId,teacherId,payment,day,time,duration,telegramId)"
+                        + "(subjectId,teacherId,payment,day,time,duration,telegramId) "
                         + "VALUES "
                         + "('" + rs.getString("id") + "','" + id + "',"
-                        + "'" + payment + "','" + day + "','0','0'," + telegramId.getText() + "')");
+                        + "'" + payment + "','" + day + "','0','0','" + telegramId.getText() + "')");
                 JOptionPane.showMessageDialog(this, "Success!");
                 teacherClassesTable();
             }
@@ -4995,6 +4994,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (success.getText().equals("studentUpdate")) {
             studentUpdate();
+            success.setText("");
         }
     }//GEN-LAST:event_tupdatelabelPropertyChange
 
@@ -5002,9 +5002,11 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (success.getText().equals("teacherAdd")) {
             teacherAdd();
+            success.setText("");
         }
         if (success.getText().equals("teacherUpdate")) {
             teacherUpdate();
+            success.setText("");
         }
     }//GEN-LAST:event_jLabel67PropertyChange
 
@@ -5012,12 +5014,14 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (success.getText().equals("groupAdd")) {
             groupAdd();
+            success.setText("");
         }
     }//GEN-LAST:event_jLabel72PropertyChange
 
     private void jLabel68PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel68PropertyChange
         // TODO add your handling code here:
         if (success.getText().equals("groupTIdUpdate")) {
+            success.setText("");
             groupTIdUpdate();
         }
     }//GEN-LAST:event_jLabel68PropertyChange
