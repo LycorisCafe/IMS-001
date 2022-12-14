@@ -249,7 +249,7 @@ public class ExamResults extends javax.swing.JFrame {
                                                     + " - " + rs6.getString("subject");
                                             message.setChatId(telegramIdx);
                                             message.setPhoto(
-                                                    new InputFile("https://drive.google.com/uc?id=1uSdNx09HJQP_JcOpAlIkl8CnLXdgUEgz"));
+                                                    new InputFile("AgACAgUAAx0CaCw0FAADQWOZmqVGir6LH9r5om728fZ0Tu7lAALttTEbfIXRVE9FAabdfWMOAQADAgADbQADLAQ"));
                                             message.setCaption("Exam Results Released!\n\n"
                                                     + "Student Name : " + studentNamex + "\n"
                                                     + "Class : " + classNamex + "\n"
@@ -257,7 +257,7 @@ public class ExamResults extends javax.swing.JFrame {
                                                     + "Exam Name : " + examNamex + "\n"
                                                     + "Exam Date : " + examDatex + "\n\n"
                                                     + "Marks : " + marksx + "\n"
-                                                    + "Rank : " + rankx);
+                                                    + "Grade : " + rankx);
                                             message.setProtectContent(true);
                                             try {
                                                 bot.execute(message);
