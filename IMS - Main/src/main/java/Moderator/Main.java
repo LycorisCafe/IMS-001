@@ -52,7 +52,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     String classId;
     // https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html
     String today = new SimpleDateFormat("u").format(new Date());
-    String todate = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+    String todate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     Helper.AutomatedMessages tMessage = new Helper.AutomatedMessages();
 
     /**
@@ -74,7 +74,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * "
                     + "FROM attendance "
-                    + "WHERE day='" + todate + "'");
+                    + "WHERE date='" + todate + "'");
             while (rs.next()) {
                 ResultSet rs2 = stmt.executeQuery("SELECT * "
                         + "FROM regclass "
