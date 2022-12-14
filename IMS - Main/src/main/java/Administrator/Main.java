@@ -4846,6 +4846,7 @@ public class Main extends javax.swing.JFrame {
                             + "'" + examTime + "','0')");
                     tGroupId.setText(rs.getString("telegramId"));
                     tAutomated.newExamAddedGroup();
+                    examIdGrab();
                     Statement stmt3 = con.createStatement();
                     ResultSet rs2 = stmt3.executeQuery("SELECT * "
                             + "FROM regclass "
@@ -4858,19 +4859,12 @@ public class Main extends javax.swing.JFrame {
                                 + "WHERE id='" + studentId + "'");
                         while (rs3.next()) {
                             telegramId.setText(rs3.getString("telegramId"));
-                            Statement stmt5 = con.createStatement();
-                            ResultSet rs5 = stmt5.executeQuery("SELECT * "
-                                    + "FROM exams "
-                                    + "ORDER BY id DESC LIMIT 1");
-                            while (rs5.next()) {
-                                int examIdx = rs5.getInt("id");
-                                Statement stmt6 = con.createStatement();
-                                stmt6.executeUpdate("INSERT INTO results "
-                                        + "(examId,studentId,marks) "
-                                        + "VALUES "
-                                        + "('" + examIdx + "','" + studentId + "','N/A')");
-                                tAutomated.newExamAddedStudent();
-                            }
+                            Statement stmt6 = con.createStatement();
+                            stmt6.executeUpdate("INSERT INTO results "
+                                    + "(examId,studentId,marks) "
+                                    + "VALUES "
+                                    + "('" + examId.getText() + "','" + studentId + "','N/A')");
+                            tAutomated.newExamAddedStudent();
                         }
                     }
                 }
@@ -4881,6 +4875,21 @@ public class Main extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void examIdGrab() {
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM exams "
+                    + "ORDER BY id DESC LIMIT 1");
+            while (rs.next()) {
+                examId.setText("" + rs.getInt("id"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
 
     private void jTable8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable8MouseClicked
         // TODO add your handling code here:
