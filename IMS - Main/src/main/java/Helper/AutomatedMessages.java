@@ -49,7 +49,7 @@ public class AutomatedMessages {
             String day = (String) Moderator.NewStudent.jTable1.getValueAt(y, 4);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
             message.setChatId(chatId);
-            message.setText("Hello, " + studentName + "!\n\n"
+            message.setText("Hello, " + studentName + "\n\n"
                     + "You have successfully enrolled to :\n"
                     + "Class : " + grade + " - " + subject + "\n"
                     + "Teacher : " + teacher + "\n"
@@ -72,7 +72,7 @@ public class AutomatedMessages {
         // message body start
         // message body end
         message.setChatId(chatId);
-        message.setText("Student Attendance Marked! \n\n"
+        message.setText("Student Attendance Marked!! \n\n"
                 + "Studnt Id : " + studentId + "\n"
                 + "Student Name : " + studentName + "\n"
                 + "Attend Class : " + atendClass + "\n"
@@ -150,31 +150,26 @@ public class AutomatedMessages {
         String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
         String paymentValue = Moderator.PayNowGate.paymentValue.getText();
         String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        
+
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ"));
         photo.setChatId(telegramId);
         photo.setParseMode("html");
         photo.setProtectContent(Boolean.TRUE);
-        
-//        System.out.println(telegramId + " " + studentId + " " + studentName + " "+className + " "+ classTeacher+ " "+ classDay+ " "+ " " );
         photo.setCaption("Dear " + studentName + ",\n"
                 + "We Confirmed that we got your Payment!!!\n\n"
-                
-                +"Class Name "+ ": " + className +"\n"
-                +"Student ID" + ": " + studentId  +"\n"
-                + "Teacher " + ": "+ classTeacher +"\n"
-                +"Class Day " + ": " + classDay +"\n" 
-                +"Payment "+ ": " + paymentId +"\n" 
-                +"Payment Target" + ": "+ paymentTarget +"\n"
-                +"Time " + ": "+ slipTime
-         
-        
-             
+                + "Student ID" + ": " + studentId + "\n"
+                + "Class Name " + ": " + className + "\n"
+                + "Teacher " + ": " + classTeacher + "\n"
+                + "Class Day " + ": " + classDay + "\n\n"
+                + "Payment Slip Number " + ": " + paymentId + "\n"
+                + "Payment " + ": " + paymentValue + "\n"
+                + "Payment Month " + ": " + paymentTarget + "\n"
+                + "Slip Time " + ": " + slipTime + "\n\n"
+                + "<b>Thank you very much for trusting US</b>"
         );
-        
+
         sendPhoto();
-        
-        
+
     }
 
     // sending operations =========>>>>>>>>>>>
