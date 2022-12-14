@@ -52,7 +52,8 @@ public class ExamResults extends javax.swing.JFrame {
                 String resultId = rs.getString("id");
                 String marks = rs.getString("marks");
                 String studentId = rs.getString("studentId");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM students "
                         + "WHERE id='" + studentId + "'");
                 while (rs2.next()) {

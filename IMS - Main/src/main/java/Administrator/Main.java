@@ -4859,7 +4859,7 @@ public class Main extends javax.swing.JFrame {
                         while (rs3.next()) {
                             telegramId.setText(rs3.getString("telegramId"));
                             Statement stmt5 = con.createStatement();
-                            ResultSet rs5 = stmt.executeQuery("SELECT * "
+                            ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                     + "FROM exams "
                                     + "ORDER BY id DESC LIMIT 1");
                             while (rs5.next()) {
