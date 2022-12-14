@@ -1058,7 +1058,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "VALUES ('" + newStudent + "',"
                         + "'" + jTable1.getValueAt(y, 0) + "',"
                         + "'" + year + "',"
-                        + "'" + month + "','1','" + today + "')");
+                        + "'" + month + "','0','" + today + "')");
                 con.close();
             } catch (SQLException ex) {
                 System.out.println(ex);

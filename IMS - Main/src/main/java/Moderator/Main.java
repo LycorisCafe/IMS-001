@@ -745,7 +745,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 jButton1.setEnabled(false);
             }
         }
-        
+
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -999,8 +999,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     }
 
     private void qrSlice() {
-        Helper.MainDetails data = new Helper.MainDetails();
-        String instituteName = data.instituteName();
+        String instituteName = Helper.MainDetails.instituteName();
         String[] parts = qrResult.split("-");
         if (parts[0].equals(instituteName) && parts[1].equals("STUDENT")) {
             String gotStudentId = parts[2];
