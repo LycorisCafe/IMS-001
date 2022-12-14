@@ -149,7 +149,7 @@ public class AutomatedMessages {
         String paymentId = Moderator.PayNowGate.paymentId.getText();
         String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
         String paymentValue = Moderator.PayNowGate.paymentValue.getText();
-        String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm aa").format(new Date());
+        String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         
         photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ"));
         photo.setChatId(telegramId);
