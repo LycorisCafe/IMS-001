@@ -4851,13 +4851,26 @@ public class Main extends javax.swing.JFrame {
                             + "FROM regclass "
                             + "WHERE classId='" + classId + "'");
                     while (rs2.next()) {
+                        String studentId = rs2.getString("studentId");
                         Statement stmt4 = con.createStatement();
                         ResultSet rs3 = stmt4.executeQuery("SELECT * "
                                 + "FROM students "
-                                + "WHERE id='" + rs2.getString("studentId") + "'");
+                                + "WHERE id='" + studentId + "'");
                         while (rs3.next()) {
                             telegramId.setText(rs3.getString("telegramId"));
-                            tAutomated.newExamAddedStudent();
+                            Statement stmt5 = con.createStatement();
+                            ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                    + "FROM exams "
+                                    + "ORDER BY id DESC LIMIT 1");
+                            while (rs5.next()) {
+                                int examIdx = rs5.getInt("id");
+                                Statement stmt6 = con.createStatement();
+                                stmt6.executeUpdate("INSERT INTO results "
+                                        + "(examId,studentId,marks) "
+                                        + "VALUES "
+                                        + "('" + examIdx + "','" + studentId + "','N/A')");
+                                tAutomated.newExamAddedStudent();
+                            }
                         }
                     }
                 }
@@ -4883,7 +4896,7 @@ public class Main extends javax.swing.JFrame {
         String id = jTable8.getValueAt(r, 0).toString();
         examId.setText(id);
     }//GEN-LAST:event_jTable8MouseClicked
-// test comment
+
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
         // TODO add your handling code here:
         if (!jTextField19.getText().equals("")) {
