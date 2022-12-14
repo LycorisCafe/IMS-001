@@ -31,7 +31,7 @@ public class PayNowGate extends javax.swing.JFrame {
     }
 
     Helper.AutomatedMessages autoMessage = new Helper.AutomatedMessages();
-    
+
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
@@ -245,20 +245,32 @@ public class PayNowGate extends javax.swing.JFrame {
                             month = 1;
                         }
                         String monthString = null;
-                        switch (month){
-                            case 1 -> monthString="January";
-                            case 2 -> monthString="February";
-                            case 3 -> monthString="March";
-                            case 4 -> monthString="April";
-                            case 5 -> monthString="May";
-                            case 6 -> monthString="June";
-                            case 7 -> monthString="July";
-                            case 8 -> monthString="August";
-                            case 9 -> monthString="September";
-                            case 10 -> monthString="October";
-                            case 11 -> monthString="November";
-                            case 12 -> monthString="December";
-                                
+                        switch (month) {
+                            case 1 ->
+                                monthString = "January";
+                            case 2 ->
+                                monthString = "February";
+                            case 3 ->
+                                monthString = "March";
+                            case 4 ->
+                                monthString = "April";
+                            case 5 ->
+                                monthString = "May";
+                            case 6 ->
+                                monthString = "June";
+                            case 7 ->
+                                monthString = "July";
+                            case 8 ->
+                                monthString = "August";
+                            case 9 ->
+                                monthString = "September";
+                            case 10 ->
+                                monthString = "October";
+                            case 11 ->
+                                monthString = "November";
+                            case 12 ->
+                                monthString = "December";
+
                         }
                         paymentDay.setText(year + " - " + monthString);
                         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -269,10 +281,12 @@ public class PayNowGate extends javax.swing.JFrame {
                                 + "'" + jTextField2.getText() + "',"
                                 + "'" + year + "',"
                                 + "'" + month + "','1','" + today + "')");
+                        dataRefresh();
                     } else {
                         stmt.executeUpdate("UPDATE payments "
                                 + "SET status='1' "
                                 + "WHERE id='" + id + "'");
+                        dataRefresh();
                     }
                     telegramUpdate();
                     autoMessage.paymentSuccess();
@@ -283,7 +297,6 @@ public class PayNowGate extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println(e);
         }
-        dataRefresh();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void telegramUpdate() {
