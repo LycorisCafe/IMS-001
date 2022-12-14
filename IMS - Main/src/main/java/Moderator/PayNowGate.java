@@ -96,6 +96,7 @@ public class PayNowGate extends javax.swing.JFrame {
         paymentDay = new javax.swing.JLabel();
         paymentId = new javax.swing.JLabel();
         telegramId = new javax.swing.JLabel();
+        paymentValue = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -119,6 +120,8 @@ public class PayNowGate extends javax.swing.JFrame {
         paymentId.setText("jLabel4");
 
         telegramId.setText("jLabel4");
+
+        paymentValue.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Payment Gateway");
@@ -289,6 +292,7 @@ public class PayNowGate extends javax.swing.JFrame {
                     + "FROM classes "
                     + "WHERE id='" + jTextField2.getText() + "'");
             while (rs.next()) {
+                paymentValue.setText(rs.getString("payment"));
                 int day = rs.getInt("day");
                 switch (day) {
                     case 1 ->
@@ -377,6 +381,7 @@ public class PayNowGate extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     public static javax.swing.JLabel paymentDay;
     public static javax.swing.JLabel paymentId;
+    public static javax.swing.JLabel paymentValue;
     public static javax.swing.JLabel studentName;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
