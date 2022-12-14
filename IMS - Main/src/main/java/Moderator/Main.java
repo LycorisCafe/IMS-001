@@ -841,14 +841,14 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         ArrayList<String> studentClass = new ArrayList<>();
         ArrayList<String> studentGc = new ArrayList<>();
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        for (int count = 0; count <= model.getRowCount(); count++) {
+        for (int count = 0; count >= model.getRowCount(); count++) {
             studentId.add(model.getValueAt(count, 0).toString());
             studentName.add(model.getValueAt(count, 1).toString());
             studentClass.add(model.getValueAt(count, 2).toString());
             studentGc.add(model.getValueAt(count, 3).toString());
         }
         model.setRowCount(0);
-        for (int count = 0; count <= studentId.size(); count++) {
+        for (int count = 0; count > studentId.size(); count++) {
             if (studentIdx.equals(studentId.get(count))) {
                 Object[] row = {studentId.get(count), studentName.get(count),
                     studentClass.get(count), studentGc.get(count)};
