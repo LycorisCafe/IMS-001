@@ -148,7 +148,31 @@ public class AutomatedMessages {
         String classDay = Moderator.PayNowGate.classDay.getText();
         String paymentId = Moderator.PayNowGate.paymentId.getText();
         String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
-        String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm aa").format(new Date());
+        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ"));
+        photo.setChatId(telegramId);
+        photo.setParseMode("html");
+        photo.setProtectContent(Boolean.TRUE);
+        
+//        System.out.println(telegramId + " " + studentId + " " + studentName + " "+className + " "+ classTeacher+ " "+ classDay+ " "+ " " );
+        photo.setCaption("Dear " + studentName + ",\n"
+                + "We Confirmed that we got your Payment!!!\n\n"
+                
+                +"Class Name "+ ": " + className +"\n"
+                +"Student ID" + ": " + studentId  +"\n"
+                + "Teacher " + ": "+ classTeacher +"\n"
+                +"Class Day " + ": " + classDay +"\n" 
+                +"Payment "+ ": " + paymentId +"\n" 
+                +"Payment Target" + ": "+ paymentTarget +"\n"
+                +"Time " + ": "+ slipTime
+         
+        
+             
+        );
+        
+        sendPhoto();
+        
+        
     }
 
     // sending operations =========>>>>>>>>>>>
