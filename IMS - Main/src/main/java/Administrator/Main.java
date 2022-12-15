@@ -3050,7 +3050,8 @@ public class Main extends javax.swing.JFrame {
                         break;
                 }
                 output.append("\nStarting Broadcast...\n");
-                output.append(time + "\n");
+                output.append(time + "\n\n");
+                output.append("Message :-\n\"" + broadcastMessage.getText()+"\"\n\n");
                 TelegramReports.jTextArea1.append("Starting Broadcast...\n");
                 try {
                     Connection con = Helper.DB.connect();
@@ -3102,7 +3103,7 @@ public class Main extends javax.swing.JFrame {
                     System.out.println("#014" + e);
                 }
                 TelegramReports.jTextArea1.append("Ending Broadcast...\n");
-                output.append("Ending Broadcast...\n\n");
+                output.append("Ending Broadcast...\n\n------------------------------------------------------------------");
                 broadcastMessage.setText("");
                 output.close();
             } catch (IOException e) {
