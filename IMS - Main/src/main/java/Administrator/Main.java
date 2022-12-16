@@ -3919,7 +3919,7 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         int r = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(r, 0).toString();
-        int r1 = jTable1.getSelectedRow();
+        int r1 = jTable2.getSelectedRow();
         String id1 = jTable2.getValueAt(r1, 0).toString();
         try {
             Connection con = Helper.DB.connect();
