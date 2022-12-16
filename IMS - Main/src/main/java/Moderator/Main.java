@@ -76,22 +76,26 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     + "FROM attendance "
                     + "WHERE date='" + todate + "'");
             while (rs.next()) {
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM regclass "
                         + "WHERE id='" + rs.getString("regClassId") + "'");
                 while (rs2.next()) {
                     String studentId = rs2.getString("studentId");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE id='" + rs2.getString("classId") + "'");
                     while (rs3.next()) {
-                        ResultSet rs4 = stmt.executeQuery("SELECT * "
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE id='" + rs3.getString("subjectId") + "'");
                         while (rs4.next()) {
                             String grade = rs4.getString("grade");
                             String subject = rs4.getString("subject");
-                            ResultSet rs5 = stmt.executeQuery("SELECT * "
+                            Statement stmt5 = con.createStatement();
+                            ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                     + "FROM students "
                                     + "WHERE id='" + studentId + "'");
                             while (rs5.next()) {
@@ -117,7 +121,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     + "FROM classes "
                     + "WHERE day='" + today + "'");
             while (rs.next()) {
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM subjects "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
