@@ -19,12 +19,18 @@ public class ImagePreview extends javax.swing.JFrame {
     public ImagePreview() {
         initComponents();
         formDetails();
+        setImage();
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-    
-    private void formDetails(){
+
+    private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
+    }
+
+    private void setImage() {
+        jLabel1.removeAll();
+        jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
     }
 
     /**
@@ -141,7 +147,7 @@ public class ImagePreview extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }
