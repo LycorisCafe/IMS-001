@@ -22,7 +22,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class Updates extends javax.swing.JFrame {
 
@@ -155,6 +155,7 @@ public class Updates extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
+        this.dispose();
     }
 
     /**

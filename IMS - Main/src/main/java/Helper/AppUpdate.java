@@ -17,7 +17,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
- * @author Anupama
+ * @author Lycoris Cafe
  */
 public class AppUpdate {
 
