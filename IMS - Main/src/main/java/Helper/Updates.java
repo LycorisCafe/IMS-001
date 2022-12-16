@@ -40,9 +40,17 @@ public class Updates extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        disposeText = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+
+        disposeText.setText("jLabel3");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
+            }
+        });
 
         setTitle("Updater");
         setUndecorated(true);
@@ -93,6 +101,11 @@ public class Updates extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -129,6 +142,7 @@ public class Updates extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JLabel disposeText;
     public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     public static javax.swing.JProgressBar jProgressBar1;

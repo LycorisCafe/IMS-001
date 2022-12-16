@@ -143,10 +143,12 @@ public class IMS {
         // ================ Install updates when downloaded ====================
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() { 
+                System.out.println("ook");
                 File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
                 File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
                 File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
-                if (downloadedUpdate.exists() && downloadedUpdater.exists() && downloadedExtractor.exists()) {
+                File downloadedSample = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
+                if (downloadedUpdate.exists() && downloadedSample.exists() && downloadedExtractor.exists()) {
                     try {
                         ProcessBuilder processBuilder
                                 = new ProcessBuilder("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"

@@ -207,6 +207,27 @@ public class AppUpdate extends Thread {
             System.out.println(ex);
         }
         // =====================================================================
+        Updates.jLabel1.setText("Preparing Updater for Download...");
+        Updates.jProgressBar1.setStringPainted(true);
+        try {
+            URL url = new URL(updaterDownload);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                count = 0;
+                while ((line = br.readLine()) != null) {
+                    count = count + 1;
+                }
+                Updates.jProgressBar1.setMaximum(count);
+                Updates.jProgressBar1.setMinimum(0);
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // =====================================================================
         Updates.jLabel1.setText("Downloading Updater...");
         try {
             URL url = new URL(updaterDownload);
@@ -214,6 +235,7 @@ public class AppUpdate extends Thread {
             InputStream is = con.getInputStream();
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
                 String line = null;
+                count = 0;
                 while ((line = br.readLine()) != null) {
                     count = count + 1;
                     try {
@@ -222,6 +244,7 @@ public class AppUpdate extends Thread {
                         String filePath = bot.execute(getFile).getFilePath();
                         bot.downloadFile(filePath, new File(
                                 "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater" + count + ".rar"));
+                        Updates.jProgressBar1.setValue(count);
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }
@@ -249,7 +272,6 @@ public class AppUpdate extends Thread {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-        Updates upui = new Updates();
-        upui.dispose();
+        Updates.disposeText.setText("0");
     }
 }
