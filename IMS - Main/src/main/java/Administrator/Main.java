@@ -3024,7 +3024,7 @@ public class Main extends javax.swing.JFrame {
                 }
                 output.append("\nStarting Broadcast...\n");
                 output.append(time + "\n\n");
-                output.append("Message :-\n\"" + broadcastMessage.getText()+"\"\n\n");
+                output.append("Message :-\n\"" + broadcastMessage.getText() + "\"\n\n");
                 TelegramReports.jTextArea1.append("Starting Broadcast...\n");
                 try {
                     Connection con = Helper.DB.connect();
@@ -3747,6 +3747,9 @@ public class Main extends javax.swing.JFrame {
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
         // TODO add your handling code here:
+        if (jTabbedPane1.getSelectedIndex() == 0) {
+            grabData();
+        }
         if (jTabbedPane1.getSelectedIndex() == 1) {
             loadTeachers();
         }
