@@ -9,7 +9,11 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -68,6 +72,21 @@ public class IMS {
         SplashScreen splash = new SplashScreen();
         splash.setVisible(true);
 
+        // ================= check internet connection =========================
+        try {
+            URL url = new URL("https://telegram.org");
+            URLConnection connection = url.openConnection();
+            connection.connect();
+        } catch (MalformedURLException e) {
+            JOptionPane.showMessageDialog(splash, "Internet connection error!\n"
+                    + "Please try again after connect to the internet.");
+            System.exit(0);
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(splash, "Internet connection error!\n"
+                    + "Please try again after connect to the internet.");
+            System.exit(0);
+        }
+
         // ================== Make Application Workspace =======================
         File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
         if (!file.exists()) {
@@ -123,7 +142,9 @@ public class IMS {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
-                if (downloadedUpdate.exists()) {
+                File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
+                File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
+                if (downloadedUpdate.exists() && downloadedUpdater.exists() && downloadedExtractor.exists()) {
                     try {
                         ProcessBuilder processBuilder
                                 = new ProcessBuilder("cmd.exe", "/c",

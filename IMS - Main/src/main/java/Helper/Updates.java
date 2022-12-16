@@ -41,120 +41,8 @@ public class Updates extends javax.swing.JFrame {
     }
 
     private void downloadUpdates() {
-        jLabel1.setText("Preparing Update for Download...");
-        jProgressBar1.setStringPainted(true);
-        String newVersionDownload = AppUpdate.newVersionDownload();
-        String unrarDownload = AppUpdate.unrar();
-        String updaterDownload = AppUpdate.updater();
-        TelegramBot bot = new TelegramBot();
-        try {
-            URL url = new URL(newVersionDownload);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                String line = null;
-                int count = 0;
-                while ((line = br.readLine()) != null) {
-                    count = count + 1;
-                }
-                jProgressBar1.setMaximum(count);
-                jProgressBar1.setMinimum(0);
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        // =====================================================================
-        jLabel1.setText("Downloading Update...");
-        try {
-            URL url = new URL(newVersionDownload);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                String line = null;
-                int count = 0;
-                while ((line = br.readLine()) != null) {
-                    count = count + 1;
-                    try {
-                        GetFile getFile = new GetFile();
-                        getFile.setFileId(line);
-                        String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\" + count + ".rar"));
-                        jProgressBar1.setValue(count);
-                    } catch (TelegramApiException e) {
-                        System.out.println(e);
-                    }
-                }
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        // =====================================================================
-        jLabel1.setText("Downloading Extractor...");
-        try {
-            URL url = new URL(unrarDownload);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    try {
-                        GetFile getFile = new GetFile();
-                        getFile.setFileId(line);
-                        String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"));
-                    } catch (TelegramApiException e) {
-                        System.out.println(e);
-                    }
-                }
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        // =====================================================================
-        jLabel1.setText("Downloading Updater...");
-        try {
-            URL url = new URL(updaterDownload);
-            URLConnection con = url.openConnection();
-            InputStream is = con.getInputStream();
-            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-                String line = null;
-                while ((line = br.readLine()) != null) {
-                    try {
-                        GetFile getFile = new GetFile();
-                        getFile.setFileId(line);
-                        String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe"));
-                    } catch (TelegramApiException e) {
-                        System.out.println(e);
-                    }
-                }
-            }
-        } catch (MalformedURLException ex) {
-            System.out.println(ex);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        // =====================================================================
-        jLabel1.setText("Setting Paths...");
-        String jarDir = null;
-        try {
-            CodeSource codeSource = MainPkg.IMS.class.getProtectionDomain().getCodeSource();
-            File jarFile = new File(codeSource.getLocation().toURI().getPath());
-            jarDir = jarFile.getParentFile().getPath();
-        } catch (URISyntaxException e) {
-            System.out.println(e);
-        }
-        try ( PrintStream out = new PrintStream(new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc"))) {
-            out.println(jarDir);
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex);
-        }
+        AppUpdate update = new AppUpdate();
+        update.downloadUpdates();
         this.dispose();
     }
 
@@ -246,8 +134,8 @@ public class Updates extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JProgressBar jProgressBar1;
+    public static javax.swing.JProgressBar jProgressBar1;
     // End of variables declaration//GEN-END:variables
 }

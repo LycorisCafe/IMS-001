@@ -6,12 +6,16 @@ package Helper;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.CodeSource;
 import org.telegram.telegrambots.meta.api.methods.GetFile;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -118,6 +122,124 @@ public class AppUpdate {
         } catch (MalformedURLException ex) {
             System.out.println(ex);
         } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void downloadUpdates() {
+        Updates.jLabel1.setText("Preparing Update for Download...");
+        Updates.jProgressBar1.setStringPainted(true);
+        String newVersionDownload = AppUpdate.newVersionDownload();
+        String unrarDownload = AppUpdate.unrar();
+        String updaterDownload = AppUpdate.updater();
+        TelegramBot bot = new TelegramBot();
+        try {
+            URL url = new URL(newVersionDownload);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                int count = 0;
+                while ((line = br.readLine()) != null) {
+                    count = count + 1;
+                }
+                Updates.jProgressBar1.setMaximum(count);
+                Updates.jProgressBar1.setMinimum(0);
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // =====================================================================
+        Updates.jLabel1.setText("Downloading Update...");
+        int count = 0;
+        try {
+            URL url = new URL(newVersionDownload);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    count = count + 1;
+                    try {
+                        GetFile getFile = new GetFile();
+                        getFile.setFileId(line);
+                        String filePath = bot.execute(getFile).getFilePath();
+                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\" + count + ".rar"));
+                        Updates.jProgressBar1.setValue(count);
+                    } catch (TelegramApiException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // =====================================================================
+        Updates.jLabel1.setText("Downloading Extractor...");
+        try {
+            URL url = new URL(unrarDownload);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    try {
+                        GetFile getFile = new GetFile();
+                        getFile.setFileId(line);
+                        String filePath = bot.execute(getFile).getFilePath();
+                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"));
+                    } catch (TelegramApiException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // =====================================================================
+        Updates.jLabel1.setText("Downloading Updater...");
+        try {
+            URL url = new URL(updaterDownload);
+            URLConnection con = url.openConnection();
+            InputStream is = con.getInputStream();
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line = null;
+                while ((line = br.readLine()) != null) {
+                    try {
+                        GetFile getFile = new GetFile();
+                        getFile.setFileId(line);
+                        String filePath = bot.execute(getFile).getFilePath();
+                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe"));
+                    } catch (TelegramApiException e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        } catch (MalformedURLException ex) {
+            System.out.println(ex);
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        // =====================================================================
+        Updates.jLabel1.setText("Setting Paths...");
+        String jarDir = null;
+        try {
+            CodeSource codeSource = MainPkg.IMS.class.getProtectionDomain().getCodeSource();
+            File jarFile = new File(codeSource.getLocation().toURI().getPath());
+            jarDir = jarFile.getParentFile().getPath();
+        } catch (URISyntaxException e) {
+            System.out.println(e);
+        }
+        try ( PrintStream out = new PrintStream(new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc"))) {
+            out.println(jarDir);
+            out.println(count);
+        } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
     }
