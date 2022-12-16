@@ -21,11 +21,6 @@ public class ImagePreview extends javax.swing.JFrame {
         formDetails();
     }
     
-    private void getImage(){
-        jLabel1.setIcon(null);
-        jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
-    }
-    
     private void formDetails(){
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
@@ -107,7 +102,6 @@ public class ImagePreview extends javax.swing.JFrame {
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         // TODO add your handling code here:
-        getImage();
     }//GEN-LAST:event_formWindowGainedFocus
 
     /**
@@ -146,7 +140,7 @@ public class ImagePreview extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    public static javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

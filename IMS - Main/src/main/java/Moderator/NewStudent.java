@@ -879,6 +879,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         // TODO add your handling code here:
         ImagePreview preview = new ImagePreview();
         preview.setVisible(true);
+        ImagePreview.jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void cr1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr1ActionPerformed
@@ -1103,6 +1104,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        webcam.close();
         Main main = new Main();
         main.setVisible(true);
         this.dispose();
