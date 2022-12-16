@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
@@ -49,16 +50,12 @@ public class Main extends javax.swing.JFrame {
     String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
     String year = new SimpleDateFormat("yyyy").format(new Date());
     String month = new SimpleDateFormat("MM").format(new Date());
-    String searchFrom;
-    String searchWhere;
-    String searchLike;
     String cr1x;
     String cr2x;
     String subjectId;
     String teacherId;
     String tableSelection;
     int dayCho;
-    DefaultTableModel tableModel;
     Helper.AutomatedMessages tAutomated = new Helper.AutomatedMessages();
 
     private void formDetails() {
@@ -256,27 +253,20 @@ public class Main extends javax.swing.JFrame {
                     while (rs3.next()) {
                         String convertedDay = null;
                         switch (day) {
-                            case 1:
+                            case 1 ->
                                 convertedDay = "Monday";
-                                break;
-                            case 2:
+                            case 2 ->
                                 convertedDay = "Tuesday";
-                                break;
-                            case 3:
+                            case 3 ->
                                 convertedDay = "Wednesday";
-                                break;
-                            case 4:
+                            case 4 ->
                                 convertedDay = "Thursday";
-                                break;
-                            case 5:
+                            case 5 ->
                                 convertedDay = "Friday";
-                                break;
-                            case 6:
+                            case 6 ->
                                 convertedDay = "Saturday";
-                                break;
-                            case 7:
+                            case 7 ->
                                 convertedDay = "Sunday";
-                                break;
                         }
                         Object[] row = {classId, rs3.getString("grade"),
                             rs3.getString("subject"), teacher, convertedDay};
@@ -289,22 +279,6 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#008" + e);
         }
-        jComboBox8.removeAllItems();
-        jComboBox8.addItem("Please Select...");
-        jComboBox8.setSelectedIndex(0);
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM subjects");
-            while (rs.next()) {
-                jComboBox8.addItem(rs.getString("grade")
-                        + " - " + rs.getString("subject"));
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("#009" + e);
-        }
         jComboBox9.removeAllItems();
         jComboBox9.addItem("Please Select...");
         jComboBox9.setSelectedIndex(0);
@@ -314,8 +288,7 @@ public class Main extends javax.swing.JFrame {
             ResultSet rs = stmt.executeQuery("SELECT * "
                     + "FROM teachers");
             while (rs.next()) {
-                jComboBox9.addItem(rs.getString("id")
-                        + " - " + rs.getString("name"));
+                jComboBox9.addItem(rs.getString("name"));
             }
             con.close();
         } catch (SQLException e) {
@@ -1465,7 +1438,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
+        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "6", "7", "8", "9", "10", "11" }));
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox4ActionPerformed(evt);
@@ -2079,13 +2052,13 @@ public class Main extends javax.swing.JFrame {
 
         jPanel25.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Search :"));
 
-        jLabel37.setText("by Class :");
+        jLabel37.setText("by Grade :");
 
         jLabel38.setText("by Teacher :");
 
         jLabel39.setText("by Day :");
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "6", "7", "8", "9", "10", "11" }));
         jComboBox8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox8ActionPerformed(evt);
@@ -3378,14 +3351,14 @@ public class Main extends javax.swing.JFrame {
                             + "FROM teachers "
                             + "WHERE id='" + id + "'");
                     while (rs.next()) {
-                        String teacherId = rs.getString("id");
+                        String teacherIdn = rs.getString("id");
                         String Teleid = rs.getString("telegramId");
                         name2 = rs.getString("name");
                         sm.setText(jTextArea2.getText());
                         sm.setChatId(Teleid);
                         try {
                             telegram.execute(sm);
-                            output.append("\n" + logTime + " - " + teacherId + " -\n" + jTextArea2.getText());
+                            output.append("\n" + logTime + " - " + teacherIdn + " -\n" + jTextArea2.getText());
                             JOptionPane.showMessageDialog(this, "Message sent success!");
                             jTextArea2.setText("");
                         } catch (TelegramApiException e) {
@@ -3405,55 +3378,74 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton21ActionPerformed
 
     private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
-        // to filter selected data by ID
-        if (!"".equals(jTextField10.getText())) {
-            searchFrom = "teachers";
-            searchWhere = "id";
-            searchLike = jTextField10.getText();
-            tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQueryTeachers();
+        if (!jTextField10.getText().equals("")) {
+            loadTeachers();
+            String teacherIdx = jTextField10.getText();
+            ArrayList<String> teacherIdn = new ArrayList<>();
+            ArrayList<String> teacherName = new ArrayList<>();
+            ArrayList<String> teacherNIC = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                teacherIdn.add(model.getValueAt(count, 0).toString());
+                teacherName.add(model.getValueAt(count, 1).toString());
+                teacherNIC.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < teacherIdn.size(); count++) {
+                if (teacherIdx.equals(teacherIdn.get(count))) {
+                    Object[] row = {teacherIdn.get(count), teacherName.get(count),
+                        teacherNIC.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jTextField10ActionPerformed
 
-    private void searchQueryTeachers() {
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = (Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM " + searchFrom + " "
-                    + "WHERE " + searchWhere + " "
-                    + "LIKE '%" + searchLike + "%'");
-            tableModel.setRowCount(0);
-            while (rs.next()) {
-                Object[] row = {rs.getString("id"),
-                    rs.getString("name"), rs.getString("nic")};
-                tableModel.addRow(row);
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("#027" + e);
-        }
-    }
-
     private void jTextField11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField11ActionPerformed
-        // to filter selected data by name
-        if (!"".equals(jTextField11.getText())) {
-            searchFrom = "teachers";
-            searchWhere = "name";
-            searchLike = jTextField11.getText();
-            tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQueryTeachers();
+        if (!jTextField11.getText().equals("")) {
+            loadTeachers();
+            String teacherNamex = jTextField11.getText();
+            ArrayList<String> teacherIdn = new ArrayList<>();
+            ArrayList<String> teacherName = new ArrayList<>();
+            ArrayList<String> teacherNIC = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                teacherIdn.add(model.getValueAt(count, 0).toString());
+                teacherName.add(model.getValueAt(count, 1).toString());
+                teacherNIC.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < teacherIdn.size(); count++) {
+                if (teacherNamex.equals(teacherName.get(count))) {
+                    Object[] row = {teacherIdn.get(count), teacherName.get(count),
+                        teacherNIC.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jTextField11ActionPerformed
 
     private void jTextField12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField12ActionPerformed
-        // to filter selected data by nic
-        if (!"".equals(jTextField12.getText())) {
-            searchFrom = "teachers";
-            searchWhere = "nic";
-            searchLike = jTextField12.getText();
-            tableModel = (DefaultTableModel) jTable1.getModel();
-            searchQueryTeachers();
+        if (!jTextField12.getText().equals("")) {
+            loadTeachers();
+            String teacherNICx = jTextField12.getText();
+            ArrayList<String> teacherIdn = new ArrayList<>();
+            ArrayList<String> teacherName = new ArrayList<>();
+            ArrayList<String> teacherNIC = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                teacherIdn.add(model.getValueAt(count, 0).toString());
+                teacherName.add(model.getValueAt(count, 1).toString());
+                teacherNIC.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < teacherIdn.size(); count++) {
+                if (teacherNICx.equals(teacherNIC.get(count))) {
+                    Object[] row = {teacherIdn.get(count), teacherName.get(count),
+                        teacherNIC.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jTextField12ActionPerformed
 
@@ -3612,56 +3604,75 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton20ActionPerformed
 
-    private void searchQueryStudents() {
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = (Statement) con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM " + searchFrom + " "
-                    + "WHERE " + searchWhere + " "
-                    + "LIKE '%" + searchLike + "%'");
-            tableModel.setRowCount(0);
-            while (rs.next()) {
-                Object[] row = {rs.getString("id"),
-                    rs.getString("firstName") + " " + rs.getString("lastName"), rs.getString("grade")};
-                tableModel.addRow(row);
-            }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println("#036" + e);
-        }
-    }
-
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
-        // search for students by id
-        if (!"".equals(jTextField9.getText())) {
-            searchFrom = "students";
-            searchWhere = "id";
-            searchLike = jTextField9.getText();
-            tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQueryStudents();
+        if (!jTextField9.getText().equals("")) {
+            loadStudents();
+            String studentIdx = jTextField12.getText();
+            ArrayList<String> studentId = new ArrayList<>();
+            ArrayList<String> studentName = new ArrayList<>();
+            ArrayList<String> studentGrade = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                studentId.add(model.getValueAt(count, 0).toString());
+                studentName.add(model.getValueAt(count, 1).toString());
+                studentGrade.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < studentId.size(); count++) {
+                if (studentIdx.equals(studentId.get(count))) {
+                    Object[] row = {studentId.get(count), studentName.get(count),
+                        studentGrade.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jTextField9ActionPerformed
 
     private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
-        // search for students by name
-        if (!"".equals(jTextField13.getText())) {
-            searchFrom = "students";
-            searchWhere = "firstName";
-            searchLike = jTextField13.getText();
-            tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQueryStudents();
+        if (!jTextField13.getText().equals("")) {
+            loadStudents();
+            String studentNamex = jTextField13.getText();
+            ArrayList<String> studentId = new ArrayList<>();
+            ArrayList<String> studentName = new ArrayList<>();
+            ArrayList<String> studentGrade = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                studentId.add(model.getValueAt(count, 0).toString());
+                studentName.add(model.getValueAt(count, 1).toString());
+                studentGrade.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < studentId.size(); count++) {
+                if (studentNamex.equals(studentName.get(count))) {
+                    Object[] row = {studentId.get(count), studentName.get(count),
+                        studentGrade.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jTextField13ActionPerformed
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
-        // search for students by grade
-        if (jComboBox4.getSelectedIndex() != 0) {
-            searchFrom = "students";
-            searchWhere = "grade";
-            searchLike = jComboBox4.getSelectedItem().toString();
-            tableModel = (DefaultTableModel) jTable3.getModel();
-            searchQueryStudents();
+        if (jComboBox4.getSelectedIndex() != 0 && jComboBox4.getSelectedItem() != null) {
+            loadStudents();
+            String studentGradex = jComboBox4.getSelectedItem().toString();
+            ArrayList<String> studentId = new ArrayList<>();
+            ArrayList<String> studentName = new ArrayList<>();
+            ArrayList<String> studentGrade = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                studentId.add(model.getValueAt(count, 0).toString());
+                studentName.add(model.getValueAt(count, 1).toString());
+                studentGrade.add(model.getValueAt(count, 2).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < studentId.size(); count++) {
+                if (studentGradex.equals(studentGrade.get(count))) {
+                    Object[] row = {studentId.get(count), studentName.get(count),
+                        studentGrade.get(count)};
+                    model.addRow(row);
+                }
+            }
         }
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
@@ -3909,7 +3920,7 @@ public class Main extends javax.swing.JFrame {
         int r = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(r, 0).toString();
         int r1 = jTable1.getSelectedRow();
-        String id1 = jTable2.getValueAt(r, 0).toString();
+        String id1 = jTable2.getValueAt(r1, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -4013,7 +4024,6 @@ public class Main extends javax.swing.JFrame {
                     com2[a].setEnabled(true);
                 }
 
-                DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
                 int r = jTable3.getSelectedRow();
                 String id = jTable3.getValueAt(r, 0).toString();
                 DefaultTableModel model1 = (DefaultTableModel) jTable5.getModel();
@@ -4094,7 +4104,6 @@ public class Main extends javax.swing.JFrame {
 
     private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
         // TODO add your handling code here:
-        DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
         int r = jTable5.getSelectedRow();
         String id = jTable5.getValueAt(r, 0).toString();
         try {
@@ -4287,163 +4296,87 @@ public class Main extends javax.swing.JFrame {
 
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox8.getSelectedIndex() != 0 || jComboBox8.getSelectedItem() != null) {
-            jComboBox9.setSelectedIndex(0);
-            jComboBox10.setSelectedIndex(0);
+        if (jComboBox8.getSelectedIndex() != 0 && jComboBox8.getSelectedItem() != null) {
+            loadGroups();
+            String gradex = jComboBox8.getSelectedItem().toString();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> grade = new ArrayList<>();
+            ArrayList<String> subject = new ArrayList<>();
+            ArrayList<String> teacher = new ArrayList<>();
+            ArrayList<String> day = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                grade.add(model.getValueAt(count, 1).toString());
+                subject.add(model.getValueAt(count, 2).toString());
+                teacher.add(model.getValueAt(count, 3).toString());
+                day.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            String convertedDay = null;
-            String[] parts = jComboBox8.getSelectedItem().toString().split(" - ");
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + parts[0] + "'"
-                        + "AND subject='" + parts[1] + "'");
-                while (rs.next()) {
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE subjectId='" + rs.getString("id") + "'");
-                    while (rs2.next()) {
-                        String classId = rs2.getString("id");
-                        int day = rs2.getInt("day");
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM teachers "
-                                + "WHERE id='" + rs2.getString("teacherId") + "'");
-                        while (rs3.next()) {
-                            switch (day) {
-                                case 1:
-                                    convertedDay = "Monday";
-                                    break;
-                                case 2:
-                                    convertedDay = "Tuesday";
-                                    break;
-                                case 3:
-                                    convertedDay = "Wednesday";
-                                    break;
-                                case 4:
-                                    convertedDay = "Thursday";
-                                    break;
-                                case 5:
-                                    convertedDay = "Friday";
-                                    break;
-                                case 6:
-                                    convertedDay = "Saturday";
-                                    break;
-                                case 7:
-                                    convertedDay = "Sunday";
-                                    break;
-                            }
-                            Object[] row = {classId, parts[0], parts[1],
-                                rs3.getString("name"), convertedDay};
-                            model.addRow(row);
-                        }
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (gradex.equals(grade.get(count))) {
+                    Object[] row = {id.get(count), grade.get(count),
+                        subject.get(count), teacher.get(count), day.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#052" + e);
             }
         }
     }//GEN-LAST:event_jComboBox8ActionPerformed
 
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox9.getSelectedIndex() != 0 || jComboBox9.getSelectedItem() != null) {
-            jComboBox8.setSelectedIndex(0);
-            jComboBox10.setSelectedIndex(0);
+        if (jComboBox9.getSelectedIndex() != 0 && jComboBox9.getSelectedItem() != null) {
+            loadGroups();
+            String teacherx = jComboBox9.getSelectedItem().toString();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> grade = new ArrayList<>();
+            ArrayList<String> subject = new ArrayList<>();
+            ArrayList<String> teacher = new ArrayList<>();
+            ArrayList<String> day = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                grade.add(model.getValueAt(count, 1).toString());
+                subject.add(model.getValueAt(count, 2).toString());
+                teacher.add(model.getValueAt(count, 3).toString());
+                day.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            String convertedDay = null;
-            String[] parts = jComboBox9.getSelectedItem().toString().split(" - ");
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM classes "
-                        + "WHERE teacherId='" + parts[0] + "'");
-                while (rs.next()) {
-                    String classId = rs.getString("id");
-                    int day = rs.getInt("day");
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM subjects "
-                            + "WHERE id='" + rs.getString("subjectId") + "'");
-                    while (rs2.next()) {
-                        switch (day) {
-                            case 1:
-                                convertedDay = "Monday";
-                                break;
-                            case 2:
-                                convertedDay = "Tuesday";
-                                break;
-                            case 3:
-                                convertedDay = "Wednesday";
-                                break;
-                            case 4:
-                                convertedDay = "Thursday";
-                                break;
-                            case 5:
-                                convertedDay = "Friday";
-                                break;
-                            case 6:
-                                convertedDay = "Saturday";
-                                break;
-                            case 7:
-                                convertedDay = "Sunday";
-                                break;
-                        }
-                        Object[] row = {classId, rs2.getString("grade"),
-                            rs2.getString("subject"), parts[1], convertedDay};
-                        model.addRow(row);
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (teacherx.equals(teacher.get(count))) {
+                    Object[] row = {id.get(count), grade.get(count),
+                        subject.get(count), teacher.get(count), day.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#053" + e);
             }
         }
     }//GEN-LAST:event_jComboBox9ActionPerformed
 
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox10.getSelectedIndex() != 0 || jComboBox10.getSelectedItem() != null) {
-            jComboBox8.setSelectedIndex(0);
-            jComboBox9.setSelectedIndex(0);
+        if (jComboBox10.getSelectedIndex() != 0 && jComboBox10.getSelectedItem() != null) {
+            loadGroups();
+            String dayx = jComboBox10.getSelectedItem().toString();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> grade = new ArrayList<>();
+            ArrayList<String> subject = new ArrayList<>();
+            ArrayList<String> teacher = new ArrayList<>();
+            ArrayList<String> day = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                grade.add(model.getValueAt(count, 1).toString());
+                subject.add(model.getValueAt(count, 2).toString());
+                teacher.add(model.getValueAt(count, 3).toString());
+                day.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            int day = jComboBox10.getSelectedIndex();
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM classes "
-                        + "WHERE day='" + day + "'");
-                while (rs.next()) {
-                    String classId = rs.getString("id");
-                    subjectId = rs.getString("subjectId");
-                    teacherId = rs.getString("teacherId");
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM teachers "
-                            + "WHERE id='" + teacherId + "'");
-                    while (rs2.next()) {
-                        String teacher = rs2.getString("name");
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM subjects "
-                                + "WHERE id='" + subjectId + "'");
-                        while (rs3.next()) {
-                            Object[] row = {classId, rs3.getString("grade"),
-                                rs3.getString("subject"), teacher,
-                                jComboBox10.getSelectedItem().toString()};
-                            model.addRow(row);
-                        }
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (dayx.equals(day.get(count))) {
+                    Object[] row = {id.get(count), grade.get(count),
+                        subject.get(count), teacher.get(count), day.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#054" + e);
             }
         }
     }//GEN-LAST:event_jComboBox10ActionPerformed
@@ -4910,38 +4843,28 @@ public class Main extends javax.swing.JFrame {
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
         // TODO add your handling code here:
         if (!jTextField19.getText().equals("")) {
+            loadExams();
+            String namex = jTextField19.getText();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> classn = new ArrayList<>();
+            ArrayList<String> date = new ArrayList<>();
+            ArrayList<String> time = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                name.add(model.getValueAt(count, 1).toString());
+                classn.add(model.getValueAt(count, 2).toString());
+                date.add(model.getValueAt(count, 3).toString());
+                time.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM exams "
-                        + "WHERE name='" + jTextField19.getText() + "'");
-                while (rs.next()) {
-                    String id = rs.getString("id");
-                    String name = rs.getString("name");
-                    String date = rs.getString("date");
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE id='" + rs.getString("classId") + "'");
-                    while (rs2.next()) {
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM subjects "
-                                + "WHERE id='" + rs2.getString("subjectId") + "'");
-                        {
-                            while (rs3.next()) {
-                                Object[] row = {id, name, rs3.getString("grade")
-                                    + " - " + rs3.getString("subject"), date};
-                                model.addRow(row);
-                            }
-                        }
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (namex.equals(name.get(count))) {
+                    Object[] row = {id.get(count), name.get(count),
+                        classn.get(count), date.get(count), time.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#064" + e);
             }
         }
     }//GEN-LAST:event_jTextField19ActionPerformed
@@ -4949,36 +4872,28 @@ public class Main extends javax.swing.JFrame {
     private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
         // TODO add your handling code here:
         if (!jTextField20.getText().equals("")) {
+            loadExams();
+            String datex = jTextField20.getText();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> classn = new ArrayList<>();
+            ArrayList<String> date = new ArrayList<>();
+            ArrayList<String> time = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                name.add(model.getValueAt(count, 1).toString());
+                classn.add(model.getValueAt(count, 2).toString());
+                date.add(model.getValueAt(count, 3).toString());
+                time.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM exams "
-                        + "WHERE date='" + jTextField20.getText() + "'");
-                while (rs.next()) {
-                    String id = rs.getString("id");
-                    String name = rs.getString("name");
-                    String date = rs.getString("date");
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE id='" + rs.getString("classId") + "'");
-                    while (rs2.next()) {
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM subjects "
-                                + "WHERE id='" + rs2.getString("subjectId") + "'");
-                        while (rs3.next()) {
-                            Object[] row = {id, name, rs3.getString("grade")
-                                + " - " + rs3.getString("subject"), date};
-                            model.addRow(row);
-                        }
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (datex.equals(date.get(count))) {
+                    Object[] row = {id.get(count), name.get(count),
+                        classn.get(count), date.get(count), time.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#065" + e);
             }
         }
     }//GEN-LAST:event_jTextField20ActionPerformed
@@ -4986,29 +4901,28 @@ public class Main extends javax.swing.JFrame {
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
         if (jComboBox3.getSelectedIndex() != 0 && jComboBox3.getSelectedItem() != null) {
+            loadExams();
+            String classx = jComboBox3.getSelectedItem().toString();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> classn = new ArrayList<>();
+            ArrayList<String> date = new ArrayList<>();
+            ArrayList<String> time = new ArrayList<>();
             DefaultTableModel model = (DefaultTableModel) jTable8.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                name.add(model.getValueAt(count, 1).toString());
+                classn.add(model.getValueAt(count, 2).toString());
+                date.add(model.getValueAt(count, 3).toString());
+                time.add(model.getValueAt(count, 4).toString());
+            }
             model.setRowCount(0);
-            String[] parts = jComboBox3.getSelectedItem().toString().split(" - ");
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + parts[0] + "' "
-                        + "AND subject='" + parts[1] + "'");
-                while (rs.next()) {
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM exams "
-                            + "WHERE subjectId='" + rs.getString("id") + "'");
-                    while (rs2.next()) {
-                        Object[] row = {rs2.getString("id"), rs2.getString("name"),
-                            jComboBox3.getSelectedItem().toString(), rs2.getString("date")};
-                        model.addRow(row);
-                    }
+            for (int count = 0; count < id.size(); count++) {
+                if (classx.equals(classn.get(count))) {
+                    Object[] row = {id.get(count), name.get(count),
+                        classn.get(count), date.get(count), time.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
-                System.out.println("#066" + e);
             }
         }
     }//GEN-LAST:event_jComboBox3ActionPerformed
