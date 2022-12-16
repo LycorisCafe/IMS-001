@@ -11,21 +11,23 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  *
  * @author Anupama
  */
-public class TelegramBot extends TelegramLongPollingBot{
+public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "5347591870:AAE72QOdY-qYn7jPGCzi2qYIj68o1ToVLmE";
+        String getBotToken = IMSInstaller.botToken();
+        return getBotToken;
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-        
+
     }
 
     @Override
     public String getBotUsername() {
-        return "NaveenB2004_bot";
+        String getBotUsername = IMSInstaller.botUser();
+        return getBotUsername;
     }
-    
+
 }

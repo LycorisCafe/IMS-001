@@ -11,6 +11,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.ComputerSystem;
@@ -195,29 +197,31 @@ public class Interface extends javax.swing.JFrame {
 
     private void grabnsend() {
         jButton1.setEnabled(false);
-        jLabel4.setText("Stating the process...");
-        jLabel3.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(
-                getClass().getResource("/Media/Loding(100x25).gif"))));
-        jProgressBar1.setMinimum(0);
-        jProgressBar1.setMaximum(3);
-        jLabel4.setText("Getting data...");
-        jProgressBar1.setValue(0);
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
-        jProgressBar1.setValue(1);
-        //get processor id
         CentralProcessor processorx = hardware.getProcessor();
         CentralProcessor.ProcessorIdentifier processorIdentifier = processorx.getProcessorIdentifier();
         String processor = processorIdentifier.getProcessorID();
-        jProgressBar1.setValue(2);
-        //get baseboard id
         ComputerSystem comsys = hardware.getComputerSystem();
         String baseboard = comsys.getBaseboard().getSerialNumber();
-        jProgressBar1.setValue(3);
-        
-        jLabel4.setText("Sending data...");
+        TelegramBot bot = new TelegramBot();
+        SendMessage message = new SendMessage();
+        message.setText(processor+"\n"+baseboard);
+        System.out.println(processor+"\n"+baseboard);
+        message.setChatId(IMSInstaller.chatId());
+        try {
+            bot.execute(message);
+            jProgressBar1.setValue(1);
+            jLabel4.setText("Success!");
+            jLabel3.setIcon(null);
+            JOptionPane.showMessageDialog(this, "Success! You can now close the app.");
+        } catch (TelegramApiException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Error while process!"
+                    + " Please restart the application and try again.");
+        }
     }
-
+    
     /**
      * @param args the command line arguments
      */

@@ -496,7 +496,7 @@ public class EditClasses extends javax.swing.JFrame {
         }
         String year = new SimpleDateFormat("yyyy").format(new Date());
         String month = new SimpleDateFormat("MM").format(new Date());
-        String today = new SimpleDateFormat("yyyy-MM-DD").format(new Date());
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();

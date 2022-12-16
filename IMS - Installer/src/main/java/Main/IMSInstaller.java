@@ -30,4 +30,19 @@ public class IMSInstaller {
         Interface ui = new Interface();
         ui.setVisible(true);
     }
+    
+    public static String chatId(){
+        String chatId = "-1001829820911";
+        return chatId;
+    }
+    
+    public static String botToken(){
+        String token = "5347591870:AAE72QOdY-qYn7jPGCzi2qYIj68o1ToVLmE";
+        return token;
+    }
+    
+    public static String botUser(){
+        String user = "@NaveenB2004_bot";
+        return user;
+    }
 }
