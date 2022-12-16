@@ -1069,5 +1069,6 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         } else {
             JOptionPane.showMessageDialog(this, "Invalid QR Code!");
         }
+        dataGrab();
     }
 }
