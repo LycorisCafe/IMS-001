@@ -16,10 +16,13 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author Lycoris Cafe
  */
 public class AutomatedMessages {
-
-    // Global Variables ========>>>>>>>>
-    String instituteName = Helper.MainDetails.instituteName();
-    TelegramBot bot = new TelegramBot();
+    TelegramBot bot;
+    String instituteName;
+    
+    public AutomatedMessages() {
+        instituteName = Helper.MainDetails.instituteName();
+        bot = new TelegramBot();
+    }
 
     // message designs ===============>>>>>>>>>>
     public void studentRegistrationSuccess() {
