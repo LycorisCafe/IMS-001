@@ -55,7 +55,7 @@ public class EditClasses extends javax.swing.JFrame {
                 Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\StudentId.lc"))) {
             jTextField1.setText(lines.skip(0).findFirst().get());
         } catch (IOException ex) {
-            System.out.println(ex);
+            System.out.println("#000"+ex);
         }
         String subject;
         String grade;
@@ -96,6 +96,7 @@ public class EditClasses extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
+            System.out.println("#001"+e);
         }
     }
 
@@ -377,7 +378,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#002"+ex);
             }
         }
     }//GEN-LAST:event_cr1ActionPerformed
@@ -416,7 +417,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#003"+ex);
             }
         }
     }//GEN-LAST:event_cr2ActionPerformed
@@ -467,7 +468,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println(ex);
+                System.out.println("#004"+ex);
             }
         }
     }//GEN-LAST:event_cr3ActionPerformed
@@ -483,6 +484,11 @@ public class EditClasses extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        int x = 0;
+        int y = 0;
+        String year = new SimpleDateFormat("yyyy").format(new Date());
+        String month = new SimpleDateFormat("MM").format(new Date());
+        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -490,13 +496,11 @@ public class EditClasses extends javax.swing.JFrame {
                     + "(studentId,classId) "
                     + "VALUES "
                     + "('" + jTextField1.getText() + "','" + classId + "')");
+            x=1;
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#005"+ex);
         }
-        String year = new SimpleDateFormat("yyyy").format(new Date());
-        String month = new SimpleDateFormat("MM").format(new Date());
-        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -506,9 +510,10 @@ public class EditClasses extends javax.swing.JFrame {
                     + "'" + classId + "',"
                     + "'" + year + "',"
                     + "'" + month + "','0','" + today + "')");
+            y=1;
             con.close();
         } catch (SQLException ex) {
-            System.out.println(ex);
+            System.out.println("#006"+ex);
         }
         getData();
         JOptionPane.showMessageDialog(this, "Success!");
@@ -536,7 +541,7 @@ public class EditClasses extends javax.swing.JFrame {
                         + "classId='" + value + "'");
                 con.close();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#007"+e);
             }
             try {
                 Connection con = Helper.DB.connect();
@@ -547,7 +552,7 @@ public class EditClasses extends javax.swing.JFrame {
                         + "classId='" + value + "'");
                 con.close();
             } catch (SQLException e) {
-                System.out.println(e);
+                System.out.println("#008"+e);
             }
             model.removeRow(selectedrow);
         }
