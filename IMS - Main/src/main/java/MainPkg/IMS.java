@@ -4,6 +4,7 @@
  */
 package MainPkg;
 
+import Helper.AppUpdate;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.io.File;
@@ -141,7 +142,7 @@ public class IMS {
 
         // ================ Install updates when downloaded ====================
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
+            public void run() { 
                 File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
                 File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
                 File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");

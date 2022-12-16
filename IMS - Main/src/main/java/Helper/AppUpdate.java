@@ -249,5 +249,7 @@ public class AppUpdate extends Thread {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
+        Updates upui = new Updates();
+        upui.dispose();
     }
 }
