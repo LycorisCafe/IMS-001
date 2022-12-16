@@ -1,6 +1,5 @@
 package Main;
 
-import com.formdev.flatlaf.FlatDarkLaf;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.LongPollingBot;
@@ -26,8 +25,7 @@ public class IMSUpdater {
         }
         
         Updater updater = new Updater();
-        
-//        UnRAR.exe x NewVersion.rar
+        updater.update();
     }
     
     public static String chatId(){

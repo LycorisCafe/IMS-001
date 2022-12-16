@@ -155,6 +155,9 @@ public class IMS {
                         System.out.println("#016" + e);
                     }
                 }
+                if (!downloadedUpdate.exists() && downloadedUpdater.exists() && !downloadedExtractor.exists()) {
+                    downloadedUpdater.delete();
+                }
             }
         }, "Shutdown-thread"));
     }

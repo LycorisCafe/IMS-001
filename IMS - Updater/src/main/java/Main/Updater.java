@@ -4,14 +4,12 @@
  */
 package Main;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
-import javax.swing.JOptionPane;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 /**
  *
@@ -20,6 +18,7 @@ import javax.swing.JOptionPane;
 public class Updater {
 
     public void update() {
+        TelegramBot bot = new TelegramBot();
         String path = "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc";
         String installedLocation = null;
         String count = null;
@@ -44,27 +43,31 @@ public class Updater {
             File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\" + x + ".rar");
             file.renameTo(new File(installedLocation + "\\" + x + ".rar"));
         }
-        
-        // move unrar.exe to installation directory
-        File unrar = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
-        unrar.renameTo(new File(installedLocation + "\\unrar.exe"));
-        
+
         // decompressing and installing new version
         try {
             ProcessBuilder processBuilder
-                    = new ProcessBuilder(installedLocation + "\\unrar.exe", "x",
-                            installedLocation + "\\1.rar");
+                    = new ProcessBuilder("unrar.exe x " + installedLocation + "\\1.rar");
             processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
             System.out.println(e);
         }
-        
+
         // delete leftovers
+        File unrar = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
         File text = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
         unrar.delete();
         text.delete();
+        for (int x = 1; x > fileCount; x++) {
+            File file = new File(installedLocation + "\\" + x + ".rar");
+            file.delete();
+        }
         
+        SendMessage ms = new SendMessage();
+        ms.setChatId(IMSUpdater.chatId());
+        ms.setText("New version successfully installed!");
         
+        System.exit(0);
     }
 }
