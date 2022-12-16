@@ -3241,6 +3241,7 @@ public class Main extends javax.swing.JFrame {
             Statement stmt = (Statement) con.createStatement();
             stmt.executeUpdate("DELETE FROM teachers WHERE id='" + id + "'");
             con.close();
+            loadTeachers();
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
             System.out.println("#021" + e);
