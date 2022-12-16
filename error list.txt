@@ -1,0 +1,59 @@
+1. table content not update/reset when click on teachers' names/ records
+	-> Admin -> Main -> Teachers panel -> class panel
+
+3. Teacher's details not update when click on teachers details
+	-> Admin -> Main -> Teachers panel -> class panel
+
+4. Target income is not update when adding new teacher and student
+	-> Admin -> Main -> Summery
+
+5. Text fields are not reset when a new teacher added.
+	-> Admin -> Main -> Teachers panel -> class panel
+
+8. Not Update marks in last student and when clear all the marks of each students, it remove all the rows/ students in table. not from db.
+	-> Admin -> Main -> Exams -> Add/ update marks
+
+9. Students' result not update when click on each student's rows
+	-> Admin -> Main -> Students -> Results
+
+10. main search is not working in teacher
+	-> Admin -> Main -> Teachers
+
+11. Class search is not working
+	-> Admin -> Main -> Teachers -> Classes
+
+12. Classes Editing panel is not working
+	-> Admin -> Main -> Teachers -> Classes
+
+13. When adding a new teacher, if the status set to inactive, all the details of the teacher translated to null value.
+	-> Admin -> Main -> Teachers -> Personal
+
+14. Main search is not working in Students panel
+	-> Admin -> Main -> Students
+
+15. Search by class is not working in Results panel
+	-> Admin -> Main -> Students -> Results
+
+16. Notifying message not sent when the marksheet was uploaded.
+	-> Admin -> Main -> 
+
+17. Search by teacher and by name is not working
+	-> Admin -> Main -> Groups
+
+18. main search is not working in Exams
+	-> Admin -> Main -> Exams
+
+19. 'studentId' not availabel error in results (location not sure) [when raise, click on a Student and then click on "Results" tabs]
+	-> Admin -> Main -> Student -> Results
+
+
+
+
+2. first Student photograph preview display in every student's registartion (Same preview display in every new student registrations)
+	-> Moderator -> New Student Registration
+
+6. Registered Classes table not update
+	-> Moderator -> Edit class
+
+7. student kenek class 3ka register wela kiyla db eke pennano. et attendance mark krddi pennanne 1 subject eki.
+	-> Moderator -> Main
