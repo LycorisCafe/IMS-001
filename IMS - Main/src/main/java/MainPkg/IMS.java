@@ -77,6 +77,7 @@ public class IMS {
             URL url = new URL("https://telegram.org");
             URLConnection connection = url.openConnection();
             connection.connect();
+            System.out.println("ok");
         } catch (MalformedURLException e) {
             JOptionPane.showMessageDialog(splash, "Internet connection error!\n"
                     + "Please try again after connect to the internet.");

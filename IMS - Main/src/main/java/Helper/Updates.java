@@ -5,20 +5,6 @@
 package Helper;
 
 import java.awt.Toolkit;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.CodeSource;
-import org.telegram.telegrambots.meta.api.methods.GetFile;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -42,8 +28,7 @@ public class Updates extends javax.swing.JFrame {
 
     private void downloadUpdates() {
         AppUpdate update = new AppUpdate();
-        update.downloadUpdates();
-        this.dispose();
+        update.start();
     }
 
     /**
@@ -62,6 +47,11 @@ public class Updates extends javax.swing.JFrame {
         setTitle("Updater");
         setUndecorated(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jProgressBar1.setFont(new java.awt.Font("Consolas", 0, 8)); // NOI18N
 
@@ -97,6 +87,10 @@ public class Updates extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments

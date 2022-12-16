@@ -23,7 +23,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  *
  * @author Lycoris Cafe
  */
-public class AppUpdate {
+public class AppUpdate extends Thread {
 
     public static String newVersionCheck() {
         // new version raw (just 0.2 or something)
@@ -127,7 +127,8 @@ public class AppUpdate {
         }
     }
 
-    public void downloadUpdates() {
+    @Override
+    public void run() {
         Updates.jLabel1.setText("Preparing Update for Download...");
         Updates.jProgressBar1.setStringPainted(true);
         String newVersionDownload = AppUpdate.newVersionDownload();
