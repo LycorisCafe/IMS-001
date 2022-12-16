@@ -19,6 +19,7 @@ public class ImagePreview extends javax.swing.JFrame {
     public ImagePreview() {
         initComponents();
         formDetails();
+        setExtendedState(this.MAXIMIZED_BOTH);
     }
     
     private void formDetails(){
