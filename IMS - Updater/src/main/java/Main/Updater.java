@@ -4,12 +4,16 @@
  */
 package Main;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.stream.Stream;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -63,11 +67,34 @@ public class Updater {
             File file = new File(installedLocation + "\\" + x + ".rar");
             file.delete();
         }
-        
+
+        String computerName = null;
+        try {
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            "hostname");
+            processBuilder.redirectErrorStream(true);
+            Process p = processBuilder.start();
+            String line = null;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = bufferedReader.readLine()) != null) {
+                computerName = line;
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        String logTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
         SendMessage ms = new SendMessage();
         ms.setChatId(IMSUpdater.chatId());
-        ms.setText("New version successfully installed!");
-        
+        ms.setText("New version successfully installed!\n\n"
+                + "Computer Name : " + computerName + "\n"
+                + "Time : " + logTime);
+        try {
+            bot.execute(ms);
+        } catch (TelegramApiException e) {
+            System.out.println(e);
+        }
+
         System.exit(0);
     }
 }
