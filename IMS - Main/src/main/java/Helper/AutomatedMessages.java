@@ -19,16 +19,14 @@ public class AutomatedMessages {
 
     // Global Variables ========>>>>>>>>
     String instituteName = Helper.MainDetails.instituteName();
-
-    // method calling ===============>>>>>>>>>>>
     TelegramBot bot = new TelegramBot();
-    SendMessage message = new SendMessage();
-    SendPhoto photo = new SendPhoto();
 
     // message designs ===============>>>>>>>>>>
     public void studentRegistrationSuccess() {
         // @ Moderator.NewStudent jButton8 ActionPerformed
         // Send welcome message to each reggistered student
+        SendMessage message = new SendMessage();
+        SendPhoto photo = new SendPhoto();
         String chatId = Moderator.NewStudent.telegramId.getText();
         String studentId = Moderator.NewStudent.tSendStudentId.getText();
         String studentName = Moderator.NewStudent.tSendStudentName.getText();
@@ -40,7 +38,11 @@ public class AutomatedMessages {
                 + "Student ID : " + instituteName + "-STUDENT-" + studentId + "\n"
                 + "Student Name : " + studentName);
         photo.setProtectContent(true);
-        sendPhoto();
+        try {
+            bot.execute(photo);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -56,12 +58,17 @@ public class AutomatedMessages {
                     + "Schedule : " + day + "\n"
                     + "Payment : " + payment
             );
-            sendMessage();
+            try {
+                bot.execute(message);
+            } catch (TelegramApiException ex) {
+                System.out.println(ex);
+            }
         }
     }
 
     public void attendanceMarking() {
         // Moderator (pkg) -> Main -> Mark Ateendance (button)
+        SendMessage message = new SendMessage();
         String chatId = Moderator.Main.tId.getText();
         String studentId = instituteName + "-STUDENT-" + Moderator.Main.studentIdLabel.getText();
         String studentName = Moderator.Main.jTextField3.getText();
@@ -69,8 +76,6 @@ public class AutomatedMessages {
         String paymentDetails = Moderator.Main.jTextField5.getText();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // message body start
-        // message body end
         message.setChatId(chatId);
         message.setText("Student Attendance Marked!! \n\n"
                 + "Studnt Id : " + studentId + "\n"
@@ -79,12 +84,16 @@ public class AutomatedMessages {
                 + "Payments : " + paymentDetails + "\n"
                 + "Time : " + time
         );
-        sendMessage();
+        try {
+            bot.execute(message);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
     }
 
     public void newExamAddedStudent() {
-        System.out.println("Hello");
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
+        SendPhoto photo = new SendPhoto();
         String chatId = Administrator.Main.telegramId.getText();
         String grade = Administrator.Main.cr1.getSelectedItem().toString();
         String subject = Administrator.Main.cr2.getSelectedItem().toString();
@@ -94,8 +103,9 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         String examTime = Administrator.Main.jTextField32.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
+        String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
 
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ"));
+        photo.setPhoto(new InputFile(image));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(chatId);
         photo.setParseMode("html");
@@ -105,14 +115,19 @@ public class AutomatedMessages {
                 + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
                 + "</b>Time " + "- " + examTime + "\n\n"
-                + "<code>Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!</code>  "
+                + "<code>Don’t tell me you haven’t studied anything because you have. "
+                + "Anyway, wish you good luck for your exam!!!</code>  "
         );
-        sendPhoto();
-
+        try {
+            bot.execute(photo);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
     }
 
     public void newExamAddedGroup() {
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
+        SendPhoto photo = new SendPhoto();
         String groupId = Administrator.Main.tGroupId.getText();
         String grade = Administrator.Main.cr1.getSelectedItem().toString();
         String subject = Administrator.Main.cr2.getSelectedItem().toString();
@@ -122,9 +137,10 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         String examTime = Administrator.Main.jTextField32.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
+        String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
         // message body start
 
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ"));
+        photo.setPhoto(new InputFile(image));
         System.out.println(grade + " " + subject + " " + teacher + " " + day);
         photo.setChatId(groupId);
         photo.setParseMode("html");
@@ -134,12 +150,47 @@ public class AutomatedMessages {
                 + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
                 + "</b>Time " + "- " + examTime + "\n\n"
-                + "Don’t tell me you haven’t studied anything because you have. Anyway, wish you good luck for your exam!!!\n "
+                + "Don’t tell me you haven’t studied anything because you have. "
+                + "Anyway, wish you good luck for your exam!!!\n "
         );
-        sendPhoto();
+        try {
+            bot.execute(photo);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void examResultPush() {
+        SendPhoto photo = new SendPhoto();
+        String telegramId = Administrator.ExamResults.telegramId.getText();
+        String studentName = Administrator.ExamResults.studentName.getText();
+        String className = Administrator.ExamResults.className.getText();
+        String teacherName = Administrator.ExamResults.teacherName.getText();
+        String examName = Administrator.ExamResults.examName.getText();
+        String examDate = Administrator.ExamResults.examDate.getText();
+        String marks = Administrator.ExamResults.marks.getText();
+        String rank = Administrator.ExamResults.rank.getText();
+        String image = "AgACAgUAAx0CaCw0FAADQWOZmqVGir6LH9r5om728fZ0Tu7lAALttTEbfIXRVE9FAabdfWMOAQADAgADbQADLAQ";
+        photo.setChatId(telegramId);
+        photo.setPhoto(new InputFile(image));
+        photo.setCaption("Exam Results Released!\n\n"
+                + "Student Name : " + studentName + "\n"
+                + "Class : " + className + "\n"
+                + "Teacher : " + teacherName + "\n\n"
+                + "Exam Name : " + examName + "\n"
+                + "Exam Date : " + examDate + "\n\n"
+                + "Marks : " + marks + "\n"
+                + "Grade : " + rank);
+        photo.setProtectContent(true);
+        try {
+            bot.execute(photo);
+        } catch (TelegramApiException ex) {
+            System.out.println(ex);
+        }
     }
 
     public void paymentSuccess() {
+        SendPhoto photo = new SendPhoto();
         String telegramId = Moderator.PayNowGate.telegramId.getText();
         String studentId = instituteName + "-STUDENT-" + Moderator.PayNowGate.jTextField1.getText();
         String studentName = Moderator.PayNowGate.studentName.getText();
@@ -150,8 +201,8 @@ public class AutomatedMessages {
         String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
         String paymentValue = Moderator.PayNowGate.paymentValue.getText();
         String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-
-        photo.setPhoto(new InputFile("AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ"));
+        String image = "AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ";
+        photo.setPhoto(new InputFile(image));
         photo.setChatId(telegramId);
         photo.setParseMode("html");
         photo.setProtectContent(Boolean.TRUE);
@@ -165,23 +216,8 @@ public class AutomatedMessages {
                 + "Payment " + ": " + paymentValue + "\n"
                 + "Payment Month " + ": " + paymentTarget + "\n"
                 + "Slip Time " + ": " + slipTime + "\n\n"
-                + "<b>Thank you very much for trusting US</b>"
+                + "<b>Thank you very much for trusting us!</b>"
         );
-
-        sendPhoto();
-
-    }
-
-    // sending operations =========>>>>>>>>>>>
-    private void sendMessage() {
-        try {
-            bot.execute(message);
-        } catch (TelegramApiException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    private void sendPhoto() {
         try {
             bot.execute(photo);
         } catch (TelegramApiException ex) {

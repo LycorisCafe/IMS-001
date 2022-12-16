@@ -92,14 +92,35 @@ public class ExamResults extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tReportLinking = new javax.swing.JLabel();
+        studentName = new javax.swing.JLabel();
+        className = new javax.swing.JLabel();
+        teacherName = new javax.swing.JLabel();
+        examName = new javax.swing.JLabel();
+        examDate = new javax.swing.JLabel();
+        marks = new javax.swing.JLabel();
+        rank = new javax.swing.JLabel();
+        telegramId = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
-        tReportLinking.setText("jLabel2");
+        studentName.setText("jLabel2");
+
+        className.setText("jLabel3");
+
+        teacherName.setText("jLabel4");
+
+        examName.setText("jLabel5");
+
+        examDate.setText("jLabel6");
+
+        marks.setText("jLabel7");
+
+        rank.setText("jLabel8");
+
+        telegramId.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exam Results");
@@ -202,8 +223,6 @@ public class ExamResults extends javax.swing.JFrame {
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (pushConfirm == JOptionPane.YES_OPTION) {
             loadResults();
-            Helper.TelegramBot bot = new Helper.TelegramBot();
-            SendPhoto message = new SendPhoto();
             int y = 0;
             int count = jTable1.getRowCount();
             for (int x = 0; x < count; x++) {
@@ -247,26 +266,14 @@ public class ExamResults extends javax.swing.JFrame {
                                         while (rs6.next()) {
                                             String classNamex = rs6.getString("grade")
                                                     + " - " + rs6.getString("subject");
-                                            message.setChatId(telegramIdx);
-                                            message.setPhoto(
-                                                    new InputFile("AgACAgUAAx0CaCw0FAADQWOZmqVGir6LH9r5om728fZ0Tu7lAALttTEbfIXRVE9FAabdfWMOAQADAgADbQADLAQ"));
-                                            message.setCaption("Exam Results Released!\n\n"
-                                                    + "Student Name : " + studentNamex + "\n"
-                                                    + "Class : " + classNamex + "\n"
-                                                    + "Teacher : " + teacherNamex + "\n\n"
-                                                    + "Exam Name : " + examNamex + "\n"
-                                                    + "Exam Date : " + examDatex + "\n\n"
-                                                    + "Marks : " + marksx + "\n"
-                                                    + "Grade : " + rankx);
-                                            message.setProtectContent(true);
-                                            try {
-                                                bot.execute(message);
-                                            } catch (TelegramApiException e) {
-                                                System.out.println(e);
-                                                JOptionPane.showMessageDialog(this, "Error while send results to :\n"
-                                                        + "Name : " + studentNamex + "\n"
-                                                        + "Class : " + classNamex);
-                                            }
+                                            telegramId.setText(telegramIdx);
+                                            studentName.setText(studentNamex);
+                                            className.setText(classNamex);
+                                            teacherName.setText(teacherNamex);
+                                            examName.setText(examNamex);
+                                            examDate.setText(examDatex);
+                                            marks.setText(marksx);
+                                            rank.setText(rankx);
                                         }
                                     }
                                 }
@@ -318,11 +325,18 @@ public class ExamResults extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JLabel className;
+    public static javax.swing.JLabel examDate;
+    public static javax.swing.JLabel examName;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    public static javax.swing.JLabel tReportLinking;
+    public static javax.swing.JLabel marks;
+    public static javax.swing.JLabel rank;
+    public static javax.swing.JLabel studentName;
+    public static javax.swing.JLabel teacherName;
+    public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }
