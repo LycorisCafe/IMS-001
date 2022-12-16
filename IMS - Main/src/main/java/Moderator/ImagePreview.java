@@ -19,7 +19,6 @@ public class ImagePreview extends javax.swing.JFrame {
     public ImagePreview() {
         initComponents();
         formDetails();
-        getImage();
     }
     
     private void getImage(){
@@ -47,6 +46,11 @@ public class ImagePreview extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Image Preview");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -90,6 +94,11 @@ public class ImagePreview extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        getImage();
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
