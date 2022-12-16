@@ -147,6 +147,15 @@ public class IMS {
                 if (downloadedUpdate.exists() && downloadedUpdater.exists() && downloadedExtractor.exists()) {
                     try {
                         ProcessBuilder processBuilder
+                                = new ProcessBuilder("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"
+                                        + " x C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
+                        processBuilder.redirectErrorStream(true);
+                        processBuilder.start();
+                    } catch (IOException e) {
+                        System.out.println("#016" + e);
+                    }
+                    try {
+                        ProcessBuilder processBuilder
                                 = new ProcessBuilder("cmd.exe", "/c",
                                         "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
                         processBuilder.redirectErrorStream(true);

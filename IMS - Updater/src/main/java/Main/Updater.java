@@ -39,7 +39,14 @@ public class Updater {
 
         // previous version delete
         File app = new File(installedLocation + "\\IMS.exe");
+        File libs = new File(installedLocation + "\\libs");
         app.delete();
+        String[] entries = libs.list();
+        for (String s : entries) {
+            File currentFile = new File(libs.getPath(), s);
+            currentFile.delete();
+        }
+        libs.delete();
 
         // move .rar files to installatiuon directory
         int fileCount = Integer.parseInt(count);

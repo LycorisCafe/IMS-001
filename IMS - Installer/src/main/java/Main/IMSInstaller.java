@@ -32,7 +32,7 @@ public class IMSInstaller {
     }
     
     public static String chatId(){
-        String chatId = "-1001829820911";
+        String chatId = "-1001698896292";
         return chatId;
     }
     

@@ -113,7 +113,8 @@ public class AppUpdate {
                         GetFile getFile = new GetFile();
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\" + fileName));
+                        bot.downloadFile(filePath, new File(
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\" + fileName));
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }
@@ -166,7 +167,8 @@ public class AppUpdate {
                         GetFile getFile = new GetFile();
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\" + count + ".rar"));
+                        bot.downloadFile(filePath, new File(
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\" + count + ".rar"));
                         Updates.jProgressBar1.setValue(count);
                     } catch (TelegramApiException e) {
                         System.out.println(e);
@@ -191,7 +193,8 @@ public class AppUpdate {
                         GetFile getFile = new GetFile();
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"));
+                        bot.downloadFile(filePath, new File(
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"));
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }
@@ -211,11 +214,13 @@ public class AppUpdate {
             try ( BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
                 String line = null;
                 while ((line = br.readLine()) != null) {
+                    count = count + 1;
                     try {
                         GetFile getFile = new GetFile();
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
-                        bot.downloadFile(filePath, new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe"));
+                        bot.downloadFile(filePath, new File(
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater" + count + ".rar"));
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }
@@ -236,7 +241,8 @@ public class AppUpdate {
         } catch (URISyntaxException e) {
             System.out.println(e);
         }
-        try ( PrintStream out = new PrintStream(new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc"))) {
+        try ( PrintStream out = new PrintStream(new File(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc"))) {
             out.println(jarDir);
             out.println(count);
         } catch (FileNotFoundException ex) {
