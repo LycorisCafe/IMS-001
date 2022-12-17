@@ -183,6 +183,7 @@ public class Main extends javax.swing.JFrame {
         jTextField6.setText("");
         jTextField7.setText("");
         jTextField8.setText("");
+        jCheckBox1.setSelected(false);
 
         jButton7.setEnabled(false);
         jButton6.setEnabled(false);
