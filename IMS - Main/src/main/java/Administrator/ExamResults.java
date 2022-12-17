@@ -196,6 +196,9 @@ public class ExamResults extends javax.swing.JFrame {
         for (int x = 0; x < count; x++) {
             String resultId = jTable1.getValueAt(y, 0).toString();
             String marks = jTable1.getValueAt(y, 3).toString();
+            if (marks.equals("")) {
+                marks = "N/A";
+            }
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
