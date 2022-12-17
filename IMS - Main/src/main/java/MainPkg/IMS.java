@@ -7,9 +7,11 @@ package MainPkg;
 import Helper.AppUpdate;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -143,32 +145,23 @@ public class IMS {
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
-                File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
+                File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat");
                 File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
-                File downloadedSample = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
-                if (downloadedUpdate.exists() && downloadedSample.exists() && downloadedExtractor.exists()) {
+                if (downloadedUpdate.exists() && downloadedUpdater.exists() && downloadedExtractor.exists()) {
                     try {
                         ProcessBuilder processBuilder
                                 = new ProcessBuilder("cmd.exe", "/c",
-                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe "
-                                        + "x C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
+                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat");
                         processBuilder.redirectErrorStream(true);
-                        processBuilder.start();
+                        Process p = processBuilder.start();
+                        String line = null;
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                        while ((line = bufferedReader.readLine()) != null) {
+                            System.out.println(line);
+                        }
                     } catch (IOException e) {
-                        System.out.println("#016" + e);
+                        System.out.println(e);
                     }
-                    try {
-                        ProcessBuilder processBuilder
-                                = new ProcessBuilder("cmd.exe", "/c",
-                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
-                        processBuilder.redirectErrorStream(true);
-                        processBuilder.start();
-                    } catch (IOException e) {
-                        System.out.println("#016" + e);
-                    }
-                }
-                if (!downloadedUpdate.exists() && downloadedUpdater.exists() && !downloadedExtractor.exists()) {
-                    downloadedUpdater.delete();
                 }
             }
         }, "Shutdown-thread"));
