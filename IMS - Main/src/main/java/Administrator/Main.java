@@ -4841,7 +4841,6 @@ public class Main extends javax.swing.JFrame {
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
         // TODO add your handling code here:
         if (!jTextField19.getText().equals("")) {
-
             String namex = jTextField19.getText();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
@@ -4870,7 +4869,6 @@ public class Main extends javax.swing.JFrame {
     private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
         // TODO add your handling code here:
         if (!jTextField20.getText().equals("")) {
-
             String datex = jTextField20.getText();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
@@ -4899,7 +4897,6 @@ public class Main extends javax.swing.JFrame {
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
         if (jComboBox3.getSelectedIndex() != 0 && jComboBox3.getSelectedItem() != null) {
-            loadExams();
             String classx = jComboBox3.getSelectedItem().toString();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
