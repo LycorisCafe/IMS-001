@@ -178,6 +178,13 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#006" + e);
         }
+
+        jTextField5.setText("");
+        jTextField5.setText("");
+        jTextField5.setText("");
+        jTextField5.setText("");
+        jCheckBox1.setSelected(false);
+
         jButton7.setEnabled(false);
         jButton6.setEnabled(false);
         Component[] com1 = jPanel7.getComponents();
