@@ -530,7 +530,7 @@ public class EditClasses extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int selectedrow = jTable1.getSelectedRow();
         String value = jTable1.getValueAt(selectedrow, 0).toString();
-        int deleteitem = JOptionPane.showConfirmDialog(null, "Are you sure!?",
+        int deleteitem = JOptionPane.showConfirmDialog(null, "Are you sure?",
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (deleteitem == JOptionPane.YES_OPTION) {
             try {
@@ -555,7 +555,8 @@ public class EditClasses extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.out.println("#008"+e);
             }
-            model.removeRow(selectedrow);
+            getData();
+            JOptionPane.showMessageDialog(this, "Success!");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
