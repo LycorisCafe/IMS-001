@@ -180,10 +180,9 @@ public class Main extends javax.swing.JFrame {
         }
 
         jTextField5.setText("");
-        jTextField5.setText("");
-        jTextField5.setText("");
-        jTextField5.setText("");
-        jCheckBox1.setSelected(false);
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
 
         jButton7.setEnabled(false);
         jButton6.setEnabled(false);
@@ -3207,6 +3206,7 @@ public class Main extends javax.swing.JFrame {
             type.setText("private");
             returnMethod.setText("teacherUpdate");
         } else {
+            System.out.println(tableSelection);
             String name = jTextField5.getName();
             String nic = jTextField6.getName();
             String contact = jTextField7.getName();
@@ -3941,6 +3941,7 @@ public class Main extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
         jButton15.setEnabled(true);
+        
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
