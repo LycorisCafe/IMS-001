@@ -4298,7 +4298,6 @@ public class Main extends javax.swing.JFrame {
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
         // TODO add your handling code here:
         if (jComboBox8.getSelectedIndex() != 0 && jComboBox8.getSelectedItem() != null) {
-            loadGroups();
             String gradex = jComboBox8.getSelectedItem().toString();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> grade = new ArrayList<>();
@@ -4327,7 +4326,6 @@ public class Main extends javax.swing.JFrame {
     private void jComboBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox9ActionPerformed
         // TODO add your handling code here:
         if (jComboBox9.getSelectedIndex() != 0 && jComboBox9.getSelectedItem() != null) {
-            loadGroups();
             String teacherx = jComboBox9.getSelectedItem().toString();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> grade = new ArrayList<>();
@@ -4356,7 +4354,6 @@ public class Main extends javax.swing.JFrame {
     private void jComboBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox10ActionPerformed
         // TODO add your handling code here:
         if (jComboBox10.getSelectedIndex() != 0 && jComboBox10.getSelectedItem() != null) {
-            loadGroups();
             String dayx = jComboBox10.getSelectedItem().toString();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> grade = new ArrayList<>();
