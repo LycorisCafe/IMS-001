@@ -24,6 +24,9 @@ public class IMSUpdater {
             System.out.println(e);
         }
         
+        Interface ui = new Interface();
+        ui.setVisible(true);
+        
         Updater updater = new Updater();
         updater.update();
     }

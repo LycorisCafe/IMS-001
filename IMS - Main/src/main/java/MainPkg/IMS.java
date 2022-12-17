@@ -78,7 +78,6 @@ public class IMS {
             URL url = new URL("https://telegram.org");
             URLConnection connection = url.openConnection();
             connection.connect();
-            System.out.println("ok");
         } catch (MalformedURLException e) {
             JOptionPane.showMessageDialog(splash, "Internet connection error!\n"
                     + "Please try again after connect to the internet.");
@@ -142,8 +141,7 @@ public class IMS {
 
         // ================ Install updates when downloaded ====================
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() { 
-                System.out.println("ook");
+            public void run() {
                 File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
                 File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.exe");
                 File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
@@ -151,8 +149,9 @@ public class IMS {
                 if (downloadedUpdate.exists() && downloadedSample.exists() && downloadedExtractor.exists()) {
                     try {
                         ProcessBuilder processBuilder
-                                = new ProcessBuilder("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe"
-                                        + " x C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
+                                = new ProcessBuilder("cmd.exe", "/c",
+                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe "
+                                        + "x C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater1.rar");
                         processBuilder.redirectErrorStream(true);
                         processBuilder.start();
                     } catch (IOException e) {
