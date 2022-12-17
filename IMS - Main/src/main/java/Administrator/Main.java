@@ -3405,7 +3405,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
         if (!jTextField10.getText().equals("")) {
-       ;
+            ;
             String teacherIdx = jTextField10.getText();
             ArrayList<String> teacherIdn = new ArrayList<>();
             ArrayList<String> teacherName = new ArrayList<>();
@@ -3939,7 +3939,7 @@ public class Main extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
         jButton15.setEnabled(true);
-        
+
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
@@ -4181,51 +4181,25 @@ public class Main extends javax.swing.JFrame {
             jTextField24.setText("");
             jTable5.clearSelection();
         } else {
-            int r = jTable3.getSelectedRow();
-            String id = jTable3.getValueAt(r, 0).toString();
-            DefaultTableModel model2 = (DefaultTableModel) jTable5.getModel();
-            model2.setRowCount(0);
-            String[] parts = jComboBox6.getSelectedItem().toString().split(" - ");
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + parts[0] + "'"
-                        + "AND subject='" + parts[1] + "'");
-                while (rs.next()) {
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE subjectId='" + rs.getString("id") + "'");
-                    while (rs2.next()) {
-                        Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                + "FROM exams "
-                                + "WHERE classId='" + rs2.getString("id") + "'");
-                        while (rs3.next()) {
-                            Statement stmt4 = con.createStatement();
-                            ResultSet rs4 = stmt4.executeQuery("SELECT * "
-                                    + "FROM results "
-                                    + "WHERE examId='" + rs3.getString("id") + "'"
-                                    + "AND studentId='" + id + "'");
-                            while (rs4.next()) {
-                                String resultId = rs4.getString("id");
-                                Statement stmt5 = con.createStatement();
-                                ResultSet rs5 = stmt5.executeQuery("SELECT * "
-                                        + "FROM exams "
-                                        + "WHERE id='" + rs4.getString("examId") + "'");
-                                while (rs5.next()) {
-                                    Object[] row = {resultId, rs5.getString("name"),
-                                        jComboBox6.getSelectedItem().toString(), rs5.getString("date")};
-                                    model2.addRow(row);
-                                }
-                            }
-                        }
-
-                    }
+            String sByClass = jComboBox6.getSelectedItem().toString();
+            ArrayList<String> id = new ArrayList<>();
+            ArrayList<String> name = new ArrayList<>();
+            ArrayList<String> classx = new ArrayList<>();
+            ArrayList<String> date = new ArrayList<>();
+            DefaultTableModel model = (DefaultTableModel) jTable5.getModel();
+            for (int count = 0; count < model.getRowCount(); count++) {
+                id.add(model.getValueAt(count, 0).toString());
+                name.add(model.getValueAt(count, 1).toString());
+                classx.add(model.getValueAt(count, 2).toString());
+                date.add(model.getValueAt(count, 3).toString());
+            }
+            model.setRowCount(0);
+            for (int count = 0; count < id.size(); count++) {
+                if (sByClass.equals(id.get(count))) {
+                    Object[] row = {id.get(count), name.get(count),
+                        classx.get(count), date.get(count)};
+                    model.addRow(row);
                 }
-            } catch (SQLException e) {
             }
         }
     }//GEN-LAST:event_jComboBox6ActionPerformed
@@ -4870,7 +4844,7 @@ public class Main extends javax.swing.JFrame {
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
         // TODO add your handling code here:
         if (!jTextField19.getText().equals("")) {
-     
+
             String namex = jTextField19.getText();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
@@ -4899,7 +4873,7 @@ public class Main extends javax.swing.JFrame {
     private void jTextField20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField20ActionPerformed
         // TODO add your handling code here:
         if (!jTextField20.getText().equals("")) {
-          
+
             String datex = jTextField20.getText();
             ArrayList<String> id = new ArrayList<>();
             ArrayList<String> name = new ArrayList<>();
