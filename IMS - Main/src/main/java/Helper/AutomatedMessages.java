@@ -4,8 +4,12 @@
  */
 package Helper;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.stream.Stream;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -16,15 +20,49 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
  * @author Lycoris Cafe
  */
 public class AutomatedMessages {
+
     TelegramBot bot;
     String instituteName;
-    
+
     public AutomatedMessages() {
         instituteName = Helper.MainDetails.instituteName();
         bot = new TelegramBot();
     }
 
     // message designs ===============>>>>>>>>>>
+    public void upToDateMessage() {
+        String installedTime = null;
+        String installedPC = null;
+        try ( Stream<String> lines = Files.lines(
+                Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc"))) {
+            installedTime = lines.skip(0).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        try ( Stream<String> lines = Files.lines(
+                Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc"))) {
+            installedPC = lines.skip(1).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        SendMessage message = new SendMessage();
+        message.setText("New version installed!\n\n"
+                + "PC Name : " + installedPC + "\n"
+                + "Time : " + installedTime);
+        for (int i = 0; i > 1; i++) {
+            if (i == 0) {
+                message.setChatId(MainDetails.devChatId());
+            } else {
+                message.setChatId(MainDetails.adminChatId());
+            }
+            try {
+                bot.execute(message);
+            } catch (TelegramApiException e) {
+                System.out.println(e);
+            }
+        }
+    }
+
     public void studentRegistrationSuccess() {
         // @ Moderator.NewStudent jButton8 ActionPerformed
         // Send welcome message to each reggistered student

@@ -4,6 +4,11 @@
  */
 package Helper;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
 /**
  *
  * @author Lycoris Cafe
@@ -41,4 +46,47 @@ public class MainDetails {
         return baseBordId;
     }
 
+    public static String botUsername() {
+        String botID = null;
+        try ( Stream<String> lines = Files.lines(Paths.get(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
+            botID = lines.skip(1).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return botID;
+    }
+
+    public static String botAPI() {
+        String botToken = null;
+        try ( Stream<String> lines = Files.lines(Paths.get(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
+            botToken = lines.skip(0).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return botToken;
+    }
+
+    public static String adminChatId() {
+        String adminChatId = null;
+        try ( Stream<String> lines = Files.lines(Paths.get(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
+            adminChatId = lines.skip(2).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return adminChatId;
+    }
+
+    public static String devChatId() {
+        String devGroupId = null;
+        try ( Stream<String> lines = Files.lines(Paths.get(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
+            devGroupId = lines.skip(3).findFirst().get();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+        return devGroupId;
+    }
 }

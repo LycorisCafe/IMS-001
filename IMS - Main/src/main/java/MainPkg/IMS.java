@@ -4,14 +4,11 @@
  */
 package MainPkg;
 
-import Helper.AppUpdate;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -89,6 +86,14 @@ public class IMS {
                     + "Please try again after connect to the internet.");
             System.exit(0);
         }
+        
+        // ============== send message if new version installed ================
+        File newVersion = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc");
+        if (newVersion.exists()){
+            Helper.AutomatedMessages msg = new Helper.AutomatedMessages();
+            msg.upToDateMessage();
+            newVersion.delete();
+        }
 
         // ================== Make Application Workspace =======================
         File file = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs");
@@ -140,30 +145,5 @@ public class IMS {
 //            splash.dispose();
 //            auth.setVisible(true);
 //        }
-
-        // ================ Install updates when downloaded ====================
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            public void run() {
-                File downloadedUpdate = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\appPath.lc");
-                File downloadedUpdater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat");
-                File downloadedExtractor = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
-                if (downloadedUpdate.exists() && downloadedUpdater.exists() && downloadedExtractor.exists()) {
-                    try {
-                        ProcessBuilder processBuilder
-                                = new ProcessBuilder("cmd.exe", "/c",
-                                        "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat");
-                        processBuilder.redirectErrorStream(true);
-                        Process p = processBuilder.start();
-                        String line = null;
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-                        while ((line = bufferedReader.readLine()) != null) {
-                            System.out.println(line);
-                        }
-                    } catch (IOException e) {
-                        System.out.println(e);
-                    }
-                }
-            }
-        }, "Shutdown-thread"));
     }
 }

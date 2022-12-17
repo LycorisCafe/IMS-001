@@ -12,6 +12,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.stream.Stream;
 import javax.swing.JOptionPane;
+import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
+import org.telegram.telegrambots.meta.generics.LongPollingBot;
+import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 /**
  *
@@ -492,7 +497,6 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
         // saving group id and telegram api key
         String token = botToken.getText();
         String id = botID.getText();
@@ -507,7 +511,19 @@ public class Main extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-        JOptionPane.showMessageDialog(this, "Success! Please restart the application to make changes!");
+        Helper.TelegramBot bot = new Helper.TelegramBot();
+        try {
+            bot.clearWebhook();
+        } catch (TelegramApiRequestException e) {
+            System.out.println(e);
+        }
+        try {
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot((LongPollingBot) new Helper.TelegramBot());
+        } catch (TelegramApiException e) {
+            System.out.println(e);
+        }
+        JOptionPane.showMessageDialog(this, "Success!");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
