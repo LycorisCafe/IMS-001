@@ -3632,7 +3632,6 @@ public class Main extends javax.swing.JFrame {
 
     private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
         if (!jTextField9.getText().equals("")) {
-        
             String studentIdx = jTextField12.getText();
             ArrayList<String> studentId = new ArrayList<>();
             ArrayList<String> studentName = new ArrayList<>();
@@ -3656,7 +3655,6 @@ public class Main extends javax.swing.JFrame {
 
     private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
         if (!jTextField13.getText().equals("")) {
-            loadStudents();
             String studentNamex = jTextField13.getText();
             ArrayList<String> studentId = new ArrayList<>();
             ArrayList<String> studentName = new ArrayList<>();
@@ -3680,7 +3678,6 @@ public class Main extends javax.swing.JFrame {
 
     private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
         if (jComboBox4.getSelectedIndex() != 0 && jComboBox4.getSelectedItem() != null) {
-            loadStudents();
             String studentGradex = jComboBox4.getSelectedItem().toString();
             ArrayList<String> studentId = new ArrayList<>();
             ArrayList<String> studentName = new ArrayList<>();
