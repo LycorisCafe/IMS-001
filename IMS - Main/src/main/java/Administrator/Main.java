@@ -3208,14 +3208,14 @@ public class Main extends javax.swing.JFrame {
             returnMethod.setText("teacherUpdate");
         } else {
             System.out.println(tableSelection);
-            String name = jTextField5.getName();
-            String nic = jTextField6.getName();
-            String contact = jTextField7.getName();
-            String address = jTextField8.getName();
+            String name = jTextField5.getText();
+            String nic = jTextField6.getText();
+            String contact = jTextField7.getText();
+            String address = jTextField8.getText();
             int status = jComboBox1.getSelectedIndex();
             try {
                 Connection con = Helper.DB.connect();
-                Statement stmt = (Statement) con.createStatement();
+                Statement stmt = con.createStatement();
                 stmt.executeUpdate("UPDATE teachers SET "
                         + "name='" + name + "', "
                         + "nic='" + nic + "', "
@@ -3240,7 +3240,7 @@ public class Main extends javax.swing.JFrame {
         int status = jComboBox1.getSelectedIndex();
         try {
             Connection con = Helper.DB.connect();
-            Statement stmt = (Statement) con.createStatement();
+            Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE teachers SET "
                     + "name='" + name + "', "
                     + "nic='" + nic + "', "
