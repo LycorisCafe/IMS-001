@@ -247,26 +247,36 @@ public class AppUpdate extends Thread {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-        // =====================================================================
-        try {
-            ProcessBuilder processBuilder
-                    = new ProcessBuilder("cmd.exe", "/c",
-                            "\"C:\\Windows\\System32\\schtasks.exe\" "
-                            + "/CREATE /SC ONLOGON /TN "
-                            + "\"LycorisCafe/IMS-Update\" "
-                            + "/TR "
-                            + "\"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat\" "
-                            + "/RL HIGHEST");
-            processBuilder.redirectErrorStream(true);
-            Process p = processBuilder.start();
-            String line = null;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println(e);
+        try ( PrintStream out = new PrintStream(new File(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\admin.vbs"))) {
+            out.println("Set UAC = CreateObject(\"Shell.Application\")");
+            out.println("UAC.ShellExecute \"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat\","
+                    + " \"\", \"\", \"runas\", 1");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
         }
         Updates.disposeText.setText("0");
+    }
+
+    public void appExitUpdate() {
+        File unrar = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\unrar.exe");
+        File updater = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat");
+        File admin = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\admin.vbs");
+        if (unrar.exists() && updater.exists() && admin.exists()) {
+            try {
+                ProcessBuilder processBuilder
+                        = new ProcessBuilder("cmd.exe", "/c",
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\admin.vbs");
+                processBuilder.redirectErrorStream(true);
+                Process p = processBuilder.start();
+                String line = null;
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                while ((line = bufferedReader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+        }
     }
 }

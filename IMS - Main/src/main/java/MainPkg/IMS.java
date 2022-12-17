@@ -86,10 +86,10 @@ public class IMS {
                     + "Please try again after connect to the internet.");
             System.exit(0);
         }
-        
+
         // ============== send message if new version installed ================
         File newVersion = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\newVersion.lc");
-        if (newVersion.exists()){
+        if (newVersion.exists()) {
             Helper.AutomatedMessages msg = new Helper.AutomatedMessages();
             msg.upToDateMessage();
             newVersion.delete();
@@ -145,5 +145,13 @@ public class IMS {
 //            splash.dispose();
 //            auth.setVisible(true);
 //        }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                Helper.AppUpdate update = new Helper.AppUpdate();
+                update.appExitUpdate();
+            }
+        }, "Shutdown-thread"));
+
     }
 }
