@@ -70,20 +70,23 @@ public class EditClasses extends javax.swing.JFrame {
                     + "WHERE studentId='" + jTextField1.getText() + "'");
             while (rs.next()) {
                 classId = rs.getString("classId");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
                         + "WHERE id='" + classId + "'");
                 while (rs2.next()) {
                     day = rs2.getString("day");
                     teacherId = rs2.getString("teacherId");
                     subjectId = rs2.getString("subjectId");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + subjectId + "'");
                     while (rs3.next()) {
                         grade = rs3.getString("grade");
                         subject = rs3.getString("subject");
-                        ResultSet rs4 = stmt.executeQuery("SELECT * "
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + teacherId + "'");
                         while (rs4.next()) {
@@ -402,12 +405,14 @@ public class EditClasses extends javax.swing.JFrame {
                         + "WHERE grade='" + cr1x + "' AND subject='" + cr2x + "'");
                 while (rs.next()) {
                     subjectId = rs.getString("id");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE subjectId='" + subjectId + "'");
                     while (rs2.next()) {
                         teacherId = rs2.getString("teacherId");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + teacherId + "'");
                         while (rs3.next()) {
@@ -484,8 +489,6 @@ public class EditClasses extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        int x = 0;
-        int y = 0;
         String year = new SimpleDateFormat("yyyy").format(new Date());
         String month = new SimpleDateFormat("MM").format(new Date());
         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
@@ -496,7 +499,6 @@ public class EditClasses extends javax.swing.JFrame {
                     + "(studentId,classId) "
                     + "VALUES "
                     + "('" + jTextField1.getText() + "','" + classId + "')");
-            x=1;
             con.close();
         } catch (SQLException ex) {
             System.out.println("#005"+ex);
@@ -510,7 +512,6 @@ public class EditClasses extends javax.swing.JFrame {
                     + "'" + classId + "',"
                     + "'" + year + "',"
                     + "'" + month + "','0','" + today + "')");
-            y=1;
             con.close();
         } catch (SQLException ex) {
             System.out.println("#006"+ex);
