@@ -18,12 +18,6 @@
 
 12. Add update button to Classes Editing panel
 	-> Admin -> Main -> Teachers -> Classes
-	
-15. Search by class is not working in Results panel
-	-> Admin -> Main -> Students -> Results
-
-16. Notifying message not sent when the marksheet was uploaded.
-	-> Admin -> Main -> 
 
 17. Search by teacher and by name is not working
 	-> Admin -> Main -> Groups

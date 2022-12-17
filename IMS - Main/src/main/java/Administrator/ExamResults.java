@@ -222,6 +222,7 @@ public class ExamResults extends javax.swing.JFrame {
                 "Warning", JOptionPane.YES_NO_OPTION);
         if (pushConfirm == JOptionPane.YES_OPTION) {
             loadResults();
+            Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
             int y = 0;
             int count = jTable1.getRowCount();
             for (int x = 0; x < count; x++) {
@@ -273,6 +274,7 @@ public class ExamResults extends javax.swing.JFrame {
                                             examDate.setText(examDatex);
                                             marks.setText(marksx);
                                             rank.setText(rankx);
+                                            bot.examResultPush();
                                         }
                                     }
                                 }
