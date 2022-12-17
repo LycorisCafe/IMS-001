@@ -4,6 +4,7 @@
  */
 package Moderator;
 
+import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 
@@ -22,15 +23,17 @@ public class ImagePreview extends javax.swing.JFrame {
         setImage();
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-
+    
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
-
+    
     private void setImage() {
-        jLabel1.removeAll();
-        jLabel1.setIcon(new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png"));
+        jLabel1.setIcon(null);
+        ImageIcon myImage = new ImageIcon("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
+        Image newImage = myImage.getImage().getScaledInstance(400, 400, Image.SCALE_DEFAULT);
+        jLabel1.setIcon(new ImageIcon(newImage));
     }
 
     /**
@@ -71,14 +74,14 @@ public class ImagePreview extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
