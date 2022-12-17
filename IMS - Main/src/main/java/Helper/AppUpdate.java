@@ -220,7 +220,7 @@ public class AppUpdate extends Thread {
                         getFile.setFileId(line);
                         String filePath = bot.execute(getFile).getFilePath();
                         bot.downloadFile(filePath, new File(
-                                "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\updater.bat"));
+                                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat"));
                     } catch (TelegramApiException e) {
                         System.out.println(e);
                     }
@@ -246,6 +246,26 @@ public class AppUpdate extends Thread {
             out.println(jarDir);
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
+        }
+        // =====================================================================
+        try {
+            ProcessBuilder processBuilder
+                    = new ProcessBuilder("cmd.exe", "/c",
+                            "\"C:\\Windows\\System32\\schtasks.exe\" "
+                            + "/CREATE /SC ONLOGON /TN "
+                            + "\"LycorisCafe/IMS-Update\" "
+                            + "/TR "
+                            + "\"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\updater.bat\" "
+                            + "/RL HIGHEST");
+            processBuilder.redirectErrorStream(true);
+            Process p = processBuilder.start();
+            String line = null;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((line = bufferedReader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println(e);
         }
         Updates.disposeText.setText("0");
     }

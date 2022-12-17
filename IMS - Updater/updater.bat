@@ -1,12 +1,12 @@
 @Echo off
 set tempPath=C:\ProgramData\LycorisCafe\IMS\Temp
-set nowPath="C:\ProgramData\Microsoft\Windows\Start Menu\Programs\StartUp"
 if exist "%tempPath%\invisible.vbs" goto INSTALL
 if not exist "%tempPath%\invisible.vbs" goto INVISIBLE
 
 :INVISIBLE
 echo CreateObject("Wscript.Shell").Run """" & WScript.Arguments(0) & """", 0, False >"%tempPath%\invisible.vbs"
-"C:\Windows\System32\wscript.exe" "%tempPath%\invisible.vbs" "%nowPath%\updater.bat"
+"C:\Windows\System32\timeout.exe" 1
+"C:\Windows\System32\wscript.exe" "%tempPath%\invisible.vbs" "%tempPath%\updater.bat"
 exit
 
 :INSTALL
@@ -22,9 +22,11 @@ move "%tempPath%\unrar.exe" "%path%\"
 echo %date% @ %time% >"%tempPath%\newVersion.lc"
 hostname >>"%tempPath%\newVersion.lc"
 
+"C:\Windows\System32\schtasks.exe" /DELETE /TN "LycorisCafe/IMS-Update" /F
+
 del /q "%path%\*.rar"
 del /q "%path%\unrar.exe"
 del /q "%tempPath%\appPath.lc"
 del /q "%tempPath%\invisible.vbs"
-del /q "%nowPath%\updater.bat"
+del /q "%tempPath%\updater.bat"
 exit
