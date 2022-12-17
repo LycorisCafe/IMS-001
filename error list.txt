@@ -54,6 +54,3 @@
 
 6. (closed) Registered Classes table not update
 	-> Moderator -> Edit class
-
-7. student kenek class 3ka register wela kiyla db eke pennano. et attendance mark krddi pennanne 1 subject eki.
-	-> Moderator -> Main
