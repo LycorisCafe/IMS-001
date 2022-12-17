@@ -22,7 +22,7 @@
 11. Class search is not working
 	-> Admin -> Main -> Teachers -> Classes
 
-12. Classes Editing panel is not working
+12. Add button to Classes Editing panel
 	-> Admin -> Main -> Teachers -> Classes
 
 13. When adding a new teacher, if the status set to inactive, all the details of the teacher translated to null value.
