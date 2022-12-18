@@ -966,7 +966,16 @@
                                                   <EmptySpace max="-2" attributes="0"/>
                                                   <Component id="jComboBox18" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jTextField37" alignment="0" max="32767" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Component id="jTextField37" min="-2" pref="72" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jLabel80" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jTextField38" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Component id="jLabel81" min="-2" max="-2" attributes="0"/>
+                                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                              </Group>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -1002,6 +1011,9 @@
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jLabel79" alignment="3" min="-2" max="-2" attributes="0"/>
                                       <Component id="jTextField37" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel80" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jTextField38" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="jLabel81" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="jPanel12" min="-2" max="-2" attributes="0"/>
@@ -1155,6 +1167,21 @@
                         <Component class="javax.swing.JTextField" name="jTextField36">
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField37">
+                          <Properties>
+                            <Property name="toolTipText" type="java.lang.String" value="(3H 30MIN)"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel80">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="H"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JTextField" name="jTextField38">
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel81">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="MIN"/>
+                          </Properties>
                         </Component>
                       </SubComponents>
                     </Container>

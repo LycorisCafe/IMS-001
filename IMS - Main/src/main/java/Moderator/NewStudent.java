@@ -59,6 +59,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     String teacherId;
     String classId;
     String payment;
+    String duration;
+    int dayInt;
     String institute = Helper.MainDetails.instituteName();
     int newStudent = 0;
 
@@ -178,6 +180,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         cr4 = new javax.swing.JComboBox<>();
         jLabel14 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
+        jLabel16 = new javax.swing.JLabel();
+        cr5 = new javax.swing.JComboBox<>();
         jPanel9 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -314,7 +318,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(grade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addContainerGap())
         );
@@ -496,11 +500,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
             },
             new String [] {
-                "ID", "Grade", "Subject", "Teacher", "Day", "Payment"
+                "ID", "Grade", "Subject", "Teacher", "Day", "Time", "Duration", "Payment"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -532,6 +536,15 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             }
         });
 
+        jLabel16.setText("Time :");
+
+        cr5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
@@ -552,17 +565,21 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cr2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cr4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cr4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cr5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -584,6 +601,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(cr4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(cr5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -670,7 +691,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -698,7 +719,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -806,7 +827,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } else {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             Object[] row = {classId, cr1x, cr2x, cr3.getSelectedItem(),
-                cr4.getSelectedItem(), payment};
+                cr4.getSelectedItem(), cr5.getSelectedItem(), duration, payment};
             model.addRow(row);
             if (!jButton7.isEnabled()) {
                 jButton7.setEnabled(true);
@@ -971,33 +992,25 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "WHERE subjectId='" + subjectId + "' AND teacherId='" + teacherId + "'");
                 while (rs.next()) {
                     int dayCho = Integer.parseInt(rs.getString("day"));
+                    dayInt = dayCho;
                     String convertDay = null;
                     switch (dayCho) {
-                        case 1:
+                        case 1 ->
                             convertDay = "Monday";
-                            break;
-                        case 2:
+                        case 2 ->
                             convertDay = "Tuesday";
-                            break;
-                        case 3:
+                        case 3 ->
                             convertDay = "Wednesday";
-                            break;
-                        case 4:
+                        case 4 ->
                             convertDay = "Thursday";
-                            break;
-                        case 5:
+                        case 5 ->
                             convertDay = "Friday";
-                            break;
-                        case 6:
+                        case 6 ->
                             convertDay = "Saturday";
-                            break;
-                        case 7:
+                        case 7 ->
                             convertDay = "Sunday";
-                            break;
                     }
                     cr4.addItem(convertDay);
-                    classId = rs.getString("id");
-                    payment = rs.getString("payment");
                 }
                 con.close();
             } catch (SQLException ex) {
@@ -1009,9 +1022,31 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private void cr4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr4ActionPerformed
         // TODO add your handling code here:
         if (cr4.getSelectedIndex() == 0 || cr4.getSelectedItem() == null) {
-            jButton3.setEnabled(false);
+            cr5.setSelectedIndex(0);
+            cr5.setEnabled(false);
         } else {
-            jButton3.setEnabled(true);
+            cr5.setEnabled(true);
+            cr5.removeAllItems();
+            cr5.addItem("Please Select...");
+            cr5.setSelectedIndex(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE subjectId='" + subjectId + "' AND teacherId='" + teacherId + "' "
+                        + "AND day='" + dayInt + "'");
+                while (rs.next()) {
+                    String time = rs.getString("time");
+                    cr5.addItem(time);
+                    classId = rs.getString("id");
+                    payment = rs.getString("payment");
+                    duration = rs.getString("duration");
+                }
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
         }
     }//GEN-LAST:event_cr4ActionPerformed
 
@@ -1061,11 +1096,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 System.out.println(ex);
             }
         }
-        
-        
+
         tSendStudentId.setText("" + newStudent);
         tSendStudentName.setText(fName.getText() + " " + lName.getText());
-        
+
         Helper.CardGenerator card = new Helper.CardGenerator();
         card.cardGenerator();
 
@@ -1078,7 +1112,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             tempImage.renameTo(imgPathSave);
             tempImage.delete();
         }
-        
+
         Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
         sendMessage.studentRegistrationSuccess();
 
@@ -1108,6 +1142,15 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         main.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cr5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr5ActionPerformed
+        // TODO add your handling code here:
+        if (cr5.getSelectedIndex() == 0 || cr5.getSelectedItem() == null) {
+            jButton3.setEnabled(false);
+        } else {
+            jButton3.setEnabled(true);
+        }
+    }//GEN-LAST:event_cr5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1150,6 +1193,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JComboBox<String> cr2;
     private javax.swing.JComboBox<String> cr3;
     private javax.swing.JComboBox<String> cr4;
+    private javax.swing.JComboBox<String> cr5;
     private javax.swing.JTextField fName;
     private javax.swing.JTextField gName;
     private javax.swing.JTextField gPhone;
@@ -1171,6 +1215,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

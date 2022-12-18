@@ -90,13 +90,16 @@ public class AutomatedMessages {
             String subject = (String) Moderator.NewStudent.jTable1.getValueAt(y, 2);
             String teacher = (String) Moderator.NewStudent.jTable1.getValueAt(y, 3);
             String day = (String) Moderator.NewStudent.jTable1.getValueAt(y, 4);
-            String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
+            String time = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
+            String duration = (String) Moderator.NewStudent.jTable1.getValueAt(y, 6);
+            String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 7);
             message.setChatId(chatId);
             message.setText("Hello, " + studentName + "\n\n"
                     + "You have successfully enrolled to :\n"
                     + "Class : " + grade + " - " + subject + "\n"
                     + "Teacher : " + teacher + "\n"
-                    + "Schedule : " + day + "\n"
+                    + "Schedule : " + day + " @ " + time + "\n"
+                    + "Duration : " + duration + "\n"
                     + "Payment : " + payment
             );
             try {
