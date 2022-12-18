@@ -1,7 +1,7 @@
-1. table content not update/reset when click on teachers' names/ records
+1.  (closed) table content not update/reset when click on teachers' names/ records
 	-> Admin -> Main -> Teachers panel -> class panel
 
-3. Teacher's details not update when click on teachers details
+3.  (closed) Teacher's details not update when click on teachers details
 	-> Admin -> Main -> Teachers panel -> class panel
 
 4. (closed) Target income is not update when adding new teacher and student
@@ -13,7 +13,7 @@
 8. (closed) Not Update marks in last student and when clear all the marks of each students, it remove all the rows/ students in table. not from db.
 	-> Admin -> Main -> Exams -> Add/ update marks
 
-9. Students' result not update when click on each student's rows
+9. (closed)  Students' result not update when click on each student's rows
 	-> Admin -> Main -> Students -> Results
 
 10. (closed) main search is not working in teacher
@@ -43,7 +43,7 @@
 18. (closed) main search is not working in Exams
 	-> Admin -> Main -> Exams
 
-19. 'studentId' not availabel error in results (location not sure) [when raise, click on a Student and then click on "Results" tabs]
+19.  (closed) 'studentId' not availabel error in results (location not sure) [when raise, click on a Student and then click on "Results" tabs]
 	-> Admin -> Main -> Student -> Results
 
 
