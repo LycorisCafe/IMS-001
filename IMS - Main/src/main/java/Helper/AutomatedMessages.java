@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.stream.Stream;
+import javax.swing.JOptionPane;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
@@ -271,24 +272,38 @@ public class AutomatedMessages {
 
     public void broadast() {
         // broadast
-        String telegramId = Administrator.Main.telegramId.getText();
-        String sName = Administrator.Main.broadcastS.getText();
-        int successCount = Integer.parseInt(Administrator.TelegramReports.jLabel3.getText());
-        int unsuccessCount = Integer.parseInt(Administrator.TelegramReports.jLabel4.getText());
-        SendMessage msg = new SendMessage();
-        msg.setChatId(telegramId);
-        msg.setText(Administrator.Main.broadcastMessage.getText());
-        try {
-            bot.execute(msg);
-            Administrator.TelegramReports.jTextArea1.append("Message sent success to : " + sName + "\n");
-            successCount = successCount + 1;
-            Administrator.TelegramReports.jLabel3.setText("" + successCount);
-        } catch (TelegramApiException e) {
-            System.out.println(e);
-            Administrator.TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
-            unsuccessCount = unsuccessCount + 1;
-            Administrator.TelegramReports.jLabel4.setText("" + unsuccessCount);
-        }
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int rowCount = Administrator.TelegramReports.jTable1.getRowCount();
+                int i = 0;
+                while (i < rowCount) {
+                    String telegramId = Administrator.TelegramReports.jTable1.getValueAt(i, 0).toString();
+                    String sName = Administrator.TelegramReports.jTable1.getValueAt(i, 1).toString();
+                    int successCount = Integer.parseInt(Administrator.TelegramReports.jLabel3.getText());
+                    int unsuccessCount = Integer.parseInt(Administrator.TelegramReports.jLabel4.getText());
+                    SendMessage msg = new SendMessage();
+                    msg.setChatId(telegramId);
+                    msg.setText(Administrator.Main.broadcastMessage.getText());
+                    try {
+                        bot.execute(msg);
+                        Administrator.TelegramReports.jTextArea1.append("Message sent success to : " + sName + "\n");
+                        successCount = successCount + 1;
+                        Administrator.TelegramReports.jLabel3.setText("" + successCount);
+                    } catch (TelegramApiException e) {
+                        System.out.println(e);
+                        Administrator.TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
+                        unsuccessCount = unsuccessCount + 1;
+                        Administrator.TelegramReports.jLabel4.setText("" + unsuccessCount);
+                    }
+                    i++;
+                }
+                Administrator.TelegramReports.save.setText("0");
+                Administrator.TelegramReports report = new Administrator.TelegramReports();
+                JOptionPane.showMessageDialog(report, "Success!");
+            }
+        });
+        t2.start();
     }
 
     public void classDetailsUpdatedGroup() {

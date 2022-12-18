@@ -57,14 +57,6 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="broadcastS">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jLabel73"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
-      </AuxValues>
-    </Component>
     <Component class="javax.swing.JLabel" name="longDetails">
       <Properties>
         <Property name="text" type="java.lang.String" value="jLabel82"/>
