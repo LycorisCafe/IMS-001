@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 12, 2022 at 10:50 AM
+-- Generation Time: Dec 18, 2022 at 07:42 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -47,7 +47,7 @@ CREATE TABLE `classes` (
   `payment` int(4) NOT NULL,
   `day` int(1) NOT NULL,
   `time` varchar(8) NOT NULL,
-  `duration` int(2) NOT NULL,
+  `duration` varchar(13) NOT NULL,
   `telegramId` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -80,7 +80,7 @@ CREATE TABLE `exams` (
   `classId` int(20) NOT NULL,
   `date` date NOT NULL,
   `time` varchar(8) NOT NULL,
-  `duration` int(2) NOT NULL
+  `duration` varchar(13) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
