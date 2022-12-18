@@ -28,7 +28,7 @@ public class Updates extends javax.swing.JFrame {
 
     private void downloadUpdates() {
         AppUpdate update = new AppUpdate();
-        update.start();
+        update.newUpdate();
     }
 
     /**
@@ -41,6 +41,7 @@ public class Updates extends javax.swing.JFrame {
     private void initComponents() {
 
         disposeText = new javax.swing.JLabel();
+        isRunning = new javax.swing.JLabel();
         jProgressBar1 = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -51,6 +52,8 @@ public class Updates extends javax.swing.JFrame {
                 disposeTextPropertyChange(evt);
             }
         });
+
+        isRunning.setText("jLabel3");
 
         setTitle("Updater");
         setUndecorated(true);
@@ -143,6 +146,7 @@ public class Updates extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel disposeText;
+    public static javax.swing.JLabel isRunning;
     public static javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     public static javax.swing.JProgressBar jProgressBar1;
