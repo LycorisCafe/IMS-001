@@ -4,7 +4,7 @@
 3. Teacher's details not update when click on teachers details
 	-> Admin -> Main -> Teachers panel -> class panel
 
-4. Target income is not update when adding new teacher and student
+4. (closed) Target income is not update when adding new teacher and student
 	-> Admin -> Main -> Summery
 
 5. (closed) Text fields are not reset when a new teacher added.
@@ -22,7 +22,7 @@
 11. Class search is not working
 	-> Admin -> Main -> Teachers -> Classes
 
-12. Classes Editing panel is not working
+12. (closed) Classes Editing panel update button need to added
 	-> Admin -> Main -> Teachers -> Classes
 
 13. (closed) When adding a new teacher, if the status set to inactive, all the details of the teacher translated to null value.
@@ -49,7 +49,7 @@
 
 
 
-2. first Student photograph preview display in every student's registartion (Same preview display in every new student registrations)
+2. (closed) first Student photograph preview display in every student's registartion (Same preview display in every new student registrations)
 	-> Moderator -> New Student Registration
 
 6. (closed) Registered Classes table not update
