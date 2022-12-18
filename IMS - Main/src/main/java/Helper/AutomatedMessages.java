@@ -291,4 +291,26 @@ public class AutomatedMessages {
         }
     }
 
+    public void classDetailsUpdatedGroup() {
+        String[] parts = Administrator.Main.longDetails.getText().split("@");
+        String telegramId = Administrator.Main.telegramId.getText();
+        String classn = parts[0];
+        String teacher = parts[1];
+        String day = parts[2];
+        String payment = parts[3];
+        String time = parts[4];
+        String duration = parts[5];
+    }
+
+    public void classDetailsUpdatedStudent() {
+        String[] parts = Administrator.Main.longDetails.getText().split("@");
+        String telegramId = Administrator.Main.telegramId.getText();
+        String classn = parts[0];
+        String teacher = parts[1];
+        String day = parts[2];
+        String payment = parts[3];
+        String time = parts[4];
+        String duration = parts[5];
+    }
+
 }

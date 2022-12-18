@@ -415,6 +415,7 @@ public class Main extends javax.swing.JFrame {
         returnMethod = new javax.swing.JLabel();
         fakeNumber = new javax.swing.JLabel();
         broadcastS = new javax.swing.JLabel();
+        longDetails = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel52 = new javax.swing.JLabel();
@@ -471,6 +472,7 @@ public class Main extends javax.swing.JFrame {
         jButton13 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
         jButton16 = new javax.swing.JButton();
+        jButton37 = new javax.swing.JButton();
         jLabel54 = new javax.swing.JLabel();
         jTextField25 = new javax.swing.JTextField();
         jLabel55 = new javax.swing.JLabel();
@@ -686,6 +688,8 @@ public class Main extends javax.swing.JFrame {
         returnMethod.setText("jLabel65");
 
         broadcastS.setText("jLabel73");
+
+        longDetails.setText("jLabel82");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrator");
@@ -1141,6 +1145,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jButton37.setText("Update");
+        jButton37.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton37ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
@@ -1148,7 +1159,9 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(119, 119, 119)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton37, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1158,11 +1171,15 @@ public class Main extends javax.swing.JFrame {
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jButton37, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jLabel54.setText("Payment :");
@@ -4221,7 +4238,37 @@ public class Main extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
         jButton15.setEnabled(true);
-
+        int r = jTable2.getSelectedRow();
+        String id = jTable2.getValueAt(r, 0).toString();
+        String grade = jTable2.getValueAt(r, 1).toString();
+        String subject = jTable2.getValueAt(r, 2).toString();
+        jComboBox2.setSelectedItem(grade + " - " + subject);
+        jComboBox2.setEnabled(false);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM classes "
+                    + "WHERE id='" + id + "'");
+            while (rs.next()) {
+                jTextField25.setText(rs.getString("payment"));
+                jComboBox14.setSelectedIndex(rs.getInt("day"));
+                String[] time = rs.getString("time").split(" ");
+                jTextField36.setText(time[0]);
+                if (time[1].equals("AM")) {
+                    jComboBox18.setSelectedIndex(0);
+                } else {
+                    jComboBox18.setSelectedIndex(1);
+                }
+                String[] duration = rs.getString("duration").split(" ");
+                String[] hours = duration[0].split("H");
+                String[] minutes = duration[1].split("MIN");
+                jTextField37.setText(hours[0]);
+                jTextField38.setText(minutes[0]);
+            }
+        } catch (SQLException e) {
+            System.out.println("#67" + e);
+        }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
@@ -4983,27 +5030,20 @@ public class Main extends javax.swing.JFrame {
                     dayCho = Integer.parseInt(rs.getString("day"));
                     String convertDay = null;
                     switch (dayCho) {
-                        case 1:
+                        case 1 ->
                             convertDay = "Monday";
-                            break;
-                        case 2:
+                        case 2 ->
                             convertDay = "Tuesday";
-                            break;
-                        case 3:
+                        case 3 ->
                             convertDay = "Wednesday";
-                            break;
-                        case 4:
+                        case 4 ->
                             convertDay = "Thursday";
-                            break;
-                        case 5:
+                        case 5 ->
                             convertDay = "Friday";
-                            break;
-                        case 6:
+                        case 6 ->
                             convertDay = "Saturday";
-                            break;
-                        case 7:
+                        case 7 ->
                             convertDay = "Sunday";
-                            break;
                     }
                     cr4.addItem(convertDay);
                 }
@@ -5377,11 +5417,91 @@ public class Main extends javax.swing.JFrame {
             stmt.executeUpdate("DELETE FROM subjects "
                     + "WHERE id='" + id + "'");
             JOptionPane.showMessageDialog(this, "Success!");
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             System.out.println("#66" + e);
         }
         loadSubjects();
     }//GEN-LAST:event_jButton35ActionPerformed
+
+    private void jButton37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton37ActionPerformed
+        // TODO add your handling code here:
+        int r = jTable2.getSelectedRow();
+        String id = jTable2.getValueAt(r, 0).toString();
+        if (jTextField25.equals("") || jComboBox14.getSelectedIndex() == 0 || jTextField36.getText().equals("")
+                || jTextField37.getText().equals("") || jTextField38.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("UPDATE classes "
+                        + "(payment,day,time,duration) "
+                        + "VALUES "
+                        + "('" + jTextField25.getText() + "','" + jComboBox14.getSelectedIndex() + "',"
+                        + "'" + jTextField36.getText() + " " + jComboBox18.getSelectedItem().toString() + "',"
+                        + "'" + jTextField37.getText() + "H " + jTextField38.getText() + "MIN" + "'");
+            } catch (SQLException e) {
+                System.out.println("#068" + e);
+            }
+            Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+            String classn;
+            String teacher;
+            String day = null;
+            String payment;
+            String time;
+            String duration;
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + id + "'");
+                while (rs.next()) {
+                    classn = jTable2.getValueAt(r, 1).toString() + " - " + jTable2.getValueAt(r, 2).toString();
+                    teacher = rs.getString("name");
+                    int dayn = rs.getInt("day");
+                    switch (dayn) {
+                        case 1 ->
+                            day = "Monday";
+                        case 2 ->
+                            day = "Tuesday";
+                        case 3 ->
+                            day = "Wednesday";
+                        case 4 ->
+                            day = "Thursday";
+                        case 5 ->
+                            day = "Friday";
+                        case 6 ->
+                            day = "Saturday";
+                        case 7 ->
+                            day = "Sunday";
+                    }
+                    payment = rs.getString("payment");
+                    time = rs.getString("time");
+                    duration = rs.getString("duration");
+                    longDetails.setText(classn + "@" + teacher + "@" + day + "@" + payment + "@" + time + "@" + duration);
+                    telegramId.setText(rs.getString("telegramId"));
+                    bot.classDetailsUpdatedGroup();
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + id + "'");
+                    while (rs2.next()) {
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs2.getString("studentId") + "'");
+                        while (rs3.next()) {
+                            telegramId.setText(rs3.getString("telegramId"));
+                            bot.classDetailsUpdatedStudent();
+                        }
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println("#069" + e);
+            }
+        }
+    }//GEN-LAST:event_jButton37ActionPerformed
     
     private void examsReset() {
         cr2.setSelectedIndex(0);
@@ -5481,6 +5601,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton34;
     private javax.swing.JButton jButton35;
     private javax.swing.JButton jButton36;
+    private javax.swing.JButton jButton37;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
@@ -5702,6 +5823,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    public static javax.swing.JLabel longDetails;
     public static javax.swing.JLabel returnMethod;
     public static javax.swing.JLabel success;
     public static javax.swing.JLabel tGroupId;
