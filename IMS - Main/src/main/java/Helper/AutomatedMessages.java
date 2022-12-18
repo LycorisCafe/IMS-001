@@ -148,6 +148,7 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         String examTime = Administrator.Main.jTextField32.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
+        String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
         String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
 
         photo.setPhoto(new InputFile(image));
@@ -182,6 +183,7 @@ public class AutomatedMessages {
         String examDate = Administrator.Main.jTextField27.getText();
         String examTime = Administrator.Main.jTextField32.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
+        String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
         String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
         // message body start
 

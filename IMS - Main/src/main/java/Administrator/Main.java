@@ -142,10 +142,36 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void loadTeachers() {
-        jTabbedPane2.setSelectedIndex(0);
         jTextField10.setText("");
         jTextField11.setText("");
         jTextField12.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jTextField8.setText("");
+        jCheckBox1.setSelected(false);
+        jButton7.setEnabled(false);
+        jButton6.setEnabled(false);
+        jComboBox2.setSelectedIndex(0);
+        jTextField25.setText("");
+        jComboBox14.setSelectedIndex(0);
+        jTextField36.setText("");
+        jTextField37.setText("");
+        jTextField38.setText("");
+        jButton13.setEnabled(false);
+        jButton37.setEnabled(false);
+        jButton15.setEnabled(false);
+        jTextArea2.setText("");
+        jButton21.setEnabled(false);
+        DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+        model2.setRowCount(0);
+        // =======
+        jLabel67.setText("");
+        jLabel66.setText("");
+        jLabel70.setText("");
+        jLabel72.setText("");
+        jLabel71.setText("");
+
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -161,66 +187,67 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#006" + e);
         }
-
-        jTextField5.setText("");
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-        jCheckBox1.setSelected(false);
-
-        jButton7.setEnabled(false);
-        jButton6.setEnabled(false);
-        Component[] com1 = jPanel7.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(false);
-        }
-        Component[] com2 = jPanel24.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(false);
-        }
     }
 
     private void loadStudents() {
         jTextField9.setText("");
         jTextField13.setText("");
         jComboBox4.setSelectedIndex(0);
+        jTextField14.setText("");
+        jTextField15.setText("");
+        jTextField16.setText("");
+        jTextField17.setText("");
+        jTextField18.setText("");
+        jComboBox5.setSelectedIndex(0);
+        jCheckBox2.setSelected(false);
+        jLabel27.setIcon(null);
+        jLabel27.setText("-");
+        jButton9.setEnabled(false);
+        jButton10.setEnabled(false);
+        DefaultTableModel model4 = (DefaultTableModel) jTable4.getModel();
+        model4.setRowCount(0);
+        DefaultTableModel model5 = (DefaultTableModel) jTable5.getModel();
+        model5.setRowCount(0);
+        jTextField23.setText("");
+        jTextField24.setText("");
+        jComboBox6.removeAllItems();
+        jComboBox6.addItem("Please Select...");
+        jComboBox6.setSelectedIndex(0);
+        jTextField21.setText("");
+        jTextArea1.setText("");
+        jButton19.setEnabled(false);
+        //========
+        tupdatelabel.setText("");
+        jLabel65.setText("");
+
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs2 = stmt.executeQuery("SELECT * FROM students");
-            DefaultTableModel model2 = (DefaultTableModel) jTable3.getModel();
-            model2.setRowCount(0);
+            DefaultTableModel model3 = (DefaultTableModel) jTable3.getModel();
+            model3.setRowCount(0);
             while (rs2.next()) {
                 Object[] row2 = {rs2.getString("id"),
                     rs2.getString("firstName") + " " + rs2.getString("lastName"),
                     rs2.getString("grade")};
-                model2.addRow(row2);
+                model3.addRow(row2);
             }
             con.close();
         } catch (SQLException e) {
             System.out.println("#007" + e);
         }
-        Component[] com0 = jPanel11.getComponents();
-        for (int a = 0; a < com0.length; a++) {
-            com0[a].setEnabled(false);
-        }
-        Component[] com1 = jPanel18.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(false);
-        }
-        Component[] com2 = jPanel20.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(false);
-        }
-        Component[] com3 = jPanel23.getComponents();
-        for (int a = 0; a < com3.length; a++) {
-            com3[a].setEnabled(false);
-        }
     }
 
     private void loadGroups() {
-        DefaultTableModel model = (DefaultTableModel) jTable6.getModel();
-        model.setRowCount(0);
+        jButton24.setEnabled(false);
+        jButton26.setEnabled(false);
+        jTextArea3.setText("");
+        // ==========
+        jLabel68.setText("");
+        jLabel69.setText("");
+
+        DefaultTableModel model6 = (DefaultTableModel) jTable6.getModel();
+        model6.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
@@ -229,7 +256,6 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 String classId = rs.getString("id");
                 int day = rs.getInt("day");
-                String subjectId = rs.getString("subjectId");
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM teachers "
@@ -260,7 +286,7 @@ public class Main extends javax.swing.JFrame {
                         }
                         Object[] row = {classId, rs3.getString("grade"),
                             rs3.getString("subject"), teacher, convertedDay};
-                        model.addRow(row);
+                        model6.addRow(row);
                     }
                 }
 
@@ -284,23 +310,36 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#010" + e);
         }
-        Component[] com1 = jPanel26.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(false);
-        }
-        Component[] com2 = jPanel27.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(false);
-        }
     }
 
     private void loadExams() {
         jTextField19.setText("");
-        jComboBox3.setSelectedIndex(0);
         jTextField20.setText("");
-        examsReset();
-        DefaultTableModel model5 = (DefaultTableModel) jTable8.getModel();
-        model5.setRowCount(0);
+
+        cr1.setSelectedIndex(0);
+        cr2.setSelectedIndex(0);
+        cr2.setEnabled(false);
+        cr3.setSelectedIndex(0);
+        cr3.setEnabled(false);
+        cr4.setSelectedIndex(0);
+        cr4.setEnabled(false);
+        cr5.setSelectedIndex(0);
+        cr5.setEnabled(false);
+        jTextField22.setText("");
+        jTextField27.setText("");
+        jTextField32.setText("");
+        jTextField39.setText("");
+        jTextField40.setText("");
+        jTextField22.setEnabled(false);
+        jTextField27.setEnabled(false);
+        jTextField32.setEnabled(false);
+        jTextField39.setEnabled(false);
+        jTextField40.setEnabled(false);
+        jButton18.setEnabled(false);
+        jButton33.setEnabled(false);
+
+        DefaultTableModel model8 = (DefaultTableModel) jTable8.getModel();
+        model8.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -311,6 +350,7 @@ public class Main extends javax.swing.JFrame {
                 String name = rs.getString("name");
                 String date = rs.getString("date");
                 String time = rs.getString("time");
+                String duration = rs.getString("duration");
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
@@ -321,9 +361,9 @@ public class Main extends javax.swing.JFrame {
                             + "FROM subjects "
                             + "WHERE id='" + rs2.getString("subjectId") + "'");
                     while (rs3.next()) {
-                        Object[] row5 = {id, name, rs3.getString("grade")
-                            + " - " + rs3.getString("subject"), date, time};
-                        model5.addRow(row5);
+                        Object[] row = {id, name, rs3.getString("grade")
+                            + " - " + rs3.getString("subject"), date, time, duration};
+                        model8.addRow(row);
                     }
                 }
             }
@@ -331,13 +371,20 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#011" + e);
         }
-        Component[] com1 = jPanel38.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(false);
-        }
-        Component[] com2 = jPanel39.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(false);
+        jComboBox3.removeAllItems();
+        jComboBox3.addItem("Please Select...");
+        jComboBox3.setSelectedIndex(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM subjects");
+            while (rs.next()) {
+                jComboBox3.addItem(rs.getString("grade")
+                        + " - " + rs.getString("subject"));
+            }
+        } catch (SQLException e) {
+            System.out.println("#70" + e);
         }
     }
 
@@ -348,8 +395,8 @@ public class Main extends javax.swing.JFrame {
         jButton35.setEnabled(false);
         jComboBox16.setSelectedIndex(0);
         jTextField33.setText("");
-        DefaultTableModel model = (DefaultTableModel) jTable9.getModel();
-        model.setRowCount(0);
+        DefaultTableModel model9 = (DefaultTableModel) jTable9.getModel();
+        model9.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -358,35 +405,39 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 Object[] row = {rs.getString("id"),
                     rs.getString("grade"), rs.getString("subject")};
-                model.addRow(row);
+                model9.addRow(row);
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            System.out.println("#082" + e);
         }
     }
 
     private void loadAccounts() {
         jComboBox13.setSelectedIndex(0);
         jTextField26.setText("");
-        DefaultTableModel model2 = (DefaultTableModel) jTable7.getModel();
-        model2.setRowCount(0);
+        jComboBox12.setSelectedIndex(0);
+        jTextField28.setText("");
+        jTextField29.setText("");
+        jTextField30.setText("");
+        jTextField31.setText("");
+
+        DefaultTableModel model7 = (DefaultTableModel) jTable7.getModel();
+        model7.setRowCount(0);
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM login");
             while (rs.next()) {
-                Object[] row2 = {rs.getString("id"),
+                Object[] row = {rs.getString("id"),
                     rs.getString("type"), rs.getString("user"),
                     rs.getString("lastLogin")};
-                model2.addRow(row2);
+                model7.addRow(row);
             }
             con.close();
         } catch (SQLException e) {
             System.out.println("#012" + e);
         }
-        jLabel29.setText("");
-        jRadioButton1.setSelected(false);
-        jRadioButton2.setEnabled(false);
-        jRadioButton3.setEnabled(false);
+        jRadioButton1.setSelected(true);
         Component[] com1 = jPanel33.getComponents();
         for (int a = 0; a < com1.length; a++) {
             com1[a].setEnabled(false);
@@ -608,6 +659,13 @@ public class Main extends javax.swing.JFrame {
         jLabel64 = new javax.swing.JLabel();
         jTextField32 = new javax.swing.JTextField();
         jComboBox15 = new javax.swing.JComboBox<>();
+        jLabel82 = new javax.swing.JLabel();
+        cr5 = new javax.swing.JComboBox<>();
+        jLabel83 = new javax.swing.JLabel();
+        jTextField39 = new javax.swing.JTextField();
+        jLabel84 = new javax.swing.JLabel();
+        jTextField40 = new javax.swing.JTextField();
+        jLabel85 = new javax.swing.JLabel();
         jPanel38 = new javax.swing.JPanel();
         jButton18 = new javax.swing.JButton();
         jPanel39 = new javax.swing.JPanel();
@@ -888,17 +946,8 @@ public class Main extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jTable1MouseEntered(evt);
-            }
         });
         jScrollPane1.setViewportView(jTable1);
-
-        jTabbedPane2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane2MouseClicked(evt);
-            }
-        });
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -1087,7 +1136,7 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Grade", "Subject"
+                "Class ID", "Grade", "Subject"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -1102,9 +1151,6 @@ public class Main extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jTable2MouseEntered(evt);
-            }
         });
         jScrollPane2.setViewportView(jTable2);
 
@@ -1113,11 +1159,6 @@ public class Main extends javax.swing.JFrame {
         jLabel11.setText("Class :");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
 
         jPanel12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
@@ -1181,12 +1222,6 @@ public class Main extends javax.swing.JFrame {
 
         jLabel54.setText("Payment :");
 
-        jTextField25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField25ActionPerformed(evt);
-            }
-        });
-
         jLabel55.setText("Day :");
 
         jComboBox14.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
@@ -1199,9 +1234,9 @@ public class Main extends javax.swing.JFrame {
 
         jTextField37.setToolTipText("(3H 30MIN)");
 
-        jLabel80.setText("H");
+        jLabel80.setText("(h)");
 
-        jLabel81.setText("MIN");
+        jLabel81.setText("(min)");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
@@ -1597,12 +1632,6 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane3MouseClicked(evt);
-            }
-        });
-
         jPanel11.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Editing Panel :"));
@@ -1618,12 +1647,6 @@ public class Main extends javax.swing.JFrame {
         jLabel23.setText("Address :");
 
         jLabel24.setText("Grade :");
-
-        jTextField14.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField14ActionPerformed(evt);
-            }
-        });
 
         jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "5", "6", "7", "8", "9", "10", "11" }));
 
@@ -1992,11 +2015,6 @@ public class Main extends javax.swing.JFrame {
         jTextField23.setEditable(false);
 
         jTextField24.setEditable(false);
-        jTextField24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField24ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
         jPanel22.setLayout(jPanel22Layout);
@@ -2244,12 +2262,6 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTabbedPane4MouseClicked(evt);
-            }
-        });
-
         jPanel26.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jTextArea3.setColumns(20);
@@ -2451,6 +2463,21 @@ public class Main extends javax.swing.JFrame {
 
         jComboBox15.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "AM", "PM" }));
 
+        jLabel82.setText("Time :");
+
+        cr5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select..." }));
+        cr5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cr5ActionPerformed(evt);
+            }
+        });
+
+        jLabel83.setText("Exam Duration :");
+
+        jLabel84.setText("(h)");
+
+        jLabel85.setText("(min)");
+
         javax.swing.GroupLayout jPanel37Layout = new javax.swing.GroupLayout(jPanel37);
         jPanel37.setLayout(jPanel37Layout);
         jPanel37Layout.setHorizontalGroup(
@@ -2472,10 +2499,6 @@ public class Main extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cr3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel37Layout.createSequentialGroup()
-                        .addComponent(jLabel59, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cr4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel37Layout.createSequentialGroup()
                         .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField22))
@@ -2485,6 +2508,15 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel37Layout.createSequentialGroup()
                         .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel82, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel59, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cr4, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cr5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel37Layout.createSequentialGroup()
+                        .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel83, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel64, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
                             .addComponent(jLabel61, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2493,7 +2525,16 @@ public class Main extends javax.swing.JFrame {
                             .addGroup(jPanel37Layout.createSequentialGroup()
                                 .addComponent(jTextField32)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel37Layout.createSequentialGroup()
+                                .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel84)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel85)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel37Layout.setVerticalGroup(
@@ -2517,6 +2558,10 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(cr4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel82)
+                    .addComponent(cr5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel60)
                     .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2528,6 +2573,13 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel64)
                     .addComponent(jTextField32, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel37Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel83)
+                    .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel84)
+                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel85))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel62)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -2606,7 +2658,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel35Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2618,11 +2670,11 @@ public class Main extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Class", "Date", "Time"
+                "ID", "Name", "Class", "Date", "Time", "Duration"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2771,7 +2823,7 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jPanel42Layout.createSequentialGroup()
                         .addComponent(jLabel73, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox16, 0, 344, Short.MAX_VALUE))
+                        .addComponent(jComboBox16, 0, 316, Short.MAX_VALUE))
                     .addGroup(jPanel42Layout.createSequentialGroup()
                         .addComponent(jLabel74, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -2952,7 +3004,7 @@ public class Main extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel40Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel40Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 506, Short.MAX_VALUE)
+                    .addComponent(jScrollPane13, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
                     .addComponent(jPanel44, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3077,11 +3129,6 @@ public class Main extends javax.swing.JFrame {
         });
 
         jComboBox12.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Please Select...", "Moderator", "Administrator" }));
-        jComboBox12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox12ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel32Layout = new javax.swing.GroupLayout(jPanel32);
         jPanel32.setLayout(jPanel32Layout);
@@ -3334,10 +3381,6 @@ public class Main extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jTextField24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField24ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField24ActionPerformed
-
     private void jButton27ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton27ActionPerformed
         // getting the admin's message and send the message
         if (broadcastMessage.getText().equals("")) {
@@ -3409,13 +3452,11 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton28ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        // grabing data from selected row
         int r = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-
             ResultSet rs = stmt.executeQuery("SELECT  * "
                     + "FROM teachers "
                     + "WHERE id='" + id + "'");
@@ -3436,26 +3477,69 @@ public class Main extends javax.swing.JFrame {
         }
         jButton7.setEnabled(true);
         jButton6.setEnabled(true);
-        Component[] com1 = jPanel7.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(true);
+
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        model.setRowCount(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT  * "
+                    + "FROM classes "
+                    + "WHERE teacherId='" + id + "'");
+            while (rs.next()) {
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE id='" + rs.getString("subjectId") + "'");
+                while (rs2.next()) {
+                    Object[] row = {rs2.getString("id"),
+                        rs2.getString("grade"), rs2.getString("subject")};
+                    model.addRow(row);
+                }
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("#042" + e);
         }
-        Component[] com2 = jPanel24.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(true);
+        jButton13.setEnabled(true);
+        jButton21.setEnabled(true);
+
+        //============================================
+        jComboBox2.removeAllItems();
+        jComboBox2.addItem("Please Select...");
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT  * "
+                    + "FROM subjects "
+                    + "ORDER BY grade,subject");
+            while (rs.next()) {
+                String settingClass = rs.getString("grade")
+                        + " - " + rs.getString("subject");
+                jComboBox2.addItem(settingClass);
+            }
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("#043" + e);
         }
+        jComboBox2.setSelectedIndex(0);
+        jButton15.setEnabled(false);
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // adding data to teachers table
-        jCheckBox1.setSelected(true);
-        jLabel66.setText("");
-        jLabel66.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
-        Faker faker = new Faker();
-        jLabel67.setText(faker.number().digits(5));
-        fakeNumber.setText(jLabel67.getText());
-        type.setText("private");
-        returnMethod.setText("teacherAdd");
+        if (jTextField5.getText().equals("") || jTextField6.getText().equals("")
+                || jTextField7.getText().equals("") || jTextField8.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            jCheckBox1.setSelected(true);
+            jLabel66.setText("");
+            jLabel66.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
+            Faker faker = new Faker();
+            jLabel67.setText(faker.number().digits(5));
+            fakeNumber.setText(jLabel67.getText());
+            type.setText("private");
+            returnMethod.setText("teacherAdd");
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     public void teacherAdd() {
@@ -3472,9 +3556,9 @@ public class Main extends javax.swing.JFrame {
                     + "VALUES "
                     + "('" + name + "', '" + nic + "', '" + address + "',"
                     + " '" + telegramId.getText() + "', '" + contact + "', '" + status + "')");
-            JOptionPane.showMessageDialog(this, "Success!");
             con.close();
             loadTeachers();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
             System.out.println("#018" + e);
         }
@@ -3482,38 +3566,42 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // updating data in teachers table
-        int r = jTable1.getSelectedRow();
-        tableSelection = jTable1.getValueAt(r, 0).toString();
-        if (jCheckBox1.isSelected()) {
-            jLabel66.setText("");
-            jLabel66.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
-            Faker faker = new Faker();
-            jLabel67.setText(faker.number().digits(5));
-            fakeNumber.setText(jLabel67.getText());
-            type.setText("private");
-            returnMethod.setText("teacherUpdate");
+        if (jTextField5.getText().equals("") || jTextField6.getText().equals("")
+                || jTextField7.getText().equals("") || jTextField8.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
-            System.out.println(tableSelection);
-            String name = jTextField5.getText();
-            String nic = jTextField6.getText();
-            String contact = jTextField7.getText();
-            String address = jTextField8.getText();
-            int status = jComboBox1.getSelectedIndex();
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                stmt.executeUpdate("UPDATE teachers SET "
-                        + "name='" + name + "', "
-                        + "nic='" + nic + "', "
-                        + "address='" + address + "', "
-                        + "contact='" + contact + "', "
-                        + "status='" + status + "' "
-                        + "WHERE id='" + tableSelection + "'");
-                JOptionPane.showMessageDialog(this, "Success!");
-                con.close();
-                loadTeachers();
-            } catch (SQLException e) {
-                System.out.println("#019" + e);
+            int r = jTable1.getSelectedRow();
+            tableSelection = jTable1.getValueAt(r, 0).toString();
+            if (jCheckBox1.isSelected()) {
+                jLabel66.setText("");
+                jLabel66.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
+                Faker faker = new Faker();
+                jLabel67.setText(faker.number().digits(5));
+                fakeNumber.setText(jLabel67.getText());
+                type.setText("private");
+                returnMethod.setText("teacherUpdate");
+            } else {
+                String name = jTextField5.getText();
+                String nic = jTextField6.getText();
+                String contact = jTextField7.getText();
+                String address = jTextField8.getText();
+                int status = jComboBox1.getSelectedIndex();
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate("UPDATE teachers SET "
+                            + "name='" + name + "', "
+                            + "nic='" + nic + "', "
+                            + "address='" + address + "', "
+                            + "contact='" + contact + "', "
+                            + "status='" + status + "' "
+                            + "WHERE id='" + tableSelection + "'");
+                    con.close();
+                    loadTeachers();
+                    JOptionPane.showMessageDialog(this, "Success!");
+                } catch (SQLException e) {
+                    System.out.println("#019" + e);
+                }
             }
         }
     }//GEN-LAST:event_jButton7ActionPerformed
@@ -3535,16 +3623,15 @@ public class Main extends javax.swing.JFrame {
                     + "contact='" + contact + "', "
                     + "status='" + status + "' "
                     + "WHERE id='" + tableSelection + "'");
-            JOptionPane.showMessageDialog(this, "Success!");
             con.close();
             loadTeachers();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
             System.out.println("#020" + e);
         }
     }
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // delete selected row
         int r = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(r, 0).toString();
         try {
@@ -3560,112 +3647,92 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // to update data of the selected row
-        int r = jTable3.getSelectedRow();
-        tableSelection = jTable3.getValueAt(r, 0).toString();
-        if (jCheckBox2.isSelected()) {
-            jLabel65.setText("");
-            jLabel65.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
-            Faker faker = new Faker();
-            tupdatelabel.setText(faker.number().digits(5));
-            fakeNumber.setText(tupdatelabel.getText());
-            type.setText("private");
-            returnMethod.setText("studentUpdate");
+        if (jTextField14.getText().equals("") || jTextField15.getText().equals("")
+                || jTextField16.getText().equals("") || jTextField17.getText().equals("")
+                || jTextField18.getText().equals("") || jComboBox5.getSelectedIndex() == 0) {
+            JOptionPane.showConfirmDialog(this, "All fields must be filled!");
         } else {
-            String fname = jTextField14.getText();
-            String lname = jTextField15.getText();
-            String gname = jTextField16.getText();
-            String gPhone = jTextField17.getText();
-            String address = jTextField18.getText();
-            String grade = jComboBox5.getSelectedItem().toString();
-
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = (Statement) con.createStatement();
-                String sql = "UPDATE students SET "
-                        + "firstName='" + fname + "', "
-                        + "lastName='" + lname + "', "
-                        + "guardianName='" + gname + "', "
-                        + "guardianPhone='" + gPhone + "', "
-                        + "address='" + address + "', "
-                        + "grade='" + grade + "', "
-                        + "status='" + jComboBox7.getSelectedIndex() + "' "
-                        + "WHERE id='" + tableSelection + "'";
-                stmt.executeUpdate(sql);
-                JOptionPane.showMessageDialog(this, "Success!");
-                loadStudents();
-                con.close();
-            } catch (SQLException e) {
-                System.out.println("#022" + e);
+            if (jCheckBox2.isSelected()) {
+                jLabel65.setText("");
+                jLabel65.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
+                Faker faker = new Faker();
+                tupdatelabel.setText(faker.number().digits(5));
+                fakeNumber.setText(tupdatelabel.getText());
+                type.setText("private");
+                returnMethod.setText("studentUpdate");
+            } else {
+                int r = jTable3.getSelectedRow();
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = (Statement) con.createStatement();
+                    stmt.executeUpdate("UPDATE students SET "
+                            + "firstName='" + jTextField14.getText() + "', "
+                            + "lastName='" + jTextField15.getText() + "', "
+                            + "guardianName='" + jTextField16.getText() + "', "
+                            + "guardianPhone='" + jTextField17.getText() + "', "
+                            + "address='" + jTextField18.getText() + "', "
+                            + "grade='" + jComboBox5.getSelectedItem().toString() + "', "
+                            + "status='" + jComboBox7.getSelectedIndex() + "' "
+                            + "WHERE id='" + jTable3.getValueAt(r, 0).toString() + "'");
+                    con.close();
+                    loadStudents();
+                    JOptionPane.showMessageDialog(this, "Success!");
+                } catch (SQLException e) {
+                    System.out.println("#022" + e);
+                }
             }
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     public void studentUpdate() {
-        String fname = jTextField14.getText();
-        String lname = jTextField15.getText();
-        String gname = jTextField16.getText();
-        String gPhone = jTextField17.getText();
-        String address = jTextField18.getText();
-        String grade = jComboBox5.getSelectedItem().toString();
-        String status = String.valueOf(jComboBox7.getSelectedIndex());
+        int r = jTable3.getSelectedRow();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
             stmt.executeUpdate("UPDATE students "
-                    + "SET firstName='" + fname + "', "
-                    + "lastName='" + lname + "', "
-                    + "guardianName='" + gname + "', "
-                    + "guardianPhone='" + gPhone + "', "
-                    + "address='" + address + "', "
-                    + "grade='" + grade + "', "
+                    + "SET firstName='" + jTextField14.getText() + "', "
+                    + "lastName='" + jTextField15.getText() + "', "
+                    + "guardianName='" + jTextField16.getText() + "', "
+                    + "guardianPhone='" + jTextField17.getText() + "', "
+                    + "address='" + jTextField18.getText() + "', "
+                    + "grade='" + jComboBox5.getSelectedItem().toString() + "', "
                     + "telegramId='" + telegramId.getText() + "', "
-                    + "status='" + status + "' "
-                    + "WHERE id='" + tableSelection + "'");
-            System.out.println("oook");
+                    + "status='" + String.valueOf(jComboBox7.getSelectedIndex()) + "' "
+                    + "WHERE id='" + jTable3.getValueAt(r, 0).toString() + "'");
             con.close();
-            JOptionPane.showMessageDialog(this, "Success!");
             loadStudents();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
             System.out.println("#023" + e);
         }
     }
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // resetting all the textfields
-        jTextField5.setText("");
-        jTextField6.setText("");
-        jTextField7.setText("");
-        jTextField8.setText("");
-        jCheckBox1.setSelected(false);
-        jComboBox1.setSelectedIndex(0);
+        loadTeachers();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton21ActionPerformed
         // send message from teacher panel to telegram
-        if (jTextArea2 == null) {
+        if (jTextArea2.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter message to send!");
         } else {
             int r = jTable1.getSelectedRow();
-            String name2 = null;
             String id = jTable1.getValueAt(r, 0).toString();
             Helper.TelegramBot telegram = new Helper.TelegramBot();
             SendMessage sm = new SendMessage();
             try {
                 Writer output = new BufferedWriter(
                         new FileWriter(logPath + "teachersMessage.log", true));
-
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-
                     ResultSet rs = stmt.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + id + "'");
                     while (rs.next()) {
                         String teacherIdn = rs.getString("id");
                         String Teleid = rs.getString("telegramId");
-                        name2 = rs.getString("name");
+                        String name2 = rs.getString("name");
                         sm.setText(jTextArea2.getText());
                         sm.setChatId(Teleid);
                         try {
@@ -3772,7 +3839,6 @@ public class Main extends javax.swing.JFrame {
             ProcessBuilder processBuilder
                     = new ProcessBuilder("cmd.exe", "/c",
                             "C:/ProgramData/LycorisCafe/IMS/Logs/teachersMessage.log");
-            processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
             System.out.println("#028" + e);
@@ -3806,13 +3872,6 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        // grabing data from selected row
-        Component[] com0 = jPanel11.getComponents();
-        for (int a = 0; a < com0.length; a++) {
-            com0[a].setEnabled(true);
-        }
-        jLabel27.setIcon(null);
-        jLabel27.setText("-");
         int r = jTable3.getSelectedRow();
         String id = jTable3.getValueAt(r, 0).toString();
         try {
@@ -3842,25 +3901,136 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("#031" + e);
         }
+
+        DefaultTableModel model4 = (DefaultTableModel) jTable4.getModel();
+        model4.setRowCount(0);
+        String convertedDay = null;
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM regclass "
+                    + "WHERE studentId='" + id + "'");
+            while (rs.next()) {
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + rs.getString("classId") + "'");
+                while (rs2.next()) {
+                    int day = rs2.getInt("day");
+                    String teacher = rs2.getString("teacherId");
+                    String subject = rs2.getString("subjectId");
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                            + "FROM subjects "
+                            + "WHERE id='" + subject + "'");
+                    while (rs3.next()) {
+                        String grade = rs3.getString("grade");
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                                + "FROM teachers "
+                                + "WHERE id='" + teacher + "'");
+                        while (rs4.next()) {
+                            switch (day) {
+                                case 1 ->
+                                    convertedDay = "Monday";
+                                case 2 ->
+                                    convertedDay = "Tuesday";
+                                case 3 ->
+                                    convertedDay = "Wednesday";
+                                case 4 ->
+                                    convertedDay = "Thursday";
+                                case 5 ->
+                                    convertedDay = "Friday";
+                                case 6 ->
+                                    convertedDay = "Saturday";
+                                case 7 ->
+                                    convertedDay = "Sunday";
+                            }
+                            Object[] row = {grade, subject,
+                                rs4.getString("name"), convertedDay};
+                            model4.addRow(row);
+                        }
+                    }
+                }
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("#047" + ex);
+        }
+
+        DefaultTableModel model5 = (DefaultTableModel) jTable5.getModel();
+        model5.setRowCount(0);
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM results "
+                    + "WHERE studentId='" + id + "'");
+            while (rs.next()) {
+                String resultId = rs.getString("id");
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM exams "
+                        + "WHERE id='" + rs.getString("examId") + "'");
+                while (rs2.next()) {
+                    String examName = rs2.getString("name");
+                    String examDate = rs2.getString("date");
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                            + "FROM classes "
+                            + "WHERE id='" + rs2.getString("classId") + "'");
+                    while (rs3.next()) {
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE id='" + rs3.getString("subjectId") + "'");
+                        while (rs4.next()) {
+                            Object[] row = {resultId, examName,
+                                rs4.getString("grade") + " - " + rs4.getString("subject"),
+                                examDate};
+                            model5.addRow(row);
+                        }
+                    }
+                }
+            }
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("#048" + ex);
+        }
+
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM regclass "
+                    + "WHERE studentId='" + id + "'");
+            while (rs.next()) {
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM subjects "
+                        + "WHERE id='" + rs.getString("subjectId") + "'");
+                while (rs2.next()) {
+                    jComboBox6.addItem(rs2.getString("grade")
+                            + " - " + rs2.getString("subject"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("#049" + e);
+        }
+
+        jButton9.setEnabled(true);
+        jButton10.setEnabled(true);
+        jButton19.setEnabled(true);
     }//GEN-LAST:event_jTable3MouseClicked
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // reset all the text fields in students panel
-        jTextField14.setText("");
-        jTextField15.setText("");
-        jTextField16.setText("");
-        jTextField17.setText("");
-        jTextField18.setText("");
-        jLabel27.setIcon(null);
-        jLabel27.setText("-");
-        jComboBox5.setSelectedIndex(0);
-        jCheckBox2.setSelected(false);
-        jComboBox7.setSelectedIndex(0);
+        loadStudents();
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton19ActionPerformed
         // to send private message to selected student via telegram bot
-        if (jTextArea1 == null) {
+        if (jTextArea1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter message to send!");
         } else {
             int r = jTable3.getSelectedRow();
@@ -3873,7 +4043,6 @@ public class Main extends javax.swing.JFrame {
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-
                     ResultSet rs = stmt.executeQuery("SELECT * "
                             + "FROM students "
                             + "WHERE id='" + id + "'");
@@ -3909,7 +4078,6 @@ public class Main extends javax.swing.JFrame {
             ProcessBuilder processBuilder
                     = new ProcessBuilder("cmd.exe", "/c",
                             logPath + "studentsMessage.log");
-            processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
             System.out.println("#035" + e);
@@ -3986,17 +4154,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // reset all the text fields in search panel - students
         loadStudents();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTable1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable1MouseEntered
-
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
-        if (jTextArea1 == null) {
+        if (jTextArea1.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter message to send!");
         } else {
             int r = jTable6.getSelectedRow();
@@ -4010,7 +4173,6 @@ public class Main extends javax.swing.JFrame {
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
-
                     ResultSet rs = stmt.executeQuery("SELECT id,telegramId "
                             + "FROM classes "
                             + "WHERE id='" + id + "'");
@@ -4023,6 +4185,7 @@ public class Main extends javax.swing.JFrame {
                             telegram.execute(sm);
                             output.append("\n" + logTime + " - " + classId + " -\n" + jTextArea3.getText());
                             JOptionPane.showMessageDialog(this, "Message sent success!");
+                            jTextArea3.setText("");
                         } catch (TelegramApiException e) {
                             System.out.println("#037" + e);
                             JOptionPane.showMessageDialog(this, "Error while sending message!");
@@ -4036,7 +4199,6 @@ public class Main extends javax.swing.JFrame {
             } catch (IOException ex) {
                 System.out.println("#039" + ex);
             }
-            jTextArea3.setText("");
         }
     }//GEN-LAST:event_jButton24ActionPerformed
 
@@ -4046,7 +4208,6 @@ public class Main extends javax.swing.JFrame {
             ProcessBuilder processBuilder
                     = new ProcessBuilder("cmd.exe", "/c",
                             logPath + "groupsMessage.log");
-            processBuilder.redirectErrorStream(true);
             processBuilder.start();
         } catch (IOException e) {
             System.out.println("#040" + e);
@@ -4079,9 +4240,6 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
-        // TODO add your handling code here:
-        int r = jTable6.getSelectedRow();
-        tableSelection = jTable6.getValueAt(r, 0).toString();
         jLabel69.setText("");
         jLabel69.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
         Faker faker = new Faker();
@@ -4092,110 +4250,41 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton26ActionPerformed
 
     public void groupTIdUpdate() {
+        int r = jTable6.getSelectedRow();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE classes SET "
                     + "telegramId='" + telegramId.getText() + "' "
-                    + "WHERE id='" + tableSelection + "'");
-            JOptionPane.showMessageDialog(this, "Success!");
+                    + "WHERE id='" + jTable6.getValueAt(r, 0).toString() + "'");
             loadGroups();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
             System.out.println("#041" + e);
         }
     }
 
-    private void jTabbedPane2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane2MouseClicked
-        // TODO add your handling code here:
-        teacherClassesTable();
-    }//GEN-LAST:event_jTabbedPane2MouseClicked
-
-    private void teacherClassesTable() {
-        if (jTable1.getSelectedRowCount() == 1) {
-            if (jTabbedPane2.getSelectedIndex() == 1) {
-                Component[] com1 = jPanel7.getComponents();
-                for (int a = 0; a < com1.length; a++) {
-                    com1[a].setEnabled(true);
-                }
-                jButton15.setEnabled(false);
-                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-                model.setRowCount(0);
-                int r = jTable1.getSelectedRow();
-                String id = jTable1.getValueAt(r, 0).toString();
-                try {
-                    Connection con = Helper.DB.connect();
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT  * "
-                            + "FROM classes "
-                            + "WHERE teacherId='" + id + "'");
-                    while (rs.next()) {
-                        Statement stmt2 = con.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                                + "FROM subjects "
-                                + "WHERE id='" + rs.getString("subjectId") + "'");
-                        while (rs2.next()) {
-                            Object[] row = {rs2.getString("id"),
-                                rs2.getString("grade"), rs2.getString("subject")};
-                            model.addRow(row);
-                        }
-                    }
-                    con.close();
-                } catch (SQLException e) {
-                    System.out.println("#042" + e);
-                }
-                jComboBox2.removeAllItems();
-                jComboBox2.addItem("Please Select...");
-                try {
-                    Connection con = Helper.DB.connect();
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT  * "
-                            + "FROM subjects "
-                            + "ORDER BY grade,subject");
-                    while (rs.next()) {
-                        String settingClass = rs.getString("grade")
-                                + " - " + rs.getString("subject");
-                        jComboBox2.addItem(settingClass);
-                    }
-                    con.close();
-                } catch (SQLException e) {
-                    System.out.println("#043" + e);
-                }
-                jComboBox2.setSelectedIndex(0);
-                jButton15.setEnabled(false);
-            }
-            if (jTabbedPane2.getSelectedIndex() == 2) {
-                Component[] com1 = jPanel24.getComponents();
-                for (int a = 0; a < com1.length; a++) {
-                    if (!com1[a].isEnabled()) {
-                        com1[a].setEnabled(true);
-                    }
-                }
-                jTextArea2.setText("");
-            }
-        }
-    }
-
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
-        jComboBox2.setSelectedIndex(0);
-        jTextField25.setText("");
-        jComboBox14.setSelectedIndex(0);
-        jTextField36.setText("");
-        jTextField37.setText("");
-        jTextField38.setText("");
-        jTable2.clearSelection();
+        jComboBox2.setEnabled(true);
+        loadTeachers();
     }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        // TODO add your handling code here:
-        jLabel70.setText("Telegram Verification :");
-        jLabel71.setText("");
-        jLabel71.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
-        Faker faker = new Faker();
-        jLabel72.setText(faker.number().digits(5));
-        fakeNumber.setText(jLabel72.getText());
-        type.setText("supergroup");
-        returnMethod.setText("groupAdd");
+        if (jComboBox2.getSelectedIndex() == 0 || jTextField25.getText().equals("")
+                || jComboBox14.getSelectedIndex() == 0 || jTextField36.getText().equals("")
+                || jTextField37.getText().equals("") || jTextField38.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            jLabel70.setText("Telegram Verification :");
+            jLabel71.setText("");
+            jLabel71.setIcon(new ImageIcon(getClass().getResource("/Media/Loding(100x25).gif")));
+            Faker faker = new Faker();
+            jLabel72.setText(faker.number().digits(5));
+            fakeNumber.setText(jLabel72.getText());
+            type.setText("supergroup");
+            returnMethod.setText("groupAdd");
+        }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     public void groupAdd() {
@@ -4208,7 +4297,7 @@ public class Main extends javax.swing.JFrame {
         String payment = jTextField25.getText();
         int day = jComboBox14.getSelectedIndex();
         String time = jTextField36.getText() + " " + jComboBox18.getSelectedItem().toString();
-        String duration = jTextField37.getText() + "H " + jTextField38.getText() + "MIN";
+        String duration = jTextField37.getText() + "(h) " + jTextField38.getText() + "(min)";
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -4223,8 +4312,8 @@ public class Main extends javax.swing.JFrame {
                         + "('" + rs.getString("id") + "','" + id + "',"
                         + "'" + payment + "','" + day + "','" + time + "','" + duration + "',"
                         + "'" + telegramId.getText() + "')");
+                loadTeachers();
                 JOptionPane.showMessageDialog(this, "Success!");
-                teacherClassesTable();
             }
         } catch (SQLException e) {
             System.out.println("#044" + e);
@@ -4232,7 +4321,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
+        jButton37.setEnabled(true);
         jButton15.setEnabled(true);
         int r = jTable2.getSelectedRow();
         String id = jTable2.getValueAt(r, 0).toString();
@@ -4268,7 +4357,6 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        // TODO add your handling code here:
         int r = jTable1.getSelectedRow();
         String id = jTable1.getValueAt(r, 0).toString();
         int r1 = jTable2.getSelectedRow();
@@ -4277,12 +4365,14 @@ public class Main extends javax.swing.JFrame {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM classes "
-                    + "WHERE subjectId='" + id1 + "' AND teacherId='" + id + "'");
+                    + "WHERE subjectId='" + id1 + "' "
+                    + "AND teacherId='" + id + "'");
+            jComboBox2.setEnabled(true);
+            loadTeachers();
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (SQLException e) {
             System.out.println("#046" + e);
         }
-        teacherClassesTable();
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jTextField10FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField10FocusGained
@@ -4303,167 +4393,15 @@ public class Main extends javax.swing.JFrame {
         jTextField11.setText("");
     }//GEN-LAST:event_jTextField12FocusGained
 
-    private void jTabbedPane3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane3MouseClicked
-        // TODO add your handling code here:
-        if (jTable3.getSelectedRowCount() == 1) {
-            if (jTabbedPane3.getSelectedIndex() == 1) {
-                Component[] com1 = jPanel18.getComponents();
-                for (int a = 0; a < com1.length; a++) {
-                    com1[a].setEnabled(true);
-                }
-                int r = jTable3.getSelectedRow();
-                String id = jTable3.getValueAt(r, 0).toString();
-                DefaultTableModel model1 = (DefaultTableModel) jTable4.getModel();
-                model1.setRowCount(0);
-                String convertedDay = null;
-                try {
-                    Connection con = Helper.DB.connect();
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * "
-                            + "FROM regclass "
-                            + "WHERE studentId='" + id + "'");
-                    while (rs.next()) {
-                        Statement stmt2 = con.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                                + "FROM classes "
-                                + "WHERE id='" + rs.getString("classId") + "'");
-                        while (rs2.next()) {
-                            int day = rs2.getInt("day");
-                            String teacher = rs2.getString("teacherId");
-                            String subject = rs2.getString("subjectId");
-                            Statement stmt3 = con.createStatement();
-                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                    + "FROM subjects "
-                                    + "WHERE id='" + subject + "'");
-                            while (rs3.next()) {
-                                String grade = rs3.getString("grade");
-                                Statement stmt4 = con.createStatement();
-                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
-                                        + "FROM teachers "
-                                        + "WHERE id='" + teacher + "'");
-                                while (rs4.next()) {
-                                    switch (day) {
-                                        case 1 ->
-                                            convertedDay = "Monday";
-                                        case 2 ->
-                                            convertedDay = "Tuesday";
-                                        case 3 ->
-                                            convertedDay = "Wednesday";
-                                        case 4 ->
-                                            convertedDay = "Thursday";
-                                        case 5 ->
-                                            convertedDay = "Friday";
-                                        case 6 ->
-                                            convertedDay = "Saturday";
-                                        case 7 ->
-                                            convertedDay = "Sunday";
-                                    }
-                                    Object[] row = {grade, subject,
-                                        rs4.getString("name"), convertedDay};
-                                    model1.addRow(row);
-                                }
-                            }
-                        }
-                    }
-                    con.close();
-                } catch (SQLException ex) {
-                    System.out.println("#047" + ex);
-                }
-            }
-            if (jTabbedPane3.getSelectedIndex() == 2) {
-                Component[] com2 = jPanel20.getComponents();
-                for (int a = 0; a < com2.length; a++) {
-                    com2[a].setEnabled(true);
-                }
-
-                int r = jTable3.getSelectedRow();
-                String id = jTable3.getValueAt(r, 0).toString();
-                DefaultTableModel model1 = (DefaultTableModel) jTable5.getModel();
-                model1.setRowCount(0);
-                try {
-                    Connection con = Helper.DB.connect();
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * "
-                            + "FROM results "
-                            + "WHERE studentId='" + id + "'");
-                    while (rs.next()) {
-                        String resultId = rs.getString("id");
-                        int marks = rs.getInt("marks");
-                        Statement stmt2 = con.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                                + "FROM exams "
-                                + "WHERE id='" + rs.getString("examId") + "'");
-                        while (rs2.next()) {
-                            String examName = rs2.getString("name");
-                            String examDate = rs2.getString("date");
-                            Statement stmt3 = con.createStatement();
-                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
-                                    + "FROM classes "
-                                    + "WHERE id='" + rs2.getString("classId") + "'");
-                            while (rs3.next()) {
-                                Statement stmt4 = con.createStatement();
-                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
-                                        + "FROM subjects "
-                                        + "WHERE id='" + rs3.getString("subjectId") + "'");
-                                while (rs4.next()) {
-                                    Object[] row = {resultId, examName,
-                                        rs4.getString("grade") + " - " + rs4.getString("subject"),
-                                        examDate};
-                                    model1.addRow(row);
-                                }
-                            }
-                        }
-                    }
-                    con.close();
-                } catch (SQLException ex) {
-                    System.out.println("#048" + ex);
-                }
-                jComboBox6.removeAllItems();
-                jComboBox6.addItem("Please Select...");
-                jComboBox6.setSelectedIndex(0);
-                try {
-                    Connection con = Helper.DB.connect();
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery("SELECT * "
-                            + "FROM regclass "
-                            + "WHERE studentId='" + id + "'");
-                    while (rs.next()) {
-                        Statement stmt2 = con.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                                + "FROM subjects "
-                                + "WHERE id='" + rs.getString("subjectId") + "'");
-                        while (rs2.next()) {
-                            jComboBox6.addItem(rs2.getString("grade")
-                                    + " - " + rs2.getString("subject"));
-                        }
-                    }
-                } catch (SQLException e) {
-                    System.out.println("#049" + e);
-                }
-            }
-            if (jTabbedPane3.getSelectedIndex() == 3) {
-                Component[] com3 = jPanel23.getComponents();
-                for (int a = 0; a < com3.length; a++) {
-                    com3[a].setEnabled(true);
-                }
-            }
-        }
-    }//GEN-LAST:event_jTabbedPane3MouseClicked
-
-    private void jTable2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable2MouseEntered
-
     private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
         // TODO add your handling code here:
         int r = jTable5.getSelectedRow();
-        String id = jTable5.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * "
                     + "FROM results "
-                    + "WHERE id='" + id + "'");
+                    + "WHERE id='" + jTable5.getValueAt(r, 0).toString() + "'");
             while (rs.next()) {
                 int marks = rs.getInt("marks");
                 jTextField23.setText("" + marks);
@@ -4596,28 +4534,16 @@ public class Main extends javax.swing.JFrame {
         jComboBox6.setSelectedIndex(0);
     }//GEN-LAST:event_jTextField21FocusGained
 
-    private void jTabbedPane4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane4MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTabbedPane4MouseClicked
-
     private void jButton23ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton23ActionPerformed
         // TODO add your handling code here:
         jComboBox8.setSelectedIndex(0);
-        jComboBox9.setSelectedIndex(0);
         jComboBox10.setSelectedIndex(0);
         loadGroups();
     }//GEN-LAST:event_jButton23ActionPerformed
 
     private void jTable6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable6MouseClicked
-        // TODO add your handling code here:
-        Component[] com1 = jPanel26.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(true);
-        }
-        Component[] com2 = jPanel27.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(true);
-        }
+        jButton24.setEnabled(true);
+        jButton26.setEnabled(true);
     }//GEN-LAST:event_jTable6MouseClicked
 
     private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
@@ -4715,7 +4641,6 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         // TODO add your handling code here:
         if (jRadioButton1.isSelected()) {
-            accountsReset();
             Component[] com1 = jPanel32.getComponents();
             for (int a = 0; a < com1.length; a++) {
                 com1[a].setEnabled(true);
@@ -4734,7 +4659,6 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         // TODO add your handling code here:
         if (jRadioButton2.isSelected()) {
-            accountsReset();
             Component[] com1 = jPanel32.getComponents();
             for (int a = 0; a < com1.length; a++) {
                 com1[a].setEnabled(false);
@@ -4753,7 +4677,6 @@ public class Main extends javax.swing.JFrame {
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         // TODO add your handling code here:
         if (jRadioButton3.isSelected()) {
-            accountsReset();
             Component[] com1 = jPanel32.getComponents();
             for (int a = 0; a < com1.length; a++) {
                 com1[a].setEnabled(false);
@@ -4822,14 +4745,10 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jTextField26ActionPerformed
 
-    private void jComboBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox12ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox12ActionPerformed
-
     private void jButton30ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton30ActionPerformed
         // TODO add your handling code here:
-        if (jComboBox12.getSelectedIndex() == 0
-                || jTextField28.getText().equals("") || jTextField29.getPassword().equals("")) {
+        if (jComboBox12.getSelectedIndex() == 0 || jTextField28.getText().equals("")
+                || jTextField29.getPassword().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
             String psw = String.valueOf(jTextField29.getPassword());
@@ -4841,11 +4760,11 @@ public class Main extends javax.swing.JFrame {
                         + "VALUES "
                         + "('" + jTextField28.getText() + "','" + psw + "',"
                         + "'" + jComboBox12.getSelectedItem().toString() + "','0','0')");
-
+                loadAccounts();
                 JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException e) {
+                System.out.println("#083" + e);
             }
-            loadAccounts();
         }
     }//GEN-LAST:event_jButton30ActionPerformed
 
@@ -4867,8 +4786,8 @@ public class Main extends javax.swing.JFrame {
                     stmt.executeUpdate("UPDATE login SET "
                             + "pass='" + psw1 + "' "
                             + "WHERE id='" + id + "'");
-                    JOptionPane.showMessageDialog(this, "Success!");
                     loadAccounts();
+                    JOptionPane.showMessageDialog(this, "Success!");
                 } catch (HeadlessException | SQLException e) {
                     System.out.println("#057" + e);
                 }
@@ -4886,8 +4805,8 @@ public class Main extends javax.swing.JFrame {
             stmt.executeUpdate("DELETE "
                     + "FROM login "
                     + "WHERE id='" + id + "'");
-            JOptionPane.showMessageDialog(this, "Success!");
             loadAccounts();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
             System.out.println("#058" + e);
         }
@@ -4895,11 +4814,10 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
         // TODO add your handling code here:
-        examsReset();
+        loadExams();
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton33ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton33ActionPerformed
-        // TODO add your handling code here:
         ExamResults results = new ExamResults();
         results.setVisible(true);
     }//GEN-LAST:event_jButton33ActionPerformed
@@ -4912,15 +4830,14 @@ public class Main extends javax.swing.JFrame {
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
         int r = jTable8.getSelectedRow();
-        String id = jTable8.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM exams "
-                    + "WHERE id='" + id + "'");
-            JOptionPane.showMessageDialog(this, "Success!");
-            loadExams();
+                    + "WHERE id='" + jTable8.getValueAt(r, 0).toString() + "'");
             con.close();
+            loadExams();
+            JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
             System.out.println("#059" + e);
         }
@@ -4932,10 +4849,17 @@ public class Main extends javax.swing.JFrame {
             cr2.setEnabled(false);
             cr3.setEnabled(false);
             cr4.setEnabled(false);
+            cr5.setEnabled(false);
             jTextField22.setText("");
             jTextField27.setText("");
+            jTextField32.setText("");
+            jTextField39.setText("");
+            jTextField40.setText("");
             jTextField22.setEnabled(false);
             jTextField27.setEnabled(false);
+            jTextField32.setEnabled(false);
+            jTextField39.setEnabled(false);
+            jTextField40.setEnabled(false);
         } else {
             cr1x = cr1.getSelectedItem().toString();
             cr2.setEnabled(true);
@@ -4963,10 +4887,17 @@ public class Main extends javax.swing.JFrame {
         if (cr2.getSelectedIndex() == 0 || cr2.getSelectedItem() == null) {
             cr3.setEnabled(false);
             cr4.setEnabled(false);
+            cr5.setEnabled(false);
             jTextField22.setText("");
             jTextField27.setText("");
+            jTextField32.setText("");
+            jTextField39.setText("");
+            jTextField40.setText("");
             jTextField22.setEnabled(false);
             jTextField27.setEnabled(false);
+            jTextField32.setEnabled(false);
+            jTextField39.setEnabled(false);
+            jTextField40.setEnabled(false);
         } else {
             cr2x = cr2.getSelectedItem().toString();
             cr3.setEnabled(true);
@@ -5007,10 +4938,17 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (cr3.getSelectedIndex() == 0 || cr3.getSelectedItem() == null) {
             cr4.setEnabled(false);
+            cr5.setEnabled(false);
             jTextField22.setText("");
             jTextField27.setText("");
+            jTextField32.setText("");
+            jTextField39.setText("");
+            jTextField40.setText("");
             jTextField22.setEnabled(false);
             jTextField27.setEnabled(false);
+            jTextField32.setEnabled(false);
+            jTextField39.setEnabled(false);
+            jTextField40.setEnabled(false);
         } else {
             cr4.setEnabled(true);
             cr4.removeAllItems();
@@ -5053,25 +4991,44 @@ public class Main extends javax.swing.JFrame {
     private void cr4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr4ActionPerformed
         // TODO add your handling code here:
         if (cr4.getSelectedIndex() == 0) {
+            cr5.setEnabled(false);
             jTextField22.setText("");
             jTextField27.setText("");
             jTextField32.setText("");
+            jTextField39.setText("");
+            jTextField40.setText("");
             jTextField22.setEnabled(false);
             jTextField27.setEnabled(false);
             jTextField32.setEnabled(false);
+            jTextField39.setEnabled(false);
+            jTextField40.setEnabled(false);
         } else {
-            jTextField22.setEnabled(true);
-            jTextField27.setEnabled(true);
-            jTextField32.setEnabled(true);
+            cr5.setEnabled(true);
+            cr5.removeAllItems();
+            cr5.addItem("Please Select...");
+            cr5.setSelectedIndex(0);
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE subjectId='" + subjectId + "' "
+                        + "AND teacherId='" + teacherId + "' "
+                        + "AND day='" + dayCho + "'");
+                while (rs.next()) {
+                    cr5.addItem(rs.getString("time"));
+                }
+            } catch (SQLException e) {
+                System.out.println("#81" + e);
+            }
         }
-
-
     }//GEN-LAST:event_cr4ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         // TODO add your handling code here:
         if (jTextField22.getText().equals("") || jTextField27.getText().equals("")
-                || jTextField32.getText().equals("")) {
+                || jTextField32.getText().equals("") || jTextField39.getText().equals("")
+                || jTextField40.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
             String classId;
@@ -5083,7 +5040,8 @@ public class Main extends javax.swing.JFrame {
                         + "FROM classes "
                         + "WHERE subjectId='" + subjectId + "' "
                         + "AND teacherId='" + teacherId + "'"
-                        + "AND day='" + dayCho + "'");
+                        + "AND day='" + dayCho + "' "
+                        + "AND time='" + cr5.getSelectedItem().toString() + "'");
                 while (rs.next()) {
                     classId = rs.getString("id");
                     Statement stmt2 = con.createStatement();
@@ -5093,7 +5051,8 @@ public class Main extends javax.swing.JFrame {
                             + "('" + jTextField22.getText() + "',"
                             + "'" + classId + "',"
                             + "'" + jTextField27.getText() + "',"
-                            + "'" + examTime + "','0')");
+                            + "'" + examTime + "',"
+                            + "'" + jTextField39.getText() + "(h) " + jTextField40.getText() + "(min)" + "')");
                     tGroupId.setText(rs.getString("telegramId"));
                     tAutomated.newExamAddedGroup();
                     examIdGrab();
@@ -5118,8 +5077,8 @@ public class Main extends javax.swing.JFrame {
                         }
                     }
                 }
-                JOptionPane.showMessageDialog(this, "Success!");
                 loadExams();
+                JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException e) {
                 System.out.println("#063" + e);
             }
@@ -5142,15 +5101,6 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void jTable8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable8MouseClicked
-        // TODO add your handling code here:
-        Component[] com1 = jPanel38.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(true);
-        }
-        Component[] com2 = jPanel39.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(true);
-        }
         int r = jTable8.getSelectedRow();
         String id = jTable8.getValueAt(r, 0).toString();
         examId.setText(id);
@@ -5276,18 +5226,6 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jLabel68PropertyChange
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jTextField25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField25ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField25ActionPerformed
-
-    private void jTextField14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField14ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField14ActionPerformed
-
     private void jButton36ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton36ActionPerformed
         // TODO add your handling code here:
         loadSubjects();
@@ -5406,27 +5344,26 @@ public class Main extends javax.swing.JFrame {
     private void jButton35ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton35ActionPerformed
         // TODO add your handling code here:
         int r = jTable9.getSelectedRow();
-        String id = jTable9.getValueAt(r, 0).toString();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("DELETE FROM subjects "
-                    + "WHERE id='" + id + "'");
+                    + "WHERE id='" + jTable9.getValueAt(r, 0).toString() + "'");
+            loadSubjects();
             JOptionPane.showMessageDialog(this, "Success!");
         } catch (HeadlessException | SQLException e) {
             System.out.println("#66" + e);
         }
-        loadSubjects();
     }//GEN-LAST:event_jButton35ActionPerformed
 
     private void jButton37ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton37ActionPerformed
-        // TODO add your handling code here:
-        int r = jTable2.getSelectedRow();
-        String id = jTable2.getValueAt(r, 0).toString();
-        if (jTextField25.equals("") || jComboBox14.getSelectedIndex() == 0 || jTextField36.getText().equals("")
+        if (jTextField25.getText().equals("")
+                || jComboBox14.getSelectedIndex() == 0 || jTextField36.getText().equals("")
                 || jTextField37.getText().equals("") || jTextField38.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
+            int r = jTable2.getSelectedRow();
+            String id = jTable2.getValueAt(r, 0).toString();
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
@@ -5435,17 +5372,11 @@ public class Main extends javax.swing.JFrame {
                         + "VALUES "
                         + "('" + jTextField25.getText() + "','" + jComboBox14.getSelectedIndex() + "',"
                         + "'" + jTextField36.getText() + " " + jComboBox18.getSelectedItem().toString() + "',"
-                        + "'" + jTextField37.getText() + "H " + jTextField38.getText() + "MIN" + "'");
+                        + "'" + jTextField37.getText() + "(h) " + jTextField38.getText() + "(min)" + "'");
             } catch (SQLException e) {
                 System.out.println("#068" + e);
             }
             Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
-            String classn;
-            String teacher;
-            String day = null;
-            String payment;
-            String time;
-            String duration;
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
@@ -5453,8 +5384,9 @@ public class Main extends javax.swing.JFrame {
                         + "FROM classes "
                         + "WHERE id='" + id + "'");
                 while (rs.next()) {
-                    classn = jTable2.getValueAt(r, 1).toString() + " - " + jTable2.getValueAt(r, 2).toString();
-                    teacher = rs.getString("name");
+                    String classn = jTable2.getValueAt(r, 1).toString() + " - " + jTable2.getValueAt(r, 2).toString();
+                    String teacher = rs.getString("name");
+                    String day = null;
                     int dayn = rs.getInt("day");
                     switch (dayn) {
                         case 1 ->
@@ -5472,9 +5404,9 @@ public class Main extends javax.swing.JFrame {
                         case 7 ->
                             day = "Sunday";
                     }
-                    payment = rs.getString("payment");
-                    time = rs.getString("time");
-                    duration = rs.getString("duration");
+                    String payment = rs.getString("payment");
+                    String time = rs.getString("time");
+                    String duration = rs.getString("duration");
                     longDetails.setText(classn + "@" + teacher + "@" + day + "@" + payment + "@" + time + "@" + duration);
                     telegramId.setText(rs.getString("telegramId"));
                     bot.classDetailsUpdatedGroup();
@@ -5496,31 +5428,33 @@ public class Main extends javax.swing.JFrame {
             } catch (SQLException e) {
                 System.out.println("#069" + e);
             }
+            jComboBox2.setEnabled(true);
+            loadTeachers();
+            JOptionPane.showMessageDialog(this, "Success!");
         }
     }//GEN-LAST:event_jButton37ActionPerformed
 
-    private void examsReset() {
-        cr2.setSelectedIndex(0);
-        cr3.setSelectedIndex(0);
-        cr4.setSelectedIndex(0);
-        jTextField22.setText("");
-        jTextField27.setText("");
-        jTextField32.setText("");
-        cr2.setEnabled(false);
-        cr3.setEnabled(false);
-        cr4.setEnabled(false);
-        jTextField22.setEnabled(false);
-        jTextField27.setEnabled(false);
-        jTextField32.setEnabled(false);
-    }
-
-    private void accountsReset() {
-        jComboBox12.setSelectedIndex(0);
-        jTextField28.setText("");
-        jTextField29.setText("");
-        jTextField30.setText("");
-        jTextField31.setText("");
-    }
+    private void cr5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cr5ActionPerformed
+        if (cr5.getSelectedIndex() == 0 || cr5.getSelectedItem() == null) {
+            jTextField22.setText("");
+            jTextField27.setText("");
+            jTextField32.setText("");
+            jTextField39.setText("");
+            jTextField40.setText("");
+            jTextField22.setEnabled(false);
+            jTextField27.setEnabled(false);
+            jTextField32.setEnabled(false);
+            jTextField39.setEnabled(false);
+            jTextField40.setEnabled(false);
+        } else {
+            jTextField22.setEnabled(true);
+            jTextField27.setEnabled(true);
+            jTextField32.setEnabled(true);
+            jTextField39.setEnabled(true);
+            jTextField40.setEnabled(true);
+            jButton12.setEnabled(true);
+        }
+    }//GEN-LAST:event_cr5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -5564,6 +5498,7 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JComboBox<String> cr2;
     public static javax.swing.JComboBox<String> cr3;
     public static javax.swing.JComboBox<String> cr4;
+    private javax.swing.JComboBox<String> cr5;
     public static javax.swing.JLabel examId;
     public static javax.swing.JLabel fakeNumber;
     private javax.swing.JButton jButton1;
@@ -5703,6 +5638,10 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel80;
     private javax.swing.JLabel jLabel81;
+    private javax.swing.JLabel jLabel82;
+    private javax.swing.JLabel jLabel83;
+    private javax.swing.JLabel jLabel84;
+    private javax.swing.JLabel jLabel85;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -5812,7 +5751,9 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField36;
     private javax.swing.JTextField jTextField37;
     private javax.swing.JTextField jTextField38;
+    public static javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField4;
+    public static javax.swing.JTextField jTextField40;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
