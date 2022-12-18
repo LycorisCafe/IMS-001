@@ -129,6 +129,8 @@ public class AppUpdate extends Thread {
 
     @Override
     public void run() {
+        Thread t = new Thread(this);
+        t.setDaemon(true);
         int count = 0;
         Updates.jLabel1.setText("Preparing Update for Download...");
         Updates.jProgressBar1.setStringPainted(true);
@@ -255,7 +257,10 @@ public class AppUpdate extends Thread {
         } catch (FileNotFoundException ex) {
             System.out.println(ex);
         }
-        Updates.disposeText.setText("0");
+        Updates up = new Updates();
+        if (up.isActive()) {
+            Updates.disposeText.setText("0");
+        }
     }
 
     public void appExitUpdate() {

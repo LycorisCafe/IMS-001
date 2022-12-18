@@ -265,4 +265,27 @@ public class AutomatedMessages {
             System.out.println(ex);
         }
     }
+
+    public void broadast() {
+        // broadast
+        String telegramId = Administrator.Main.telegramId.getText();
+        String sName = Administrator.Main.broadcastS.getText();
+        int successCount = Integer.parseInt(Administrator.TelegramReports.jLabel3.getText());
+        int unsuccessCount = Integer.parseInt(Administrator.TelegramReports.jLabel4.getText());
+        SendMessage msg = new SendMessage();
+        msg.setChatId(telegramId);
+        msg.setText(Administrator.Main.broadcastMessage.getText());
+        try {
+            bot.execute(msg);
+            Administrator.TelegramReports.jTextArea1.append("Message sent success to : " + sName + "\n");
+            successCount = successCount + 1;
+            Administrator.TelegramReports.jLabel3.setText("" + successCount);
+        } catch (TelegramApiException e) {
+            System.out.println(e);
+            Administrator.TelegramReports.jTextArea1.append("Message sent unsuccess to : " + sName + "\n");
+            unsuccessCount = unsuccessCount + 1;
+            Administrator.TelegramReports.jLabel4.setText("" + unsuccessCount);
+        }
+    }
+
 }

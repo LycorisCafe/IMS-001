@@ -5,6 +5,11 @@
 package Administrator;
 
 import java.awt.Toolkit;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.text.SimpleDateFormat;
 
 /**
  *
@@ -34,6 +39,7 @@ public class TelegramReports extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        save = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -44,6 +50,13 @@ public class TelegramReports extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+
+        save.setText("jLabel7");
+        save.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                savePropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Telegram Broadcast");
@@ -85,7 +98,7 @@ public class TelegramReports extends javax.swing.JFrame {
 
         jLabel4.setText("0");
 
-        jLabel5.setText("Waiting Count :");
+        jLabel5.setText("Total Count :");
 
         jLabel6.setText("0");
 
@@ -153,6 +166,23 @@ public class TelegramReports extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void savePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_savePropertyChange
+        // TODO add your handling code here:
+        String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date());
+        try {
+            Writer output = new BufferedWriter(new FileWriter(
+                    "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log", true));
+            output.append("----------\n");
+            output.append(time + "\n");
+            output.append("Message :\n" + Main.broadcastMessage.getText() + "\n");
+            output.append(jTextArea1.getText());
+            output.append("----------\n\n");
+            output.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_savePropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -200,5 +230,6 @@ public class TelegramReports extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTextArea jTextArea1;
+    public static javax.swing.JLabel save;
     // End of variables declaration//GEN-END:variables
 }
