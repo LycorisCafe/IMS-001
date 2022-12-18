@@ -229,17 +229,29 @@ public class Settings extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         // ============>>>>
+        try ( PrintStream out = new PrintStream(new File(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlAdmin.vbs"))) {
+            out.println("Set UAC = CreateObject(\"Shell.Application\")");
+            out.println("UAC.ShellExecute \"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlServer.bat\","
+                    + " \"\", \"\", \"runas\", 1");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
+        try ( PrintStream out = new PrintStream(new File(
+                "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlServer.bat"))) {
+            out.println("net stop mysql");
+            out.println("net start mysql");
+            out.println("del /q \"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlAdmin.vbs\"");
+            out.println("del /q \"C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlServer.bat\"");
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex);
+        }
         try {
             ProcessBuilder processBuilder
                     = new ProcessBuilder("cmd.exe", "/c",
-                            "net start mysql");
+                            "C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\sqlAdmin.vbs");
             processBuilder.redirectErrorStream(true);
-            Process p = processBuilder.start();
-            String line = null;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            while ((line = bufferedReader.readLine()) != null) {
-                JOptionPane.showMessageDialog(this, line);
-            }
+            processBuilder.start();
         } catch (IOException e) {
             System.out.println(e);
         }
