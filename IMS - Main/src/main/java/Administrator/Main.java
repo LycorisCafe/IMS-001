@@ -5327,6 +5327,7 @@ public class Main extends javax.swing.JFrame {
                                 + "(grade,subject) "
                                 + "VALUES "
                                 + "('" + grade + "','" + name + "')");
+                        x = 1;
                         loadSubjects();
                         JOptionPane.showMessageDialog(this, "Success!");
                     }
