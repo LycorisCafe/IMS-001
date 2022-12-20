@@ -5310,27 +5310,46 @@ public class Main extends javax.swing.JFrame {
         } else {
             String grade = jComboBox16.getSelectedItem().toString();
             String name = jTextField33.getText();
+            int x = 0;
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects");
                 while (rs.next()) {
-                    
+                    String gradex = rs.getString("grade");
+                    String subjectx = rs.getString("subject");
+                    if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
+                        JOptionPane.showMessageDialog(this, "Subject already registered!");
+                    } else {
                         Statement stmt2 = con.createStatement();
                         stmt2.executeUpdate("INSERT INTO subjects "
                                 + "(grade,subject) "
                                 + "VALUES "
                                 + "('" + grade + "','" + name + "')");
+                        loadSubjects();
                         JOptionPane.showMessageDialog(this, "Success!");
-                    
+                    }
                 }
 
             } catch (HeadlessException | SQLException e) {
                 System.out.println("#065" + e);
             }
+            if (x == 0) {
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate("INSERT INTO subjects "
+                            + "(grade,subject) "
+                            + "VALUES "
+                            + "('" + grade + "','" + name + "')");
+                    loadSubjects();
+                    JOptionPane.showMessageDialog(this, "Success!");
+                } catch (HeadlessException | SQLException e) {
+                    System.out.println("#065" + e);
+                }
+            }
         }
-        loadSubjects();
     }//GEN-LAST:event_jButton34ActionPerformed
 
     private void jTable9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable9MouseClicked
