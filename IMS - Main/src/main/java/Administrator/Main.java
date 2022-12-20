@@ -255,6 +255,7 @@ public class Main extends javax.swing.JFrame {
                     + "FROM classes");
             while (rs.next()) {
                 String classId = rs.getString("id");
+                subjectId = rs.getString("subjectId")
                 int day = rs.getInt("day");
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
