@@ -4017,8 +4017,8 @@ public class Main extends javax.swing.JFrame {
                             + "FROM subjects "
                             + "WHERE id='" + rs2.getString("subjectId") + "'");
                     while (rs3.next()) {
-                        jComboBox6.addItem(rs2.getString("grade")
-                                + " - " + rs2.getString("subject"));
+                        jComboBox6.addItem(rs3.getString("grade")
+                                + " - " + rs3.getString("subject"));
                     }
                 }
             }
