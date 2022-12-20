@@ -4009,11 +4009,17 @@ public class Main extends javax.swing.JFrame {
             while (rs.next()) {
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                        + "FROM subjects "
+                        + "FROM classes "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
-                    jComboBox6.addItem(rs2.getString("grade")
-                            + " - " + rs2.getString("subject"));
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                            + "FROM subjects "
+                            + "WHERE id='" + rs2.getString("subjectId") + "'");
+                    while (rs3.next()) {
+                        jComboBox6.addItem(rs2.getString("grade")
+                                + " - " + rs2.getString("subject"));
+                    }
                 }
             }
         } catch (SQLException e) {
