@@ -3920,13 +3920,14 @@ public class Main extends javax.swing.JFrame {
                 while (rs2.next()) {
                     int day = rs2.getInt("day");
                     String teacher = rs2.getString("teacherId");
-                    String subject = rs2.getString("subjectId");
+                    String subjectId = rs2.getString("subjectId");
                     Statement stmt3 = con.createStatement();
                     ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
-                            + "WHERE id='" + subject + "'");
+                            + "WHERE id='" + subjectId + "'");
                     while (rs3.next()) {
                         String grade = rs3.getString("grade");
+                        String subject = rs3.getString("subject");
                         Statement stmt4 = con.createStatement();
                         ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                 + "FROM teachers "
