@@ -5320,17 +5320,9 @@ public class Main extends javax.swing.JFrame {
                     String gradex = rs.getString("grade");
                     String subjectx = rs.getString("subject");
                     if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
-                        x = 1;
                         JOptionPane.showMessageDialog(this, "Subject already registered!");
                     } else {
-                        Statement stmt2 = con.createStatement();
-                        stmt2.executeUpdate("INSERT INTO subjects "
-                                + "(grade,subject) "
-                                + "VALUES "
-                                + "('" + grade + "','" + name + "')");
                         x = 1;
-                        loadSubjects();
-                        JOptionPane.showMessageDialog(this, "Success!");
                     }
                 }
 
