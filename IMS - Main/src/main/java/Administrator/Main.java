@@ -5316,8 +5316,9 @@ public class Main extends javax.swing.JFrame {
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects");
                 while (rs.next()) {
-                    if (rs.getString("grade").equalsIgnoreCase(grade)
-                            && rs.getString("subject").equalsIgnoreCase(name)) {
+                    String gradex = rs.getString("grade");
+                    String subjectx = rs.getString("subject");
+                    if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
                         JOptionPane.showMessageDialog(this, "Subject already registered!");
                     } else {
                         Statement stmt2 = con.createStatement();
