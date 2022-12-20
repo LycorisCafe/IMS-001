@@ -5105,6 +5105,8 @@ public class Main extends javax.swing.JFrame {
         int r = jTable8.getSelectedRow();
         String id = jTable8.getValueAt(r, 0).toString();
         examId.setText(id);
+        jButton18.setEnabled(true);
+        jButton33.setEnabled(true);
     }//GEN-LAST:event_jTable8MouseClicked
 
     private void jTextField19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField19ActionPerformed
