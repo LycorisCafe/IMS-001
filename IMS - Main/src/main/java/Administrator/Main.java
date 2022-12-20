@@ -5329,7 +5329,7 @@ public class Main extends javax.swing.JFrame {
             } catch (HeadlessException | SQLException e) {
                 System.out.println("#065" + e);
             }
-            if (x == 0) {
+            if (x == 1) {
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
