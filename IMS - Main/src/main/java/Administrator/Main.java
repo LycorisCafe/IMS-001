@@ -4010,7 +4010,7 @@ public class Main extends javax.swing.JFrame {
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
-                        + "WHERE id='" + rs.getString("subjectId") + "'");
+                        + "WHERE id='" + rs.getString("classId") + "'");
                 while (rs2.next()) {
                     Statement stmt3 = con.createStatement();
                     ResultSet rs3 = stmt3.executeQuery("SELECT * "
