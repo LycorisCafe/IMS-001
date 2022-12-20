@@ -4160,7 +4160,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton24ActionPerformed
         // TODO add your handling code here:
-        if (jTextArea1.getText().equals("")) {
+        if (jTextArea3.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Please enter message to send!");
         } else {
             int r = jTable6.getSelectedRow();
