@@ -5316,18 +5316,14 @@ public class Main extends javax.swing.JFrame {
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects");
                 while (rs.next()) {
-                    String gradex = rs.getString("grade");
-                    String subjectx = rs.getString("subject");
-                    if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
-                        JOptionPane.showMessageDialog(this, "Subject already registered!");
-                    } else {
+                    
                         Statement stmt2 = con.createStatement();
                         stmt2.executeUpdate("INSERT INTO subjects "
                                 + "(grade,subject) "
                                 + "VALUES "
                                 + "('" + grade + "','" + name + "')");
                         JOptionPane.showMessageDialog(this, "Success!");
-                    }
+                    
                 }
 
             } catch (HeadlessException | SQLException e) {
