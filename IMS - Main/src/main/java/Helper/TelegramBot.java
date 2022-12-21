@@ -39,7 +39,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             if (Administrator.TelegramVerify.jTextField1 != null && !Administrator.TelegramVerify.jTextField1.getText().equals("---")) {
                 if (update.getMessage().getText().equals(Administrator.TelegramVerify.jTextField1.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.Main.type.getText())) {
-                            Administrator.TelegramVerify.jLabel2.setText("Success!");
+                    Administrator.TelegramVerify.disposeText.setText("0");
                     switch (Administrator.Main.returnMethod.getText()) {
                         case "teacherAdd" -> {
                             Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
@@ -49,25 +49,21 @@ public class TelegramBot extends TelegramLongPollingBot {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
                             Administrator.Main.success.setText("teacherUpdate");
-//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "groupAdd" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
                             Administrator.Main.success.setText("groupAdd");
-//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "studentUpdate" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
                             Administrator.Main.success.setText("studentUpdate");
-//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "groupTIdUpdate" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
                             Administrator.Main.success.setText("groupTIdUpdate");
-//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                     }
                 }

@@ -34,11 +34,19 @@ public class TelegramVerify extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        disposeText = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+
+        disposeText.setText("jLabel4");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Telegram Verification");
@@ -115,15 +123,13 @@ public class TelegramVerify extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabel2PropertyChange
-        // TODO add your handling code here:
-        if (jLabel2.getText().equals("Success!")) {
-            try {
-            this.dispose();
-            } catch (Exception e) {
-                System.out.println(e +"lol");
-            }
-        }
+        
     }//GEN-LAST:event_jLabel2PropertyChange
+
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
 
     /**
      * @param args the command line arguments
@@ -161,6 +167,7 @@ public class TelegramVerify extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JLabel disposeText;
     private javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
