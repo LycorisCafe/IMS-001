@@ -146,7 +146,7 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        String examTime = Administrator.Main.jTextField32.getText() + " "
+        String examTime = Administrator.Main.jTextField32.getText() + ":" + Administrator.Main.jTextField42.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
         String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
         String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
@@ -160,7 +160,8 @@ public class AutomatedMessages {
                 + "</b>Exam Name " + "- " + examName + "\n"
                 + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- " + examTime + "\n\n"
+                + "</b>Time " + "- " + examTime + "\n"
+                + "Duration - " + examDuration + "\n\n"
                 + "<code>Don’t tell me you haven’t studied anything because you have. "
                 + "Anyway, wish you good luck for your exam!!!</code>  "
         );
@@ -181,7 +182,7 @@ public class AutomatedMessages {
         String day = Administrator.Main.cr4.getSelectedItem().toString();
         String examName = Administrator.Main.jTextField22.getText();
         String examDate = Administrator.Main.jTextField27.getText();
-        String examTime = Administrator.Main.jTextField32.getText() + " "
+        String examTime = Administrator.Main.jTextField32.getText() + ":" + Administrator.Main.jTextField42.getText() + " "
                 + Administrator.Main.jComboBox15.getSelectedItem().toString();
         String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
         String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
@@ -196,7 +197,8 @@ public class AutomatedMessages {
                 + "</b>Exam Name " + "- " + examName + "\n"
                 + "Class " + "- " + grade + " " + subject + "\n"
                 + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- " + examTime + "\n\n"
+                + "</b>Time " + "- " + examTime + "\n"
+                + "Duration - " + examDuration + "\n\n"
                 + "Don’t tell me you haven’t studied anything because you have. "
                 + "Anyway, wish you good luck for your exam!!!\n "
         );

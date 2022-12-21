@@ -236,6 +236,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jPanel7 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
 
         tId.setText("jLabel1");
@@ -610,6 +611,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/InstituteDesign.png"))); // NOI18N
 
+        jButton8.setText("Classes Details");
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -618,7 +621,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
@@ -626,7 +630,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
-                .addGap(42, 42, 42)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -930,6 +936,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox1;
     public static javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
@@ -1045,8 +1052,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         while (rs2.next()) {
                             ResultSet rs3 = stmt.executeQuery("SELECT * "
                                     + "FROM classes "
-                                    + "WHERE id='" + rs2.getString("classId") + "' AND day='" + today + "'");
+                                    + "WHERE id='" + rs2.getString("classId") + "' "
+                                    + "AND day='" + today + "'");
                             while (rs3.next()) {
+                                String time = rs3.getString("time");
                                 ResultSet rs4 = stmt.executeQuery("SELECT * "
                                         + "FROM subjects "
                                         + "WHERE id='" + rs3.getString("subjectId") + "'");
@@ -1055,7 +1064,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                     jComboBox3.addItem("Please Select...");
                                     jComboBox3.setSelectedIndex(0);
                                     jComboBox3.addItem(rs4.getString("grade")
-                                            + " - " + rs4.getString("subject"));
+                                            + " - " + rs4.getString("subject")
+                                            + " - @ " + time);
                                 }
                             }
                         }

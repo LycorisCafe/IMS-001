@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  * @author Lycoris Cafe
  */
 public class TelegramBot extends TelegramLongPollingBot {
-    
+
     @Override
     public String getBotToken() {
         return MainDetails.botAPI();
@@ -36,43 +36,38 @@ public class TelegramBot extends TelegramLongPollingBot {
                 }
             }
 
-            if (Administrator.Main.fakeNumber != null && !Administrator.Main.fakeNumber.getText().equals("")) {
-                if (update.getMessage().getText().equals(Administrator.Main.fakeNumber.getText())
+            if (Administrator.TelegramVerify.jTextField1 != null && !Administrator.TelegramVerify.jTextField1.getText().equals("---")) {
+                if (update.getMessage().getText().equals(Administrator.TelegramVerify.jTextField1.getText())
                         && update.getMessage().getChat().getType().equals(Administrator.Main.type.getText())) {
+                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                     switch (Administrator.Main.returnMethod.getText()) {
                         case "teacherAdd" -> {
                             Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
                             Administrator.Main.success.setText("teacherAdd");
-                            Administrator.Main.jLabel67.setText("");
-                            Administrator.Main.jLabel66.setIcon(null);
                         }
                         case "teacherUpdate" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
                             Administrator.Main.success.setText("teacherUpdate");
-                            Administrator.Main.jLabel67.setText("");
-                            Administrator.Main.jLabel66.setIcon(null);
+//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "groupAdd" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
                             Administrator.Main.success.setText("groupAdd");
-                            Administrator.Main.jLabel72.setText("");
-                            Administrator.Main.jLabel71.setIcon(null);
+//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "studentUpdate" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
                             Administrator.Main.success.setText("studentUpdate");
-                            Administrator.Main.tupdatelabel.setText("");
-                            Administrator.Main.jLabel65.setIcon(null);
+//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                         case "groupTIdUpdate" -> {
                             Administrator.Main.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
                             Administrator.Main.success.setText("groupTIdUpdate");
-                            Administrator.Main.jLabel68.setText("");
-                            Administrator.Main.jLabel69.setIcon(null);
+//                            Administrator.TelegramVerify.jLabel2.setText("Success!");
                         }
                     }
                 }
