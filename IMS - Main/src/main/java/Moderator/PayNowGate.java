@@ -30,6 +30,14 @@ public class PayNowGate extends javax.swing.JFrame {
     }
 
     Helper.AutomatedMessages autoMessage = new Helper.AutomatedMessages();
+    String telegramId;
+    String studentName;
+    String className;
+    String classTeacher;
+    String classDay;
+    String paymentId;
+    String paymentDay;
+    String paymentValue;
 
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
@@ -88,14 +96,7 @@ public class PayNowGate extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        studentName = new javax.swing.JLabel();
-        className = new javax.swing.JLabel();
-        classTeacher = new javax.swing.JLabel();
-        classDay = new javax.swing.JLabel();
-        paymentDay = new javax.swing.JLabel();
-        paymentId = new javax.swing.JLabel();
-        telegramId = new javax.swing.JLabel();
-        paymentValue = new javax.swing.JLabel();
+        detailsPass = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -106,21 +107,7 @@ public class PayNowGate extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
 
-        studentName.setText("jLabel5");
-
-        className.setText("jLabel6");
-
-        classTeacher.setText("jLabel7");
-
-        classDay.setText("jLabel8");
-
-        paymentDay.setText("jLabel9");
-
-        paymentId.setText("jLabel4");
-
-        telegramId.setText("jLabel4");
-
-        paymentValue.setText("jLabel4");
+        detailsPass.setText("jLabel4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Payment Gateway");
@@ -285,8 +272,11 @@ public class PayNowGate extends javax.swing.JFrame {
                             monthString = "December";
 
                     }
-                    paymentDay.setText(year + " - " + monthString);
+                    paymentDay = year + " - " + monthString;
                     telegramUpdate();
+                    detailsPass.setText(telegramId + "@" + studentName + "@" + className
+                            + "@" + classTeacher + "@" + classDay + "@" + paymentId + "@"
+                            + paymentDay + "@" + paymentValue);
                     autoMessage.paymentSuccess();
                     JOptionPane.showMessageDialog(this, "Success!");
                 }
@@ -305,9 +295,9 @@ public class PayNowGate extends javax.swing.JFrame {
                     + "FROM students "
                     + "WHERE id='" + jTextField1.getText() + "'");
             while (rs.next()) {
-                telegramId.setText(rs.getString("telegramId"));
-                studentName.setText(rs.getString("firstName") + " "
-                        + rs.getString("lastName"));
+                telegramId = rs.getString("telegramId");
+                studentName = rs.getString("firstName") + " "
+                        + rs.getString("lastName");
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -319,35 +309,35 @@ public class PayNowGate extends javax.swing.JFrame {
                     + "FROM classes "
                     + "WHERE id='" + jTextField2.getText() + "'");
             while (rs.next()) {
-                paymentValue.setText(rs.getString("payment"));
+                paymentValue = rs.getString("payment");
                 int day = rs.getInt("day");
                 switch (day) {
                     case 1 ->
-                        classDay.setText("Monday");
+                        classDay = "Monday";
                     case 2 ->
-                        classDay.setText("Tuesday");
+                        classDay = "Tuesday";
                     case 3 ->
-                        classDay.setText("Wednesday");
+                        classDay = "Wednesday";
                     case 4 ->
-                        classDay.setText("Thursday");
+                        classDay = "Thursday";
                     case 5 ->
-                        classDay.setText("Friday");
+                        classDay = "Friday";
                     case 6 ->
-                        classDay.setText("Saturday");
+                        classDay = "Saturday";
                     case 7 ->
-                        classDay.setText("Sunday");
+                        classDay = "Sunday";
                 }
                 String teacherId = rs.getString("teacherId");
                 ResultSet rs2 = stmt.executeQuery("SELECT * "
                         + "FROM subjects "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
-                    className.setText(rs2.getString("grade") + " - " + rs2.getString("subject"));
+                    className = rs2.getString("grade") + " - " + rs2.getString("subject");
                     ResultSet rs3 = stmt.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + teacherId + "'");
                     while (rs3.next()) {
-                        classTeacher.setText(rs3.getString("name"));
+                        classTeacher = rs3.getString("name");
                     }
                 }
             }
@@ -355,7 +345,7 @@ public class PayNowGate extends javax.swing.JFrame {
             System.out.println(e);
         }
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        paymentId.setText(model.getValueAt(model.getRowCount() - 1, 0).toString());
+        paymentId = model.getValueAt(model.getRowCount() - 1, 0).toString();
     }
 
     /**
@@ -394,9 +384,7 @@ public class PayNowGate extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel classDay;
-    public static javax.swing.JLabel className;
-    public static javax.swing.JLabel classTeacher;
+    public static javax.swing.JLabel detailsPass;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -406,10 +394,5 @@ public class PayNowGate extends javax.swing.JFrame {
     public static javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    public static javax.swing.JLabel paymentDay;
-    public static javax.swing.JLabel paymentId;
-    public static javax.swing.JLabel paymentValue;
-    public static javax.swing.JLabel studentName;
-    public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 }

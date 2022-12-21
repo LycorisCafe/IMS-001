@@ -4782,11 +4782,42 @@ public class Main extends javax.swing.JFrame {
     private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
         // TODO add your handling code here:
         int r = jTable8.getSelectedRow();
+        String examId = jTable8.getValueAt(r, 0).toString();
+        Helper.AutomatedMessages msg = new Helper.AutomatedMessages();
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("DELETE FROM exams "
-                    + "WHERE id='" + jTable8.getValueAt(r, 0).toString() + "'");
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM exams "
+                    + "WHERE id='" + examId + "'");
+            while (rs.next()) {
+                String classId = rs.getString("classId");
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + classId + "'");
+                while (rs2.next()) {
+                    Statement stmt3 = con.createStatement();
+                    stmt3.executeUpdate("DELETE FROM exams "
+                            + "WHERE id='" + examId + "'");
+                    telegramId.setText(rs2.getString("telegramId"));
+                    msg.examDelete();
+                    Statement stmt4 = con.createStatement();
+                    ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + classId + "'");
+                    while (rs4.next()) {
+                        Statement stmt5 = con.createStatement();
+                        ResultSet rs5 = stmt5.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs4.getString("studentId") + "'");
+                        while (rs5.next()) {
+                            telegramId.setText(rs5.getString("telegramId"));
+                            msg.examDelete();
+                        }
+                    }
+                }
+            }
             con.close();
             loadExams();
             JOptionPane.showMessageDialog(this, "Success!");
@@ -5022,8 +5053,8 @@ public class Main extends javax.swing.JFrame {
                             + "'" + jTextField27.getText() + "',"
                             + "'" + examTime + "',"
                             + "'" + jTextField39.getText() + "(h) " + jTextField40.getText() + "(min)" + "')");
-                    tGroupId.setText(rs.getString("telegramId"));
-                    tAutomated.newExamAddedGroup();
+                    telegramId.setText(rs.getString("telegramId"));
+                    tAutomated.newExamAdded();
                     examIdGrab();
                     Statement stmt3 = con.createStatement();
                     ResultSet rs2 = stmt3.executeQuery("SELECT * "
@@ -5042,7 +5073,7 @@ public class Main extends javax.swing.JFrame {
                                     + "(examId,studentId,marks) "
                                     + "VALUES "
                                     + "('" + examId.getText() + "','" + studentId + "','N/A')");
-                            tAutomated.newExamAddedStudent();
+                            tAutomated.newExamAdded();
                         }
                     }
                 }
@@ -5356,7 +5387,7 @@ public class Main extends javax.swing.JFrame {
                     String duration = rs.getString("duration");
                     longDetails.setText(classn + "@" + teacher + "@" + day + "@" + payment + "@" + time + "@" + duration);
                     telegramId.setText(rs.getString("telegramId"));
-                    bot.classDetailsUpdatedGroup();
+                    bot.classDetailsUpdated();
                     Statement stmt2 = con.createStatement();
                     ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM regclass "
@@ -5368,7 +5399,7 @@ public class Main extends javax.swing.JFrame {
                                 + "WHERE id='" + rs2.getString("studentId") + "'");
                         while (rs3.next()) {
                             telegramId.setText(rs3.getString("telegramId"));
-                            bot.classDetailsUpdatedStudent();
+                            bot.classDetailsUpdated();
                         }
                     }
                 }
@@ -5678,7 +5709,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
-    private javax.swing.JTable jTable8;
+    public static javax.swing.JTable jTable8;
     private javax.swing.JTable jTable9;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;

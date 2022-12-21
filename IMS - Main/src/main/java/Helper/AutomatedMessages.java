@@ -136,7 +136,7 @@ public class AutomatedMessages {
         }
     }
 
-    public void newExamAddedStudent() {
+    public void newExamAdded() {
         // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
         SendPhoto photo = new SendPhoto();
         String chatId = Administrator.Main.telegramId.getText();
@@ -172,53 +172,26 @@ public class AutomatedMessages {
         }
     }
 
-    public void newExamAddedGroup() {
-        // Administrator (pkg) -> Main -> Exams (tab) -> Add (button)
-        SendPhoto photo = new SendPhoto();
-        String groupId = Administrator.Main.tGroupId.getText();
-        String grade = Administrator.Main.cr1.getSelectedItem().toString();
-        String subject = Administrator.Main.cr2.getSelectedItem().toString();
-        String teacher = Administrator.Main.cr3.getSelectedItem().toString();
-        String day = Administrator.Main.cr4.getSelectedItem().toString();
-        String examName = Administrator.Main.jTextField22.getText();
-        String examDate = Administrator.Main.jTextField27.getText();
-        String examTime = Administrator.Main.jTextField32.getText() + ":" + Administrator.Main.jTextField42.getText() + " "
-                + Administrator.Main.jComboBox15.getSelectedItem().toString();
-        String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
-        String image = "AgACAgUAAx0CaCw0FAADNWOYwc7TRCQ_8h-RXfMRHIBxBQ2yAAKLtDEbfIXJVOT-bHCX6s5UAQADAgADbQADLAQ";
-        // message body start
-
-        photo.setPhoto(new InputFile(image));
-        System.out.println(grade + " " + subject + " " + teacher + " " + day);
-        photo.setChatId(groupId);
-        photo.setParseMode("html");
-        photo.setCaption("<b>Exam Announcement !!!</b>\n\n"
-                + teacher + " has called an exam<b> " + "\n\n"
-                + "</b>Exam Name " + "- " + examName + "\n"
-                + "Class " + "- " + grade + " " + subject + "\n"
-                + "Exam Date " + "- <b>" + examDate + "\n"
-                + "</b>Time " + "- " + examTime + "\n"
-                + "Duration - " + examDuration + "\n\n"
-                + "Don’t tell me you haven’t studied anything because you have. "
-                + "Anyway, wish you good luck for your exam!!!\n "
-        );
-        try {
-            bot.execute(photo);
-        } catch (TelegramApiException ex) {
-            System.out.println(ex);
-        }
+    public void examDelete() {
+        String telegramId = Administrator.Main.telegramId.getText();
+        int r = Administrator.Main.jTable8.getSelectedRow();
+        String className = Administrator.Main.jTable8.getValueAt(r, 2).toString();
+        String examName = Administrator.Main.jTable8.getValueAt(r, 1).toString();
+        String examDate = Administrator.Main.jTable8.getValueAt(r, 3).toString();
+        String examTime = Administrator.Main.jTable8.getValueAt(r, 4).toString();
     }
 
     public void examResultPush() {
         SendPhoto photo = new SendPhoto();
-        String telegramId = Administrator.ExamResults.telegramId.getText();
-        String studentName = Administrator.ExamResults.studentName.getText();
-        String className = Administrator.ExamResults.className.getText();
-        String teacherName = Administrator.ExamResults.teacherName.getText();
-        String examName = Administrator.ExamResults.examName.getText();
-        String examDate = Administrator.ExamResults.examDate.getText();
-        String marks = Administrator.ExamResults.marks.getText();
-        String rank = Administrator.ExamResults.rank.getText();
+        String[] details = Administrator.ExamResults.detailsPass.getText().split("@");
+        String telegramId = details[0];
+        String studentName = details[1];
+        String className = details[2];
+        String teacherName = details[3];
+        String examName = details[4];
+        String examDate = details[5];
+        String marks = details[6];
+        String rank = details[7];
         String image = "AgACAgUAAx0CaCw0FAADQWOZmqVGir6LH9r5om728fZ0Tu7lAALttTEbfIXRVE9FAabdfWMOAQADAgADbQADLAQ";
         photo.setChatId(telegramId);
         photo.setPhoto(new InputFile(image));
@@ -240,15 +213,16 @@ public class AutomatedMessages {
 
     public void paymentSuccess() {
         SendPhoto photo = new SendPhoto();
-        String telegramId = Moderator.PayNowGate.telegramId.getText();
+        String[] details = Moderator.PayNowGate.detailsPass.getText().split("@");
+        String telegramId = details[0];
         String studentId = instituteName + "-STUDENT-" + Moderator.PayNowGate.jTextField1.getText();
-        String studentName = Moderator.PayNowGate.studentName.getText();
-        String className = Moderator.PayNowGate.className.getText();
-        String classTeacher = Moderator.PayNowGate.classTeacher.getText();
-        String classDay = Moderator.PayNowGate.classDay.getText();
-        String paymentId = Moderator.PayNowGate.paymentId.getText();
-        String paymentTarget = Moderator.PayNowGate.paymentDay.getText();
-        String paymentValue = Moderator.PayNowGate.paymentValue.getText();
+        String studentName = details[1];
+        String className = details[2];
+        String classTeacher = details[3];
+        String classDay = details[4];
+        String paymentId = details[5];
+        String paymentTarget = details[6];
+        String paymentValue = details[7];
         String slipTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         String image = "AgACAgUAAx0CaCw0FAADPmOZMlj_Abh9EZFQkVVd4ynn2LD2AALUtDEbfIXJVInjFD6XGb0dAQADAgADbQADLAQ";
         photo.setPhoto(new InputFile(image));
@@ -310,18 +284,7 @@ public class AutomatedMessages {
         t2.start();
     }
 
-    public void classDetailsUpdatedGroup() {
-        String[] parts = Administrator.Main.longDetails.getText().split("@");
-        String telegramId = Administrator.Main.telegramId.getText();
-        String classn = parts[0];
-        String teacher = parts[1];
-        String day = parts[2];
-        String payment = parts[3];
-        String time = parts[4];
-        String duration = parts[5];
-    }
-
-    public void classDetailsUpdatedStudent() {
+    public void classDetailsUpdated() {
         String[] parts = Administrator.Main.longDetails.getText().split("@");
         String telegramId = Administrator.Main.telegramId.getText();
         String classn = parts[0];
