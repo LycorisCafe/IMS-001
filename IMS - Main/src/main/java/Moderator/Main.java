@@ -697,6 +697,12 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         webcamClose();
+        if (PayNowGate.disposeText!=null){
+            PayNowGate.disposeText.setText("0");
+        }
+        if (ImagePreview.disposeText!=null){
+            ImagePreview.disposeText.setText("0");
+        }
         MainPkg.Welcome logout = new MainPkg.Welcome();
         logout.setVisible(true);
         this.dispose();

@@ -754,6 +754,7 @@ public class Main extends javax.swing.JFrame {
         jButton32 = new javax.swing.JButton();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
+        jPanel47 = new javax.swing.JPanel();
 
         telegramId.setText("jLabel53");
 
@@ -3528,6 +3529,21 @@ public class Main extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Accounts", jPanel28);
 
+        jPanel47.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout jPanel47Layout = new javax.swing.GroupLayout(jPanel47);
+        jPanel47.setLayout(jPanel47Layout);
+        jPanel47Layout.setHorizontalGroup(
+            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1020, Short.MAX_VALUE)
+        );
+        jPanel47Layout.setVerticalGroup(
+            jPanel47Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 591, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("App", jPanel47);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -3555,6 +3571,15 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        if (ExamResults.disposeText != null) {
+            ExamResults.disposeText.setText("0");
+        }
+        if (TelegramReports.disposeText != null) {
+            TelegramReports.disposeText.setText("0");
+        }
+        if (TelegramVerify.disposeText != null) {
+            TelegramVerify.disposeText.setText("0");
+        }
         MainPkg.Welcome logout = new MainPkg.Welcome();
         logout.setVisible(true);
         this.dispose();
@@ -6224,6 +6249,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel44;
     private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel46;
+    private javax.swing.JPanel jPanel47;
     private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;

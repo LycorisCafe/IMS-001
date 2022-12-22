@@ -90,6 +90,7 @@ public class ExamResults extends javax.swing.JFrame {
     private void initComponents() {
 
         detailsPass = new javax.swing.JLabel();
+        disposeText = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
@@ -97,6 +98,13 @@ public class ExamResults extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         detailsPass.setText("jLabel2");
+
+        disposeText.setText("jLabel2");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Exam Results");
@@ -265,6 +273,11 @@ public class ExamResults extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -302,6 +315,7 @@ public class ExamResults extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel detailsPass;
+    public static javax.swing.JLabel disposeText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

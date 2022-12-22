@@ -108,9 +108,13 @@ public class IMS {
         if (!file2.exists()) {
             file2.mkdirs();
         }
-        File file3 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\frontPage.png");
-        File file4 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\backPage.png");
-        if (!file3.exists() && !file4.exists()) {
+        File file3 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentCards");
+        if (!file3.exists()) {
+            file3.mkdirs();
+        }
+        File file4 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\frontPage.png");
+        File file5 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\backPage.png");
+        if (!file4.exists() || !file5.exists()) {
             updates.firstRunDownloads();
         }
 

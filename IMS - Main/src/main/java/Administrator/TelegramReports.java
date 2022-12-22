@@ -41,6 +41,7 @@ public class TelegramReports extends javax.swing.JFrame {
     private void initComponents() {
 
         save = new javax.swing.JLabel();
+        disposeText = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -59,6 +60,13 @@ public class TelegramReports extends javax.swing.JFrame {
         save.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 savePropertyChange(evt);
+            }
+        });
+
+        disposeText.setText("jLabel7");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
             }
         });
 
@@ -229,6 +237,11 @@ public class TelegramReports extends javax.swing.JFrame {
         bot.broadast();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -266,6 +279,7 @@ public class TelegramReports extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public static javax.swing.JLabel disposeText;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

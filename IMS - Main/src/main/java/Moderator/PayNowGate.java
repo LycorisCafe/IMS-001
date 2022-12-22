@@ -97,6 +97,7 @@ public class PayNowGate extends javax.swing.JFrame {
     private void initComponents() {
 
         detailsPass = new javax.swing.JLabel();
+        disposeText = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -108,6 +109,13 @@ public class PayNowGate extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
 
         detailsPass.setText("jLabel4");
+
+        disposeText.setText("jLabel4");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Payment Gateway");
@@ -287,6 +295,11 @@ public class PayNowGate extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
+
     private void telegramUpdate() {
         try {
             Connection con = Helper.DB.connect();
@@ -385,6 +398,7 @@ public class PayNowGate extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel detailsPass;
+    public static javax.swing.JLabel disposeText;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
