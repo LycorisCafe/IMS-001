@@ -31,6 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import org.apache.commons.io.FileUtils;
 
 /**
  *
@@ -133,8 +134,14 @@ public class CardGenerator {
             img1.setFixedPosition(20, 54);
             doc.add(img1);
             doc.close();
+            
+            File source = new File(defFileLocation + "\\" + studentId + ".pdf");
+            File to = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentCards");
+            FileUtils.copyFile(source, to);
         } catch (FileNotFoundException | MalformedURLException e) {
             System.out.println(e);
+        } catch (IOException ex) {
+            System.out.println(ex);
         }
     }
 }
