@@ -5358,8 +5358,82 @@ public class Main extends javax.swing.JFrame {
         int r = jTable8.getSelectedRow();
         String id = jTable8.getValueAt(r, 0).toString();
 
-        
-        
+        String classx = jTable8.getValueAt(r, 2).toString();
+        String[] classSplit = classx.split(" - ");
+        cr1.removeAllItems();
+        cr1.addItem(classSplit[0]);
+        cr1.setSelectedIndex(0);
+        cr2.removeAllItems();
+        cr2.addItem(classSplit[1]);
+        cr2.setSelectedIndex(0);
+        cr3.removeAllItems();
+        cr3.addItem(jTable8.getValueAt(r, 3).toString());
+        cr3.setSelectedIndex(0);
+
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM exams "
+                    + "WHERE id='" + id + "'");
+            while (rs.next()) {
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + rs.getString("classId") + "'");
+                while (rs2.next()) {
+                    cr5.removeAllItems();
+                    cr5.addItem(rs2.getString("time"));
+                    cr5.setSelectedIndex(0);
+                    cr4.removeAllItems();
+                    switch (rs.getInt("day")) {
+                        case 1 -> {
+                            cr4.addItem("Monday");
+                            cr4.setSelectedItem("Monday");
+                        }
+                        case 2 -> {
+                            cr4.addItem("Tuesday");
+                            cr4.setSelectedItem("Tuesday");
+                        }
+                        case 3 -> {
+                            cr4.addItem("Wednesday");
+                            cr4.setSelectedItem("Wednesday");
+                        }
+                        case 4 -> {
+                            cr4.addItem("Thursday");
+                            cr4.setSelectedItem("Thursday");
+                        }
+                        case 5 -> {
+                            cr4.addItem("Friday");
+                            cr4.setSelectedItem("Friday");
+                        }
+                        case 6 -> {
+                            cr4.addItem("Saturday");
+                            cr4.setSelectedItem("Saturday");
+                        }
+                        case 7 -> {
+                            cr4.addItem("Sunday");
+                            cr4.setSelectedItem("Sunday");
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("#092" + e);
+        }
+
+        jTextField22.setText(jTable8.getValueAt(r, 1).toString());
+        jTextField27.setText(jTable8.getValueAt(r, 4).toString());
+        String[] examTime = jTable8.getValueAt(r, 5).toString().split(" ");
+        String[] examTimeRe = examTime[0].split(":");
+        jTextField32.setText(examTimeRe[0]);
+        jTextField42.setText(examTimeRe[1]);
+        jComboBox15.setSelectedItem(examTime[1]);
+        String[] examDuration = jTable8.getValueAt(r, 6).toString().split("(h) ");
+        jTextField39.setText(examDuration[0]);
+        String[] examDurationRe = examDuration[1].split("(min)");
+        jTextField40.setText(examDurationRe[0]);
+
         jButton12.setEnabled(false);
         jButton42.setEnabled(true);
 
@@ -5718,6 +5792,30 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton38ActionPerformed
         // TODO add your handling code here:
+        int r = jTable6.getSelectedRow();
+        String id = jTable6.getValueAt(r, 0).toString();
+        Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("INSERT INTO specialclasses "
+                    + "(classId,name,date,time,duration) "
+                    + "VALUES "
+                    + "('" + id + "'," + jTextField43.getText() + "','" + jTextField44.getText() + "',"
+                    + "'" + jTextField45.getText() + ":" + jTextField48.getText() + " " + jComboBox19.getSelectedItem().toString() + "',"
+                    + "'" + jTextField46.getText() + "(h) " + jTextField47.getText() + "(min)" + "'");
+            Statement stmt2 = con.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                    + "FROM classes "
+                    + "WHERE id='"+id+"'");
+            while(rs2.next()){
+                telegramId.setText(rs2.getString("telegramId"));
+                bot.specialClassAdd();
+                // students
+            }
+        } catch (SQLException e) {
+            System.out.println("#094"+e);
+        }
     }//GEN-LAST:event_jButton38ActionPerformed
 
     private void jButton39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton39ActionPerformed
@@ -5735,7 +5833,54 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton42ActionPerformed
         // TODO add your handling code here:
-
+        int r = jTable8.getSelectedRow();
+        String id = jTable8.getValueAt(r, 0).toString();
+        Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("UPDATE exams "
+                    + "name='" + jTextField22.getText() + "',"
+                    + "date='" + jTextField27.getText() + "',"
+                    + "time='" + jTextField32.getText() + ":" + jTextField42.getText() + " "
+                    + jComboBox15.getSelectedItem().toString() + "',"
+                    + "duration='" + jTextField39.getText() + "(h) " + jTextField40.getText() + "(min)" + "' "
+                    + "WHERE id='" + id + "'");
+            Statement stmt2 = con.createStatement();
+            ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                    + "FROM exams "
+                    + "WHERE id='" + id + "'");
+            while (rs2.next()) {
+                String classId = rs2.getString("classId");
+                Statement stmt3 = con.createStatement();
+                ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + classId + "'");
+                while (rs3.next()) {
+                    telegramId.setText(rs3.getString("telegramId"));
+                    bot.examUpdate();
+                    Statement stmt4 = con.createStatement();
+                    ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + classId + "'");
+                    while (rs4.next()) {
+                        Statement stmt5 = con.createStatement();
+                        ResultSet rs5 = stmt5.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs4.getString("studentId") + "'");
+                        while (rs5.next()) {
+                            telegramId.setText(rs5.getString("telegramId"));
+                            bot.examUpdate();
+                        }
+                    }
+                }
+            }
+            con.close();
+            loadExams();
+            JOptionPane.showMessageDialog(this, "Success!");
+        } catch (HeadlessException | SQLException e) {
+            System.out.println("#092" + e);
+        }
     }//GEN-LAST:event_jButton42ActionPerformed
 
     /**

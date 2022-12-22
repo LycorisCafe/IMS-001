@@ -172,6 +172,19 @@ public class AutomatedMessages {
         }
     }
 
+    public void examUpdate() {
+        String chatId = Administrator.Main.telegramId.getText();
+        String grade = Administrator.Main.cr1.getSelectedItem().toString();
+        String subject = Administrator.Main.cr2.getSelectedItem().toString();
+        String teacher = Administrator.Main.cr3.getSelectedItem().toString();
+        String day = Administrator.Main.cr4.getSelectedItem().toString();
+        String examName = Administrator.Main.jTextField22.getText();
+        String examDate = Administrator.Main.jTextField27.getText();
+        String examTime = Administrator.Main.jTextField32.getText() + ":" + Administrator.Main.jTextField42.getText() + " "
+                + Administrator.Main.jComboBox15.getSelectedItem().toString();
+        String examDuration = Administrator.Main.jTextField39.getText() + "(h) " + Administrator.Main.jTextField40.getText() + "(min)";
+    }
+
     public void examDelete() {
         String telegramId = Administrator.Main.telegramId.getText();
         int r = Administrator.Main.jTable8.getSelectedRow();
@@ -211,6 +224,10 @@ public class AutomatedMessages {
         }
     }
 
+    public void specialClassAdd(){
+        
+    }
+    
     public void paymentSuccess() {
         SendPhoto photo = new SendPhoto();
         String[] details = Moderator.PayNowGate.detailsPass.getText().split("@");
