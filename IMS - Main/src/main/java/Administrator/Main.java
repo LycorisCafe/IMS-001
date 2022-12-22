@@ -2254,6 +2254,11 @@ public class Main extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTable10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable10MouseClicked(evt);
+            }
+        });
         jScrollPane14.setViewportView(jTable10);
 
         jPanel46.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Editing Panel :"));
@@ -5792,34 +5797,71 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton38ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton38ActionPerformed
         // TODO add your handling code here:
-        int r = jTable6.getSelectedRow();
-        String id = jTable6.getValueAt(r, 0).toString();
-        Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO specialclasses "
-                    + "(classId,name,date,time,duration) "
-                    + "VALUES "
-                    + "('" + id + "'," + jTextField43.getText() + "','" + jTextField44.getText() + "',"
-                    + "'" + jTextField45.getText() + ":" + jTextField48.getText() + " " + jComboBox19.getSelectedItem().toString() + "',"
-                    + "'" + jTextField46.getText() + "(h) " + jTextField47.getText() + "(min)" + "'");
-            Statement stmt2 = con.createStatement();
-            ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                    + "FROM classes "
-                    + "WHERE id='"+id+"'");
-            while(rs2.next()){
-                telegramId.setText(rs2.getString("telegramId"));
-                bot.specialClassAdd();
-                // students
+        if (jTextField43.getText().equals("") || jTextField44.getText().equals("")
+                || jTextField45.getText().equals("") || jTextField48.getText().equals("")
+                || jTextField46.getText().equals("") || jTextField47.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            int r = jTable6.getSelectedRow();
+            String id = jTable6.getValueAt(r, 0).toString();
+            Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO specialclasses "
+                        + "(classId,name,date,time,duration) "
+                        + "VALUES "
+                        + "('" + id + "'," + jTextField43.getText() + "','" + jTextField44.getText() + "',"
+                        + "'" + jTextField45.getText() + ":" + jTextField48.getText() + " " + jComboBox19.getSelectedItem().toString() + "',"
+                        + "'" + jTextField46.getText() + "(h) " + jTextField47.getText() + "(min)" + "'");
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + id + "'");
+                while (rs2.next()) {
+                    telegramId.setText(rs2.getString("telegramId"));
+                    bot.specialClassAdd();
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + id + "'");
+                    while (rs3.next()) {
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs3.getString("studentId") + "'");
+                        while (rs4.next()) {
+                            telegramId.setText(rs4.getString("telegramId"));
+                            bot.specialClassAdd();
+                        }
+                    }
+                }
+                con.close();
+                loadClasses();
+                JOptionPane.showMessageDialog(this, "Success!");
+            } catch (SQLException e) {
+                System.out.println("#094" + e);
             }
-        } catch (SQLException e) {
-            System.out.println("#094"+e);
         }
     }//GEN-LAST:event_jButton38ActionPerformed
 
     private void jButton39ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton39ActionPerformed
         // TODO add your handling code here:
+        int r = jTable10.getSelectedRow();
+        String id = jTable10.getValueAt(r, 0).toString();
+        Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+        try {
+            Connection con = Helper.DB.connect();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("DELETE FROM specialclasses "
+                    + "WHERE id='" + id + "'");
+            con.close();
+            bot.specialClassDelete();
+            loadClasses();
+            JOptionPane.showMessageDialog(this, "Success!");
+        } catch (Exception e) {
+            System.out.println("#097" + e);
+        }
     }//GEN-LAST:event_jButton39ActionPerformed
 
     private void jButton40ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton40ActionPerformed
@@ -5829,6 +5871,55 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton41ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton41ActionPerformed
         // TODO add your handling code here:
+        if (jTextField43.getText().equals("") || jTextField44.getText().equals("")
+                || jTextField45.getText().equals("") || jTextField48.getText().equals("")
+                || jTextField46.getText().equals("") || jTextField47.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled!");
+        } else {
+            int r = jTable6.getSelectedRow();
+            String id = jTable6.getValueAt(r, 0).toString();
+            int sr = jTable10.getSelectedRow();
+            String sid = jTable10.getValueAt(r, 0).toString();
+            Helper.AutomatedMessages bot = new Helper.AutomatedMessages();
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("UPDATE specialclasses SET "
+                        + "name='" + jTextField43.getText() + "',"
+                        + "date='" + jTextField44.getText() + "',"
+                        + "time='" + jTextField45.getText() + ":" + jTextField48.getText() + " "
+                        + jComboBox19.getSelectedItem().toString() + "',"
+                        + "duration='" + jTextField46.getText() + "(h) " + jTextField47.getText() + "(min)" + "' "
+                        + "WHERE id='" + sid + "'");
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + id + "'");
+                while (rs2.next()) {
+                    telegramId.setText(rs2.getString("telegramId"));
+                    bot.specialClassUpdate();
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE classId='" + id + "'");
+                    while (rs3.next()) {
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + rs3.getString("studentId") + "'");
+                        while (rs4.next()) {
+                            telegramId.setText(rs4.getString("telegramId"));
+                            bot.specialClassUpdate();
+                        }
+                    }
+                }
+                con.close();
+                loadClasses();
+                JOptionPane.showMessageDialog(this, "Success!");
+            } catch (SQLException e) {
+                System.out.println("#095" + e);
+            }
+        }
     }//GEN-LAST:event_jButton41ActionPerformed
 
     private void jButton42ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton42ActionPerformed
@@ -5839,7 +5930,7 @@ public class Main extends javax.swing.JFrame {
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("UPDATE exams "
+            stmt.executeUpdate("UPDATE exams SET "
                     + "name='" + jTextField22.getText() + "',"
                     + "date='" + jTextField27.getText() + "',"
                     + "time='" + jTextField32.getText() + ":" + jTextField42.getText() + " "
@@ -5882,6 +5973,22 @@ public class Main extends javax.swing.JFrame {
             System.out.println("#092" + e);
         }
     }//GEN-LAST:event_jButton42ActionPerformed
+
+    private void jTable10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable10MouseClicked
+        // TODO add your handling code here:
+        int r = jTable10.getSelectedRow();
+        jTextField43.setText(jTable10.getValueAt(r, 1).toString());
+        jTextField44.setText(jTable10.getValueAt(r, 2).toString());
+        String[] time = jTable10.getValueAt(r, 3).toString().split(" ");
+        String[] timex = time[0].split(":");
+        jTextField45.setText(timex[0]);
+        jTextField48.setText(timex[1]);
+        jComboBox19.setSelectedItem(time[1]);
+        String[] duration = jTable10.getValueAt(r, 4).toString().split("(h) ");
+        jTextField46.setText(duration[0]);
+        String[] durationx = duration[1].split("(min)");
+        jTextField47.setText(durationx[0]);
+    }//GEN-LAST:event_jTable10MouseClicked
 
     /**
      * @param args the command line arguments
@@ -5980,7 +6087,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox16;
     private javax.swing.JComboBox<String> jComboBox17;
     private javax.swing.JComboBox<String> jComboBox18;
-    private javax.swing.JComboBox<String> jComboBox19;
+    public static javax.swing.JComboBox<String> jComboBox19;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
@@ -6150,7 +6257,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
+    public static javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
     public static javax.swing.JTable jTable8;
     private javax.swing.JTable jTable9;
@@ -6194,12 +6301,12 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JTextField jTextField40;
     private javax.swing.JTextField jTextField41;
     public static javax.swing.JTextField jTextField42;
-    private javax.swing.JTextField jTextField43;
-    private javax.swing.JTextField jTextField44;
-    private javax.swing.JTextField jTextField45;
-    private javax.swing.JTextField jTextField46;
-    private javax.swing.JTextField jTextField47;
-    private javax.swing.JTextField jTextField48;
+    public static javax.swing.JTextField jTextField43;
+    public static javax.swing.JTextField jTextField44;
+    public static javax.swing.JTextField jTextField45;
+    public static javax.swing.JTextField jTextField46;
+    public static javax.swing.JTextField jTextField47;
+    public static javax.swing.JTextField jTextField48;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;

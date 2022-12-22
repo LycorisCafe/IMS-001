@@ -2553,6 +2553,9 @@
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable6MouseClicked"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
@@ -2806,6 +2809,9 @@
                               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                             </Property>
                           </Properties>
+                          <Events>
+                            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable10MouseClicked"/>
+                          </Events>
                         </Component>
                       </SubComponents>
                     </Container>
@@ -2934,12 +2940,24 @@
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField43">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField44">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField45">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField46">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel69">
                           <Properties>
@@ -2947,6 +2965,9 @@
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField47">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel70">
                           <Properties>
@@ -2960,6 +2981,9 @@
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JTextField" name="jTextField48">
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JComboBox" name="jComboBox19">
                           <Properties>
@@ -2972,6 +2996,7 @@
                           </Properties>
                           <AuxValues>
                             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
                           </AuxValues>
                         </Component>
                         <Container class="javax.swing.JPanel" name="jPanel48">

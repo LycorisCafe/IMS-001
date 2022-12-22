@@ -224,10 +224,57 @@ public class AutomatedMessages {
         }
     }
 
-    public void specialClassAdd(){
-        
+    public void specialClassAdd() {
+        String telegramId = Administrator.Main.telegramId.getText();
+        int r = Administrator.Main.jTable6.getSelectedRow();
+        String className = Administrator.Main.jTable6.getValueAt(r, 1).toString() + " - "
+                + Administrator.Main.jTable6.getValueAt(r, 2).toString();
+        String teacherName = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainDay = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainTime = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String specialName = Administrator.Main.jTextField43.getText();
+        String specialDate = Administrator.Main.jTextField44.getText();
+        String specialTime = Administrator.Main.jTextField45.getText() + ":"
+                + Administrator.Main.jTextField48.getText() + " "
+                + Administrator.Main.jComboBox19.getSelectedItem().toString();
+        String specialDuration = Administrator.Main.jTextField46.getText() + "(h) "
+                + Administrator.Main.jTextField47.getText() + "(min)";
+    }
+
+    public void specialClassUpdate() {
+        String telegramId = Administrator.Main.telegramId.getText();
+        int r = Administrator.Main.jTable6.getSelectedRow();
+        String className = Administrator.Main.jTable6.getValueAt(r, 1).toString() + " - "
+                + Administrator.Main.jTable6.getValueAt(r, 2).toString();
+        String teacherName = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainDay = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainTime = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String specialName = Administrator.Main.jTextField43.getText();
+        String specialDate = Administrator.Main.jTextField44.getText();
+        String specialTime = Administrator.Main.jTextField45.getText() + ":"
+                + Administrator.Main.jTextField48.getText() + " "
+                + Administrator.Main.jComboBox19.getSelectedItem().toString();
+        String specialDuration = Administrator.Main.jTextField46.getText() + "(h) "
+                + Administrator.Main.jTextField47.getText() + "(min)";
     }
     
+    public void specialClassDelete(){
+        String telegramId = Administrator.Main.telegramId.getText();
+        int r = Administrator.Main.jTable6.getSelectedRow();
+        String className = Administrator.Main.jTable6.getValueAt(r, 1).toString() + " - "
+                + Administrator.Main.jTable6.getValueAt(r, 2).toString();
+        String teacherName = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainDay = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String mainTime = Administrator.Main.jTable6.getValueAt(r, r).toString();
+        String specialName = Administrator.Main.jTextField43.getText();
+        String specialDate = Administrator.Main.jTextField44.getText();
+        String specialTime = Administrator.Main.jTextField45.getText() + ":"
+                + Administrator.Main.jTextField48.getText() + " "
+                + Administrator.Main.jComboBox19.getSelectedItem().toString();
+        String specialDuration = Administrator.Main.jTextField46.getText() + "(h) "
+                + Administrator.Main.jTextField47.getText() + "(min)";
+    }
+
     public void paymentSuccess() {
         SendPhoto photo = new SendPhoto();
         String[] details = Moderator.PayNowGate.detailsPass.getText().split("@");

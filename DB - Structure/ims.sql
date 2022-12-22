@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 18, 2022 at 07:42 PM
+-- Generation Time: Dec 22, 2022 at 05:58 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -148,6 +148,7 @@ CREATE TABLE `results` (
 CREATE TABLE `specialclasses` (
   `id` int(20) NOT NULL,
   `classId` int(20) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `time` varchar(8) NOT NULL,
   `duration` int(2) NOT NULL
