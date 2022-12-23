@@ -259,12 +259,14 @@ public class Login extends javax.swing.JFrame {
                 while (rs.next()) {
                     String usery = rs.getString("user");
                     if (usery.equalsIgnoreCase(userx)) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT id "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT id "
                                 + "FROM login "
                                 + "WHERE user='" + userx + "'");
                         while (rs2.next()) {
                             String userid = rs2.getString("id");
-                            ResultSet rs3 = stmt.executeQuery("SELECT pass "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT pass "
                                     + "FROM login "
                                     + "WHERE id='" + userid + "'");
                             while (rs3.next()) {
