@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 22, 2022 at 05:58 PM
+-- Generation Time: Dec 23, 2022 at 06:37 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -142,6 +142,20 @@ CREATE TABLE `results` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `specialattendance`
+--
+
+CREATE TABLE `specialattendance` (
+  `id` int(20) NOT NULL,
+  `regClassId` int(20) NOT NULL,
+  `specialClassId` int(20) NOT NULL,
+  `date` date NOT NULL,
+  `time` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `specialclasses`
 --
 
@@ -151,7 +165,7 @@ CREATE TABLE `specialclasses` (
   `name` varchar(255) NOT NULL,
   `date` date NOT NULL,
   `time` varchar(8) NOT NULL,
-  `duration` int(2) NOT NULL
+  `duration` varchar(13) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -257,6 +271,15 @@ ALTER TABLE `results`
   ADD KEY `studentId` (`studentId`);
 
 --
+-- Indexes for table `specialattendance`
+--
+ALTER TABLE `specialattendance`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `specialClassId` (`specialClassId`),
+  ADD KEY `specialClassId_2` (`specialClassId`),
+  ADD KEY `regClassId` (`regClassId`);
+
+--
 -- Indexes for table `specialclasses`
 --
 ALTER TABLE `specialclasses`
@@ -328,6 +351,12 @@ ALTER TABLE `results`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `specialattendance`
+--
+ALTER TABLE `specialattendance`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `specialclasses`
 --
 ALTER TABLE `specialclasses`
@@ -388,6 +417,13 @@ ALTER TABLE `regclass`
 ALTER TABLE `results`
   ADD CONSTRAINT `results_ibfk_1` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `results_ibfk_2` FOREIGN KEY (`examId`) REFERENCES `exams` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `specialattendance`
+--
+ALTER TABLE `specialattendance`
+  ADD CONSTRAINT `specialattendance_ibfk_1` FOREIGN KEY (`specialClassId`) REFERENCES `specialclasses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `specialattendance_ibfk_2` FOREIGN KEY (`regClassId`) REFERENCES `regclass` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `specialclasses`

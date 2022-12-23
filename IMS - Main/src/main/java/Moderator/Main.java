@@ -1056,9 +1056,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                 + "FROM regclass "
                                 + "WHERE studentId='" + studentIdLabel.getText() + "'");
                         while (rs2.next()) {
+                            String classIdx = rs2.getString("classId");
                             ResultSet rs3 = stmt.executeQuery("SELECT * "
                                     + "FROM classes "
-                                    + "WHERE id='" + rs2.getString("classId") + "' "
+                                    + "WHERE id='" + classIdx + "' "
                                     + "AND day='" + today + "'");
                             while (rs3.next()) {
                                 String time = rs3.getString("time");
@@ -1066,12 +1067,29 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                         + "FROM subjects "
                                         + "WHERE id='" + rs3.getString("subjectId") + "'");
                                 while (rs4.next()) {
+                                    String examTrue = "";
+                                    ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                            + "FROM exams "
+                                            + "WHERE classId='"+classIdx+"' "
+                                                    + "AND date='"+todate+"'");
+                                    while (rs5.next()){
+                                        if (rs5.getString("time").equals(time)){
+                                            examTrue = "/E";
+                                        }
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
                                     jComboBox3.removeAllItems();
                                     jComboBox3.addItem("Please Select...");
                                     jComboBox3.setSelectedIndex(0);
                                     jComboBox3.addItem(rs4.getString("grade")
                                             + " - " + rs4.getString("subject")
-                                            + " - @ " + time);
+                                            + " - @ " + time
+                                    +" - (N"+examTrue+")");
                                 }
                             }
                         }
