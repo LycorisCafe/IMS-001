@@ -3877,10 +3877,21 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+<<<<<<< Updated upstream
         if (jTextField14.getText().equals("") || jTextField15.getText().equals("")
                 || jTextField16.getText().equals("") || jTextField17.getText().equals("")
                 || jTextField18.getText().equals("") || jComboBox5.getSelectedIndex() == 0) {
             JOptionPane.showConfirmDialog(this, "All fields must be filled!");
+=======
+        // to update data of the selected row
+        int r = jTable3.getSelectedRow();
+        tableSelection.setText(jTable3.getValueAt(r, 0).toString());
+        System.out.println();
+        if (jCheckBox2.isSelected()) {
+            telegramUpdate.setVisible(true);
+            type.setText("private");
+            returnMethod.setText("studentUpdate");
+>>>>>>> Stashed changes
         } else {
             if (jCheckBox2.isSelected()) {
                 TelegramVerify tVerify = new TelegramVerify();
