@@ -5677,31 +5677,27 @@ public class Main extends javax.swing.JFrame {
             String grade = jComboBox16.getSelectedItem().toString();
             String name = jTextField33.getText();
             int x = 0;
+            String gradex;
+            String subjectx;
             try {
                 Connection con = Helper.DB.connect();
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects");
                 while (rs.next()) {
-                    x = 1;
-                    String gradex = rs.getString("grade");
-                    String subjectx = rs.getString("subject");
+                    gradex = rs.getString("grade");
+                    subjectx = rs.getString("subject");
                     if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
-                        JOptionPane.showMessageDialog(this, "Subject already registered!");
-                    } else {
-                        stmt.executeUpdate("INSERT INTO subjects "
-                                + "(grade,subject) "
-                                + "VALUES "
-                                + "('" + grade + "','" + name + "')");
-                        loadSubjects();
-                        JOptionPane.showMessageDialog(this, "Success!");
+                        x = 1;
                     }
                 }
 
             } catch (HeadlessException | SQLException e) {
                 System.out.println("#065" + e);
             }
-            if (x == 0) {
+            if (x == 1) {
+                JOptionPane.showMessageDialog(this, "Subject already exist!");
+            } else {
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
