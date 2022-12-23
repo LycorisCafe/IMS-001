@@ -966,12 +966,14 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "WHERE grade='" + cr1x + "' AND subject='" + cr2x + "'");
                 while (rs.next()) {
                     subjectId = rs.getString("id");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM classes "
                             + "WHERE subjectId='" + subjectId + "'");
                     while (rs2.next()) {
                         teacherId = rs2.getString("teacherId");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        Statement stmt3 = con.createStatement();
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + teacherId + "'");
                         while (rs3.next()) {
@@ -1103,7 +1105,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                                 + "WHERE id='" + jTable1.getValueAt(y, 0) + "'");
                         while (rs.next()) {
                             String telegramIdx = rs.getString("telegramId");
-                            ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            Statement stmt2 = con.createStatement();
+                            ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                     + "FROM regclass "
                                     + "WHERE studentId='" + newStudent + "' "
                                     + "AND classId='" + jTable1.getValueAt(y, 0) + "'");

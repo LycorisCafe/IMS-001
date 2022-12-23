@@ -55,12 +55,14 @@ public class ClassesDetails extends javax.swing.JFrame {
                 String time = rs.getString("time");
                 String duration = rs.getString("duration");
                 String payment = rs.getString("payment");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM subjects "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
                     String classx = rs2.getString("grade") + " - " + rs2.getString("subject");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + teacherId + "'");
                     while (rs3.next()) {

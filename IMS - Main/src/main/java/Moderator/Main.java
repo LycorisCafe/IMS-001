@@ -738,14 +738,16 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             + "FROM subjects "
                             + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
                     while (rs.next()) {
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM classes "
                                 + "WHERE subjectId='" + rs.getString("id") + "' "
                                 + "AND day='" + today + "' "
                                 + "AND time='" + time[0] + "'");
                         while (rs2.next()) {
                             classId = rs2.getString("id");
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM payments "
                                     + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
                                     + "classId='" + classId + "' AND "
@@ -783,19 +785,22 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                             + "AND time='" + time[0] + "'");
                     while (rs.next()) {
                         String classIdx = rs.getString("classId");
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM subjects "
                                 + "WHERE grade='" + parts[0] + "' "
                                 + "AND subject='" + parts[1] + "'");
                         while (rs2.next()) {
                             String subjectId = rs2.getString("id");
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + classIdx + "' "
                                     + "AND subjectId='" + subjectId + "'");
                             while (rs3.next()) {
                                 classId = rs3.getString("id");
-                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                Statement stmt4 = con.createStatement();
+                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM payments "
                                         + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
                                         + "classId='" + classId + "' AND "
@@ -843,12 +848,14 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         + "WHERE studentId='" + studentId + "' AND classId='" + classId + "'");
                 while (rs.next()) {
                     String regClassId = rs.getString("id");
-                    ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT COUNT(*) "
                             + "FROM attendance "
                             + "WHERE regClassId='" + rs.getString("id") + "' "
                             + "AND date='" + date + "'");
                     while (rs2.next()) {
                         int count = rs2.getInt(1);
+                        Statement stmt3 = con.createStatement();
                         ResultSet rs3 = stmt.executeQuery("SELECT * "
                                 + "FROM students "
                                 + "WHERE id='" + studentId + "'");
@@ -861,7 +868,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                         + "VALUES "
                                         + "('" + regClassId + "','" + date + "','" + logtime + "')");
                                 if (type.equals("(N/E)")) {
-                                    ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                    Statement stmt4 = con.createStatement();
+                                    ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                             + "FROM exams "
                                             + "WHERE classId='" + classId + "' "
                                             + "AND date='" + todate + "'");
@@ -921,7 +929,8 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                                     + "'" + studentId + "','" + todate + "','" + logtime + "'");
                         }
                     }
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                    Statement stmt2 = con.createStatement();
+                    ResultSet rs2 = stmt2.executeQuery("SELECT * "
                             + "FROM students "
                             + "WHERE id='" + studentId + "'");
                     while (rs2.next()) {

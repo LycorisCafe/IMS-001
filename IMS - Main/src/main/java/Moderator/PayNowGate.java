@@ -222,7 +222,8 @@ public class PayNowGate extends javax.swing.JFrame {
             while (rs.next()) {
                 status = rs.getInt("status");
                 year = rs.getInt("year");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM payments "
                         + "WHERE studentId='" + jTextField1.getText() + "' "
                         + "AND classId='" + jTextField2.getText() + "' "
@@ -341,12 +342,14 @@ public class PayNowGate extends javax.swing.JFrame {
                         classDay = "Sunday";
                 }
                 String teacherId = rs.getString("teacherId");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM subjects "
                         + "WHERE id='" + rs.getString("subjectId") + "'");
                 while (rs2.next()) {
                     className = rs2.getString("grade") + " - " + rs2.getString("subject");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM teachers "
                             + "WHERE id='" + teacherId + "'");
                     while (rs3.next()) {

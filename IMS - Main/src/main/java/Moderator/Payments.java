@@ -44,19 +44,22 @@ public class Payments extends javax.swing.JFrame {
                     + "WHERE studentId='" + studentId + "'");
             while (rs.next()) {
                 classId = rs.getString("classId");
-                ResultSet rs2 = stmt.executeQuery("SELECT * "
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM classes "
                         + "WHERE id='" + classId + "'");
                 while (rs2.next()) {
                     teacherId = rs2.getString("teacherId");
                     subjectId = rs2.getString("subjectId");
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT * "
                             + "FROM subjects "
                             + "WHERE id='" + subjectId + "'");
                     while (rs3.next()) {
                         grade = rs3.getString("grade");
                         subject = rs3.getString("subject");
-                        ResultSet rs4 = stmt.executeQuery("SELECT * "
+                        Statement stmt4 = con.createStatement();
+                        ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                 + "FROM teachers "
                                 + "WHERE id='" + teacherId + "'");
                         while (rs4.next()) {
