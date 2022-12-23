@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 23, 2022 at 06:37 AM
+-- Generation Time: Dec 23, 2022 at 08:58 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -136,7 +136,8 @@ CREATE TABLE `results` (
   `id` int(20) NOT NULL,
   `examId` int(20) NOT NULL,
   `studentId` int(20) NOT NULL,
-  `marks` varchar(3) NOT NULL
+  `marks` varchar(3) NOT NULL,
+  `attendance` varchar(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -147,8 +148,8 @@ CREATE TABLE `results` (
 
 CREATE TABLE `specialattendance` (
   `id` int(20) NOT NULL,
-  `regClassId` int(20) NOT NULL,
   `specialClassId` int(20) NOT NULL,
+  `studentId` int(20) NOT NULL,
   `date` date NOT NULL,
   `time` varchar(8) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -183,7 +184,8 @@ CREATE TABLE `students` (
   `address` varchar(255) NOT NULL,
   `grade` int(2) NOT NULL,
   `telegramId` varchar(20) NOT NULL,
-  `status` int(11) NOT NULL
+  `status` int(11) NOT NULL,
+  `regDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -211,7 +213,8 @@ CREATE TABLE `teachers` (
   `address` varchar(255) NOT NULL,
   `telegramId` varchar(20) NOT NULL,
   `contact` varchar(10) NOT NULL,
-  `status` int(1) NOT NULL
+  `status` int(1) NOT NULL,
+  `regDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -275,9 +278,9 @@ ALTER TABLE `results`
 --
 ALTER TABLE `specialattendance`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `specialClassId` (`specialClassId`),
-  ADD KEY `specialClassId_2` (`specialClassId`),
-  ADD KEY `regClassId` (`regClassId`);
+  ADD KEY `specialClassId` (`studentId`),
+  ADD KEY `specialClassId_2` (`studentId`),
+  ADD KEY `regClassId` (`specialClassId`);
 
 --
 -- Indexes for table `specialclasses`
@@ -423,7 +426,7 @@ ALTER TABLE `results`
 --
 ALTER TABLE `specialattendance`
   ADD CONSTRAINT `specialattendance_ibfk_1` FOREIGN KEY (`specialClassId`) REFERENCES `specialclasses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `specialattendance_ibfk_2` FOREIGN KEY (`regClassId`) REFERENCES `regclass` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `specialattendance_ibfk_2` FOREIGN KEY (`studentId`) REFERENCES `students` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `specialclasses`
