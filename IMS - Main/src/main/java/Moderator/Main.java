@@ -612,6 +612,11 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Media/InstituteDesign.png"))); // NOI18N
 
         jButton8.setText("Classes Details");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -697,10 +702,10 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         webcamClose();
-        if (PayNowGate.disposeText!=null){
+        if (PayNowGate.disposeText != null) {
             PayNowGate.disposeText.setText("0");
         }
-        if (ImagePreview.disposeText!=null){
+        if (ImagePreview.disposeText != null) {
             ImagePreview.disposeText.setText("0");
         }
         MainPkg.Welcome logout = new MainPkg.Welcome();
@@ -722,38 +727,94 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             String selectedClass = jComboBox3.getSelectedItem().toString();
             String thisYear = new SimpleDateFormat("yyyy").format(new Date());
             String thisMonth = new SimpleDateFormat("MM").format(new Date());
-            String[] parts = selectedClass.split(" - ");
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM subjects "
-                        + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
-                while (rs.next()) {
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
-                            + "FROM classes "
-                            + "WHERE subjectId='" + rs.getString("id") + "'");
-                    while (rs2.next()) {
-                        classId = rs2.getString("id");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
-                                + "FROM payments "
-                                + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
-                                + "classId='" + classId + "' AND "
-                                + "year='" + thisYear + "' AND month='" + thisMonth + "'");
-                        while (rs3.next()) {
-                            if (rs3.getString("status").equals("1")) {
-                                jTextField5.setText("Paid!");
-                                jTextField5.setForeground(Color.green);
-                            } else {
-                                jTextField5.setText("Not Paid!");
-                                jTextField5.setForeground(Color.red);
+            String[] partsx = selectedClass.split(" @ ");
+            String[] parts = partsx[0].split(" - ");
+            String[] time = partsx[1].split(" - ");
+            if (time[1].equals("(N)") || time[1].equals("(N/E)")) {
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * "
+                            + "FROM subjects "
+                            + "WHERE grade='" + parts[0] + "' AND subject='" + parts[1] + "'");
+                    while (rs.next()) {
+                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                                + "FROM classes "
+                                + "WHERE subjectId='" + rs.getString("id") + "' "
+                                + "AND day='" + today + "' "
+                                + "AND time='" + time[0] + "'");
+                        while (rs2.next()) {
+                            classId = rs2.getString("id");
+                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                    + "FROM payments "
+                                    + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
+                                    + "classId='" + classId + "' AND "
+                                    + "year='" + thisYear + "' AND month='" + thisMonth + "'");
+                            while (rs3.next()) {
+                                if (rs3.getString("status").equals("1")) {
+                                    jTextField5.setText("Paid!");
+                                    jTextField5.setForeground(Color.green);
+                                } else {
+                                    jTextField5.setText("Not Paid!");
+                                    jTextField5.setForeground(Color.red);
+                                }
                             }
                         }
                     }
+                    con.close();
+                } catch (SQLException e) {
+                    System.out.println(e);
                 }
-                con.close();
-            } catch (SQLException e) {
-                System.out.println(e);
+            }
+            if (time[1].equals("E") || time[1].equals("S")) {
+                String searchFrom = null;
+                switch (time[1]) {
+                    case "E" ->
+                        searchFrom = "exams";
+                    case "S" ->
+                        searchFrom = "specialclasses";
+                }
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    ResultSet rs = stmt.executeQuery("SELECT * "
+                            + "FROM " + searchFrom + " "
+                            + "WHERE date='" + todate + "' "
+                            + "AND time='" + time[0] + "'");
+                    while (rs.next()) {
+                        String classIdx = rs.getString("classId");
+                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                                + "FROM subjects "
+                                + "WHERE grade='" + parts[0] + "' "
+                                + "AND subject='" + parts[1] + "'");
+                        while (rs2.next()) {
+                            String subjectId = rs2.getString("id");
+                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                    + "FROM classes "
+                                    + "WHERE id='" + classIdx + "' "
+                                    + "AND subjectId='" + subjectId + "'");
+                            while (rs3.next()) {
+                                classId = rs3.getString("id");
+                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                        + "FROM payments "
+                                        + "WHERE studentId='" + studentIdLabel.getText() + "' AND "
+                                        + "classId='" + classId + "' AND "
+                                        + "year='" + thisYear + "' AND month='" + thisMonth + "'");
+                                while (rs4.next()) {
+                                    if (rs4.getString("status").equals("1")) {
+                                        jTextField5.setText("Paid!");
+                                        jTextField5.setForeground(Color.green);
+                                    } else {
+                                        jTextField5.setText("Not Paid!");
+                                        jTextField5.setForeground(Color.red);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } catch (SQLException e) {
+                    System.out.println(e);
+                }
             }
             jButton1.setEnabled(true);
         } else {
@@ -769,44 +830,110 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         // TODO add your handling code here:
         String studentId = studentIdLabel.getText();
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * "
-                    + "FROM regclass "
-                    + "WHERE studentId='" + studentId + "' AND classId='" + classId + "'");
-            while (rs.next()) {
-                String regClassId = rs.getString("id");
-                ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) "
-                        + "FROM attendance "
-                        + "WHERE regClassId='" + rs.getString("id") + "' "
-                        + "AND date='" + date + "'");
-                while (rs2.next()) {
-                    int count = rs2.getInt(1);
-                    ResultSet rs3 = stmt.executeQuery("SELECT * "
-                            + "FROM students "
-                            + "WHERE id='" + studentId + "'");
-                    while (rs3.next()) {
-                        tId.setText(rs3.getString("telegramId"));
-                        String logtime = new SimpleDateFormat("HH:mm:ss").format(new Date());
-                        if (count == 0) {
-                            stmt.executeUpdate("INSERT INTO attendance "
-                                    + "(regClassId,date,time) "
-                                    + "VALUES "
-                                    + "('" + regClassId + "','" + date + "','" + logtime + "')");
-                            tMessage.attendanceMarking();
-                            JOptionPane.showMessageDialog(this, "Success!");
-                            disablePanels();
-                        } else {
-                            JOptionPane.showMessageDialog(this, "Already marked the attendance!");
-                            disablePanels();
+        String comboSelect = jComboBox3.getSelectedItem().toString();
+        String[] classx = comboSelect.split(" @ ");
+        String[] type = classx[1].split(" - ");
+
+        if (type[1].equals("(N)") || type[1].equals("(N/E)")) {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM regclass "
+                        + "WHERE studentId='" + studentId + "' AND classId='" + classId + "'");
+                while (rs.next()) {
+                    String regClassId = rs.getString("id");
+                    ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) "
+                            + "FROM attendance "
+                            + "WHERE regClassId='" + rs.getString("id") + "' "
+                            + "AND date='" + date + "'");
+                    while (rs2.next()) {
+                        int count = rs2.getInt(1);
+                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                                + "FROM students "
+                                + "WHERE id='" + studentId + "'");
+                        while (rs3.next()) {
+                            tId.setText(rs3.getString("telegramId"));
+                            String logtime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+                            if (count == 0) {
+                                stmt.executeUpdate("INSERT INTO attendance "
+                                        + "(regClassId,date,time) "
+                                        + "VALUES "
+                                        + "('" + regClassId + "','" + date + "','" + logtime + "')");
+                                if (type.equals("(N/E)")) {
+                                    ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                            + "FROM exams "
+                                            + "WHERE classId='" + classId + "' "
+                                            + "AND date='" + todate + "'");
+                                    while (rs4.next()) {
+                                        stmt.executeUpdate("UPDATE results SET "
+                                                + "attendance='1' "
+                                                + "WHERE examId='" + rs4.getString("id") + "' "
+                                                + "AND studentId='" + studentId + "'");
+                                    }
+                                }
+                                tMessage.attendanceMarking();
+                                disablePanels();
+                                JOptionPane.showMessageDialog(this, "Success!");
+                            } else {
+                                disablePanels();
+                                JOptionPane.showMessageDialog(this, "Already marked the attendance!");
+                            }
                         }
                     }
                 }
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e);
             }
-            con.close();
-        } catch (SQLException e) {
-            System.out.println(e);
+        }
+
+        if (type[1].equals("(E)") || type[1].equals("(S)")) {
+            String searchFrom = null;
+            String logtime = new SimpleDateFormat("HH:mm:ss").format(new Date());
+            switch (type[1]) {
+                case "E" ->
+                    searchFrom = "exams";
+                case "S" ->
+                    searchFrom = "specialclasses";
+            }
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM " + searchFrom + " "
+                        + "WHERE date='" + todate + "' "
+                        + "AND time='" + type[0] + "' "
+                        + "AND classId='" + classId + "'");
+                while (rs.next()) {
+                    switch (type[1]) {
+                        case "E" -> {
+                            stmt.executeUpdate("UPDATE results SET "
+                                    + "attendance='1' "
+                                    + "WHERE examId='" + rs.getString("id") + "' "
+                                    + "AND studentId='" + studentId + "'");
+                        }
+                        case "S" -> {
+                            stmt.executeUpdate("INSERT INTO specialattendance "
+                                    + "(specialClassId,studentId,date,time) "
+                                    + "VALUES "
+                                    + "('" + rs.getString("id") + "',"
+                                    + "'" + studentId + "','" + todate + "','" + logtime + "'");
+                        }
+                    }
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM students "
+                            + "WHERE id='" + studentId + "'");
+                    while (rs2.next()) {
+                        tId.setText(rs2.getString("telegramId"));
+                        tMessage.attendanceMarking();
+                        disablePanels();
+                        JOptionPane.showMessageDialog(this, "Success!");
+                    }
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
         }
         dataGrab();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -897,6 +1024,12 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             }
         }
     }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        ClassesDetails details = new ClassesDetails();
+        details.setVisible(true);
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1052,44 +1185,88 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                         jButton1.setEnabled(false);
                         jButton2.setEnabled(true);
                         jButton6.setEnabled(true);
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        jComboBox3.removeAllItems();
+                        String classIdx;
+                        String time;
+                        jComboBox3.addItem("Please Select...");
+                        jComboBox3.setSelectedIndex(0);
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM regclass "
                                 + "WHERE studentId='" + studentIdLabel.getText() + "'");
                         while (rs2.next()) {
-                            String classIdx = rs2.getString("classId");
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            classIdx = rs2.getString("classId");
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM classes "
                                     + "WHERE id='" + classIdx + "' "
                                     + "AND day='" + today + "'");
                             while (rs3.next()) {
-                                String time = rs3.getString("time");
-                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                time = rs3.getString("time");
+                                Statement stmt4 = con.createStatement();
+                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM subjects "
                                         + "WHERE id='" + rs3.getString("subjectId") + "'");
                                 while (rs4.next()) {
-                                    String examTrue = "";
-                                    ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                    String grade = rs4.getString("grade");
+                                    String subject = rs4.getString("subject");
+                                    Statement stmt5 = con.createStatement();
+                                    ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                             + "FROM exams "
-                                            + "WHERE classId='"+classIdx+"' "
-                                                    + "AND date='"+todate+"'");
-                                    while (rs5.next()){
-                                        if (rs5.getString("time").equals(time)){
-                                            examTrue = "/E";
+                                            + "WHERE classId='" + classIdx + "' "
+                                            + "AND date='" + todate + "'");
+                                    while (rs5.next()) {
+                                        String examTime = rs5.getString("time");
+                                        if (examTime.equals(time)) {
+                                            jComboBox3.addItem(grade
+                                                    + " - " + subject
+                                                    + " @ " + time
+                                                    + " - (N/E)");
+                                        } else {
+                                            jComboBox3.addItem(grade
+                                                    + " - " + subject
+                                                    + " @ " + examTime
+                                                    + " - (E)");
                                         }
                                     }
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    
-                                    jComboBox3.removeAllItems();
-                                    jComboBox3.addItem("Please Select...");
-                                    jComboBox3.setSelectedIndex(0);
-                                    jComboBox3.addItem(rs4.getString("grade")
-                                            + " - " + rs4.getString("subject")
-                                            + " - @ " + time
-                                    +" - (N"+examTrue+")");
+
+                                    int count = jComboBox3.getItemCount();
+                                    String comboItem = grade + " - " + subject + " - @ " + time + " - (N/E)";
+                                    for (int i = 0; i >= count; i++) {
+                                        if (!jComboBox3.getItemAt(i).equals(comboItem)) {
+                                            jComboBox3.addItem(grade
+                                                    + " - " + subject
+                                                    + " @ " + time
+                                                    + " - (N)");
+                                        }
+                                    }
+
+                                }
+                            }
+                            Statement stmt6 = con.createStatement();
+                            ResultSet rs6 = stmt6.executeQuery("SELECT * "
+                                    + "FROM specialclasses "
+                                    + "WHERE date='" + todate + "' "
+                                    + "AND classId='" + classIdx + "'");
+                            while (rs6.next()) {
+                                time = rs6.getString("time");
+                                Statement stmt7 = con.createStatement();
+                                ResultSet rs7 = stmt7.executeQuery("SELECT * "
+                                        + "FROM classes "
+                                        + "WHERE id='" + rs6.getString("classId") + "'");
+                                while (rs7.next()) {
+                                    Statement stmt8 = con.createStatement();
+                                    ResultSet rs8 = stmt8.executeQuery("SELECT * "
+                                            + "FROM subjects "
+                                            + "WHERE id='" + rs7.getString("subjectId") + "'");
+                                    while (rs8.next()) {
+                                        String grade = rs8.getString("grade");
+                                        String subject = rs8.getString("subject");
+                                        jComboBox3.addItem(grade
+                                                + " - " + subject
+                                                + " @ " + time
+                                                + " - (S)");
+                                    }
                                 }
                             }
                         }

@@ -55,7 +55,7 @@ public class EditClasses extends javax.swing.JFrame {
                 Paths.get("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\StudentId.lc"))) {
             jTextField1.setText(lines.skip(0).findFirst().get());
         } catch (IOException ex) {
-            System.out.println("#000"+ex);
+            System.out.println("#000" + ex);
         }
         String subject;
         String grade;
@@ -99,7 +99,7 @@ public class EditClasses extends javax.swing.JFrame {
             }
             con.close();
         } catch (SQLException e) {
-            System.out.println("#001"+e);
+            System.out.println("#001" + e);
         }
     }
 
@@ -381,7 +381,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#002"+ex);
+                System.out.println("#002" + ex);
             }
         }
     }//GEN-LAST:event_cr1ActionPerformed
@@ -422,7 +422,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#003"+ex);
+                System.out.println("#003" + ex);
             }
         }
     }//GEN-LAST:event_cr2ActionPerformed
@@ -473,7 +473,7 @@ public class EditClasses extends javax.swing.JFrame {
                 }
                 con.close();
             } catch (SQLException ex) {
-                System.out.println("#004"+ex);
+                System.out.println("#004" + ex);
             }
         }
     }//GEN-LAST:event_cr3ActionPerformed
@@ -492,32 +492,51 @@ public class EditClasses extends javax.swing.JFrame {
         String year = new SimpleDateFormat("yyyy").format(new Date());
         String month = new SimpleDateFormat("MM").format(new Date());
         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        int count = 0;
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO regclass "
-                    + "(studentId,classId) "
-                    + "VALUES "
-                    + "('" + jTextField1.getText() + "','" + classId + "')");
+            ResultSet rs = stmt.executeQuery("SELECT COUNT(*) "
+                    + "FROM regclass "
+                    + "WHERE studentId='" + jTextField1.getText() + "' "
+                    + "AND classId='" + classId + "'");
+            while (rs.next()) {
+                count = rs.getInt(1);
+            }
             con.close();
         } catch (SQLException ex) {
-            System.out.println("#005"+ex);
+            System.out.println("#005" + ex);
         }
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO payments "
-                    + "(studentId,classId,year,month,status,paymentDate) "
-                    + "VALUES ('" + jTextField1.getText() + "',"
-                    + "'" + classId + "',"
-                    + "'" + year + "',"
-                    + "'" + month + "','0','" + today + "')");
-            con.close();
-        } catch (SQLException ex) {
-            System.out.println("#006"+ex);
+        if (count == 0) {
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO regclass "
+                        + "(studentId,classId) "
+                        + "VALUES "
+                        + "('" + jTextField1.getText() + "','" + classId + "')");
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println("#005" + ex);
+            }
+            try {
+                Connection con = Helper.DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("INSERT INTO payments "
+                        + "(studentId,classId,year,month,status,paymentDate) "
+                        + "VALUES ('" + jTextField1.getText() + "',"
+                        + "'" + classId + "',"
+                        + "'" + year + "',"
+                        + "'" + month + "','0','" + today + "')");
+                con.close();
+            } catch (SQLException ex) {
+                System.out.println("#006" + ex);
+            }
+            getData();
+            JOptionPane.showMessageDialog(this, "Success!");
+        } else {
+            JOptionPane.showMessageDialog(this, "Already registered to the class!");
         }
-        getData();
-        JOptionPane.showMessageDialog(this, "Success!");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -542,7 +561,7 @@ public class EditClasses extends javax.swing.JFrame {
                         + "classId='" + value + "'");
                 con.close();
             } catch (SQLException e) {
-                System.out.println("#007"+e);
+                System.out.println("#007" + e);
             }
             try {
                 Connection con = Helper.DB.connect();
@@ -553,7 +572,7 @@ public class EditClasses extends javax.swing.JFrame {
                         + "classId='" + value + "'");
                 con.close();
             } catch (SQLException e) {
-                System.out.println("#008"+e);
+                System.out.println("#008" + e);
             }
             getData();
             JOptionPane.showMessageDialog(this, "Success!");

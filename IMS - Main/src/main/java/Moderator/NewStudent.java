@@ -1052,15 +1052,16 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        String todate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("INSERT INTO students "
-                    + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status)"
+                    + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status,regDate)"
                     + "VALUES"
                     + "('" + newStudent + "','" + fName.getText() + "','" + lName.getText() + "',"
                     + "'" + gName.getText() + "','" + gPhone.getText() + "','" + address.getText() + "',"
-                    + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0')");
+                    + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0','" + todate + "')");
             con.close();
         } catch (SQLException ex) {
             System.out.println(ex);

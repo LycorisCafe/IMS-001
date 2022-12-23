@@ -117,6 +117,8 @@ public class AutomatedMessages {
         String chatId = Moderator.Main.tId.getText();
         String studentId = instituteName + "-STUDENT-" + Moderator.Main.studentIdLabel.getText();
         String studentName = Moderator.Main.jTextField3.getText();
+        //========
+
         String atendClass = Moderator.Main.jComboBox3.getSelectedItem().toString();
         String paymentDetails = Moderator.Main.jTextField5.getText();
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -203,8 +205,9 @@ public class AutomatedMessages {
         String teacherName = details[3];
         String examName = details[4];
         String examDate = details[5];
-        String marks = details[6];
-        String rank = details[7];
+        String attendance = details[6];
+        String marks = details[7];
+        String rank = details[8];
         String image = "AgACAgUAAx0CaCw0FAADQWOZmqVGir6LH9r5om728fZ0Tu7lAALttTEbfIXRVE9FAabdfWMOAQADAgADbQADLAQ";
         photo.setChatId(telegramId);
         photo.setPhoto(new InputFile(image));
@@ -214,6 +217,7 @@ public class AutomatedMessages {
                 + "Teacher : " + teacherName + "\n\n"
                 + "Exam Name : " + examName + "\n"
                 + "Exam Date : " + examDate + "\n\n"
+                + "Attendance : " + attendance + "\n"
                 + "Marks : " + marks + "\n"
                 + "Grade : " + rank);
         photo.setProtectContent(true);
@@ -257,8 +261,8 @@ public class AutomatedMessages {
         String specialDuration = Administrator.Main.jTextField46.getText() + "(h) "
                 + Administrator.Main.jTextField47.getText() + "(min)";
     }
-    
-    public void specialClassDelete(){
+
+    public void specialClassDelete() {
         String telegramId = Administrator.Main.telegramId.getText();
         int r = Administrator.Main.jTable6.getSelectedRow();
         String className = Administrator.Main.jTable6.getValueAt(r, 1).toString() + " - "

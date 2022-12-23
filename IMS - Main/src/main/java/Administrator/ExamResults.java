@@ -38,7 +38,7 @@ public class ExamResults extends javax.swing.JFrame {
         model.setRowCount(0);
         int r = Main.jTable8.getSelectedRow();
         String examId = Main.jTable8.getValueAt(r, 0).toString();
-        String rank = null;
+        String rank;
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -49,13 +49,14 @@ public class ExamResults extends javax.swing.JFrame {
                 String resultId = rs.getString("id");
                 String marks = rs.getString("marks");
                 String studentId = rs.getString("studentId");
+                String attendance = rs.getString("attendance");
                 Statement stmt2 = con.createStatement();
                 ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM students "
                         + "WHERE id='" + studentId + "'");
                 while (rs2.next()) {
                     if (marks.equals("N/A")) {
-                        rank = marks;
+                        rank = "N/A";
                     } else {
                         int marksx = Integer.parseInt(marks);
                         if (marksx >= 75) {
@@ -70,8 +71,11 @@ public class ExamResults extends javax.swing.JFrame {
                             rank = "W";
                         }
                     }
+                    if (attendance.equals("1")) {
+                        attendance = "Present";
+                    }
                     Object[] row = {resultId, studentId, rs2.getString("firstName")
-                        + " " + rs2.getString("lastName"), marks, rank};
+                        + " " + rs2.getString("lastName"), attendance, marks, rank};
                     model.addRow(row);
                 }
             }
@@ -96,6 +100,7 @@ public class ExamResults extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         detailsPass.setText("jLabel2");
 
@@ -114,11 +119,11 @@ public class ExamResults extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Result Id", "Student Id", "Student Name", "Marks", "Rank"
+                "Result Id", "Student Id", "Student Name", "Attendance", "Marks", "Rank"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
+                false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -144,6 +149,13 @@ public class ExamResults extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jLabel1.setText("[ Exam results will send via Telegram Bot ]");
 
+        jButton3.setText("?");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -157,6 +169,8 @@ public class ExamResults extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
@@ -169,7 +183,8 @@ public class ExamResults extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(jButton3))
                 .addContainerGap())
         );
 
@@ -183,7 +198,7 @@ public class ExamResults extends javax.swing.JFrame {
         int count = jTable1.getRowCount();
         for (int x = 0; x < count; x++) {
             String resultId = jTable1.getValueAt(y, 0).toString();
-            String marks = jTable1.getValueAt(y, 3).toString();
+            String marks = jTable1.getValueAt(y, 4).toString();
             if (marks.equals("")) {
                 marks = "N/A";
             }
@@ -216,8 +231,14 @@ public class ExamResults extends javax.swing.JFrame {
             for (int x = 0; x < count; x++) {
                 String resultId = jTable1.getValueAt(y, 0).toString();
                 String studentId = jTable1.getValueAt(y, 1).toString();
-                String marksx = jTable1.getValueAt(y, 3).toString();
-                String rankx = jTable1.getValueAt(y, 4).toString();
+                String attendancex = jTable1.getValueAt(y, 3).toString();
+                String marksx = jTable1.getValueAt(y, 4).toString();
+                String rankx = jTable1.getValueAt(y, 5).toString();
+                if (attendancex.equals("A/B")) {
+                    attendancex = "Absent";
+                } else {
+                    attendancex = "Present";
+                }
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();
@@ -256,7 +277,7 @@ public class ExamResults extends javax.swing.JFrame {
                                                     + " - " + rs6.getString("subject");
                                             detailsPass.setText(telegramIdx + "@" + studentNamex + "@"
                                                     + classNamex + "@" + teacherNamex + "@" + examNamex
-                                                    + "@" + examDatex + "@" + marksx + "@" + rankx);
+                                                    + "@" + examDatex + "@" + attendancex + "@" + marksx + "@" + rankx);
                                             bot.examResultPush();
                                         }
                                     }
@@ -269,7 +290,7 @@ public class ExamResults extends javax.swing.JFrame {
                 }
                 y = y + 1;
             }
-            JOptionPane.showMessageDialog(this, "Success!");
+            jButton1ActionPerformed(evt);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -277,6 +298,11 @@ public class ExamResults extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_disposeTextPropertyChange
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "N/A - Not set results yet\nA/B - Absent for exam");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -318,6 +344,7 @@ public class ExamResults extends javax.swing.JFrame {
     public static javax.swing.JLabel disposeText;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

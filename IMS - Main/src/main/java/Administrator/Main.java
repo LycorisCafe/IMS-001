@@ -3777,14 +3777,16 @@ public class Main extends javax.swing.JFrame {
         String contact = jTextField7.getText();
         String address = jTextField8.getText();
         int status = jComboBox1.getSelectedIndex();
+        String todate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = (Statement) con.createStatement();
-            stmt.executeUpdate("INSERT INTO teachers(name, nic, address, "
-                    + "telegramId, contact, status) "
+            stmt.executeUpdate("INSERT INTO teachers "
+                    + "(name,nic,address,telegramId,contact,status,regDate) "
                     + "VALUES "
-                    + "('" + name + "', '" + nic + "', '" + address + "',"
-                    + " '" + telegramId.getText() + "', '" + contact + "', '" + status + "')");
+                    + "('" + name + "','" + nic + "','" + address + "',"
+                    + "'" + telegramId.getText() + "','" + contact + "','" + status + "',"
+                    + "'" + todate + "')");
             con.close();
             loadTeachers();
             JOptionPane.showMessageDialog(this, "Success!");
@@ -5383,9 +5385,9 @@ public class Main extends javax.swing.JFrame {
                             telegramId.setText(rs3.getString("telegramId"));
                             Statement stmt6 = con.createStatement();
                             stmt6.executeUpdate("INSERT INTO results "
-                                    + "(examId,studentId,marks) "
+                                    + "(examId,studentId,marks,attendance) "
                                     + "VALUES "
-                                    + "('" + examId + "','" + studentId + "','N/A')");
+                                    + "('" + examId + "','" + studentId + "','N/A','A/B')");
                             tAutomated.newExamAdded();
                         }
                     }
@@ -6076,7 +6078,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
         // TODO add your handling code here:
-        if (jCheckBox3.isSelected()){
+        if (jCheckBox3.isSelected()) {
             String[] time = cr5.getSelectedItem().toString().split(" ");
             String[] timex = time[1].split(":");
             jTextField32.setText(timex[0]);
