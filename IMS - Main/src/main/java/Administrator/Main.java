@@ -5683,18 +5683,17 @@ public class Main extends javax.swing.JFrame {
                 ResultSet rs = stmt.executeQuery("SELECT * "
                         + "FROM subjects");
                 while (rs.next()) {
+                    x = 1;
                     String gradex = rs.getString("grade");
                     String subjectx = rs.getString("subject");
                     if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
                         JOptionPane.showMessageDialog(this, "Subject already registered!");
-                        x=1;
                     } else {
                         stmt.executeUpdate("INSERT INTO subjects "
                                 + "(grade,subject) "
                                 + "VALUES "
                                 + "('" + grade + "','" + name + "')");
                         loadSubjects();
-                        x=1;
                         JOptionPane.showMessageDialog(this, "Success!");
                     }
                 }
