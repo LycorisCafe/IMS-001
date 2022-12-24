@@ -3761,6 +3761,7 @@ public class Main extends javax.swing.JFrame {
                 || jTextField7.getText().equals("") || jTextField8.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
+            success.setText("---");
             jCheckBox1.setSelected(true);
             TelegramVerify tVerify = new TelegramVerify();
             tVerify.setVisible(true);
@@ -3804,6 +3805,7 @@ public class Main extends javax.swing.JFrame {
             int r = jTable1.getSelectedRow();
             tableSelection = jTable1.getValueAt(r, 0).toString();
             if (jCheckBox1.isSelected()) {
+                success.setText("---");
                 TelegramVerify tVerify = new TelegramVerify();
                 tVerify.setVisible(true);
                 Faker faker = new Faker();
@@ -3883,6 +3885,7 @@ public class Main extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(this, "All fields must be filled!");
         } else {
             if (jCheckBox2.isSelected()) {
+                success.setText("---");
                 TelegramVerify tVerify = new TelegramVerify();
                 tVerify.setVisible(true);
                 Faker faker = new Faker();
@@ -4477,6 +4480,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        success.setText("---");
         TelegramVerify tVerify = new TelegramVerify();
         tVerify.setVisible(true);
         Faker faker = new Faker();
@@ -4513,6 +4517,7 @@ public class Main extends javax.swing.JFrame {
                 || jTextField38.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "All fields must be filled!");
         } else {
+            success.setText("---");
             TelegramVerify tVerify = new TelegramVerify();
             tVerify.setVisible(true);
             Faker faker = new Faker();
