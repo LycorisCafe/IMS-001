@@ -5687,15 +5687,22 @@ public class Main extends javax.swing.JFrame {
                     String subjectx = rs.getString("subject");
                     if (gradex.equalsIgnoreCase(grade) && subjectx.equalsIgnoreCase(name)) {
                         JOptionPane.showMessageDialog(this, "Subject already registered!");
+                        x=1;
                     } else {
-                        x = 1;
+                        stmt.executeUpdate("INSERT INTO subjects "
+                                + "(grade,subject) "
+                                + "VALUES "
+                                + "('" + grade + "','" + name + "')");
+                        loadSubjects();
+                        x=1;
+                        JOptionPane.showMessageDialog(this, "Success!");
                     }
                 }
 
             } catch (HeadlessException | SQLException e) {
                 System.out.println("#065" + e);
             }
-            if (x == 1) {
+            if (x == 0) {
                 try {
                     Connection con = Helper.DB.connect();
                     Statement stmt = con.createStatement();

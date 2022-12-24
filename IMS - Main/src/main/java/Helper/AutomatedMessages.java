@@ -89,6 +89,7 @@ public class AutomatedMessages {
             System.out.println(ex);
         }
         String[] inviteLinks = Moderator.NewStudent.tSendLinks.getText().split(" ");
+        System.out.println(Moderator.NewStudent.tSendLinks.getText());
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -99,6 +100,7 @@ public class AutomatedMessages {
             String duration = (String) Moderator.NewStudent.jTable1.getValueAt(y, 6);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 7);
             String groupLink = inviteLinks[y];
+            System.out.println("ok "+groupLink);
             message.setChatId(chatId);
             message.setText("Hello, " + studentName + "\n\n"
                     + "You have successfully enrolled to :\n"

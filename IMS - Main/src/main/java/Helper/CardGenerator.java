@@ -134,9 +134,9 @@ public class CardGenerator {
             img1.setFixedPosition(20, 54);
             doc.add(img1);
             doc.close();
-            
+
             File source = new File(defFileLocation + "\\" + studentId + ".pdf");
-            File to = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentCards");
+            File to = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentCards\\" + studentId + ".pdf");
             FileUtils.copyFile(source, to);
         } catch (FileNotFoundException | MalformedURLException e) {
             System.out.println(e);
