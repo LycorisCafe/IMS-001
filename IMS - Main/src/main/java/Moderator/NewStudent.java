@@ -49,7 +49,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         formDetails();
         disablePanels();
     }
-
+    
     String code = null;
     private WebcamPanel panel = null;
     private Webcam webcam = null;
@@ -65,13 +65,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     int dayInt;
     String institute = Helper.MainDetails.instituteName();
     int newStudent = 0;
-
+    
     private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
         setExtendedState(this.MAXIMIZED_BOTH);
     }
-
+    
     private void disablePanels() {
         Component[] com1 = jPanel4.getComponents();
         for (int a = 0; a < com1.length; a++) {
@@ -90,26 +90,27 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
             com4[a].setEnabled(false);
         }
     }
-
+    
     private void initWebCam() {
         try {
             Dimension size = WebcamResolution.QVGA.getSize();
             webcam = Webcam.getWebcams().get(0);
             webcam.setViewSize(size);
-
+            
             panel = new WebcamPanel(webcam);
             panel.setPreferredSize(size);
             panel.setFPSDisplayed(true);
-
+            
             jPanel5.add(panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 150));
-
+            
             executor.execute(this);
         } catch (WebcamException e) {
             System.out.println(e);
         }
     }
-
+    
     private void clearData() {
+        telegramId.setText("---");
         fName.setText("");
         lName.setText("");
         gName.setText("");
@@ -134,7 +135,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        telegram = new javax.swing.JLabel();
         telegramId = new javax.swing.JLabel();
         tSendStudentId = new javax.swing.JLabel();
         tSendStudentName = new javax.swing.JLabel();
@@ -189,8 +189,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         jPanel10 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jButton8 = new javax.swing.JButton();
-
-        telegram.setText("jLabel16");
 
         telegramId.setText("jLabel16");
 
@@ -759,7 +757,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         Faker faker = new Faker();
         code = faker.number().digits(5);
         jTextField5.setText(code);
-        telegram.setText(code);
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -868,7 +865,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         for (int a = 0; a < com2.length; a++) {
             com2[a].setEnabled(true);
         }
-
+        
         try {
             Connection con = Helper.DB.connect();
             Statement stmt = con.createStatement();
@@ -883,7 +880,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         } catch (SQLException ex) {
             System.out.println(ex);
         }
-
+        
         int width = 150;
         int height = 150;
         String newStudentId = newStudent + "";
@@ -1087,7 +1084,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                 }
                 String year = new SimpleDateFormat("yyyy").format(new Date());
                 String month = new SimpleDateFormat("MM").format(new Date());
-
+                
                 int rowcount = jTable1.getRowCount();
                 Helper.TelegramBot bot = new Helper.TelegramBot();
                 DefaultTableModel modelx = (DefaultTableModel) tSendLinks.getModel();
@@ -1148,13 +1145,13 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         System.out.println(ex);
                     }
                 }
-
+                
                 tSendStudentId.setText("" + newStudent);
                 tSendStudentName.setText(fName.getText() + " " + lName.getText());
-
+                
                 Helper.CardGenerator card = new Helper.CardGenerator();
                 card.cardGenerator();
-
+                
                 File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
                 File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
                 if (imgPathSave.exists()) {
@@ -1164,10 +1161,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                     tempImage.renameTo(imgPathSave);
                     tempImage.delete();
                 }
-
+                
                 Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
                 sendMessage.studentRegistrationSuccess();
-
+                
                 Component[] com1 = jPanel9.getComponents();
                 for (int a = 0; a < com1.length; a++) {
                     com1[a].setEnabled(false);
@@ -1293,12 +1290,11 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     public static javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField5;
+    public static javax.swing.JTextField jTextField5;
     private javax.swing.JTextField lName;
     public static javax.swing.JTable tSendLinks;
     public static javax.swing.JLabel tSendStudentId;
     public static javax.swing.JLabel tSendStudentName;
-    public static javax.swing.JLabel telegram;
     public static javax.swing.JLabel telegramId;
     // End of variables declaration//GEN-END:variables
 
@@ -1308,10 +1304,10 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         t.setDaemon(true);
         return t;
     }
-
+    
     @Override
     public void run() {
         // do nothing
     }
-
+    
 }
