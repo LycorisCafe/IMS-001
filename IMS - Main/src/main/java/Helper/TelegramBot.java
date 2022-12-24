@@ -4,12 +4,12 @@
  */
 package Helper;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.Connection;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.groupadministration.ApproveChatJoinRequest;
+//import org.telegram.telegrambots.meta.api.methods.groupadministration.ApproveChatJoinRequest;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
@@ -86,40 +86,40 @@ public class TelegramBot extends TelegramLongPollingBot {
                     + " " + "@" + user + " : " + update.getMessage().getText() + "\n");
         }
 
-        if (update.hasChatJoinRequest()) {
-            long userId = update.getChatJoinRequest().getUser().getId();
-            String link = update.getChatJoinRequest().getInviteLink().getInviteLink();
-            String regClassId = update.getChatJoinRequest().getInviteLink().getName();
-            try {
-                Connection con = DB.connect();
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM regclass "
-                        + "WHERE id='" + regClassId + "'");
-                while (rs.next()) {
-                    String classId = rs.getString("classId");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
-                            + "FROM students "
-                            + "WHERE id='" + rs.getString("studentId") + "'");
-                    while (rs2.next()) {
-                        long telegramIdUser = rs2.getLong("telegramId");
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
-                                + "FROM classes "
-                                + "WHERE id='" + classId + "'");
-                        while (rs3.next()) {
-                            if (userId == telegramIdUser) {
-                                ApproveChatJoinRequest reqApprove = new ApproveChatJoinRequest();
-                                reqApprove.setChatId(rs3.getString("telegramId"));
-                                reqApprove.setUserId(userId);
-                                
-                            }
-                        }
-                    }
-                }
-            } catch (SQLException e) {
-                System.out.println(e);
-            }
-        }
+//        if (update.hasChatJoinRequest()) {
+//            long userId = update.getChatJoinRequest().getUser().getId();
+//            String link = update.getChatJoinRequest().getInviteLink().getInviteLink();
+//            String regClassId = update.getChatJoinRequest().getInviteLink().getName();
+//            try {
+//                Connection con = DB.connect();
+//                Statement stmt = con.createStatement();
+//                ResultSet rs = stmt.executeQuery("SELECT * "
+//                        + "FROM regclass "
+//                        + "WHERE id='" + regClassId + "'");
+//                while (rs.next()) {
+//                    String classId = rs.getString("classId");
+//                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+//                            + "FROM students "
+//                            + "WHERE id='" + rs.getString("studentId") + "'");
+//                    while (rs2.next()) {
+//                        long telegramIdUser = rs2.getLong("telegramId");
+//                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+//                                + "FROM classes "
+//                                + "WHERE id='" + classId + "'");
+//                        while (rs3.next()) {
+//                            if (userId == telegramIdUser) {
+//                                ApproveChatJoinRequest reqApprove = new ApproveChatJoinRequest();
+//                                reqApprove.setChatId(rs3.getString("telegramId"));
+//                                reqApprove.setUserId(userId);
+//                                
+//                            }
+//                        }
+//                    }
+//                }
+//            } catch (SQLException e) {
+//                System.out.println(e);
+//            }
+//        }
 
     }
 }

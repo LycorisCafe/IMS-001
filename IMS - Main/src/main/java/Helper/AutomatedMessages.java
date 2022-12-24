@@ -88,8 +88,6 @@ public class AutomatedMessages {
         } catch (TelegramApiException ex) {
             System.out.println(ex);
         }
-        String[] inviteLinks = Moderator.NewStudent.tSendLinks.getText().split(" ");
-        System.out.println(Moderator.NewStudent.tSendLinks.getText());
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -99,8 +97,7 @@ public class AutomatedMessages {
             String time = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
             String duration = (String) Moderator.NewStudent.jTable1.getValueAt(y, 6);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 7);
-            String groupLink = inviteLinks[y];
-            System.out.println("ok "+groupLink);
+            String groupLink = (String) Moderator.NewStudent.tSendLinks.getValueAt(y, 0);
             message.setChatId(chatId);
             message.setText("Hello, " + studentName + "\n\n"
                     + "You have successfully enrolled to :\n"

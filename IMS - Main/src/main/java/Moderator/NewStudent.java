@@ -138,7 +138,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         telegramId = new javax.swing.JLabel();
         tSendStudentId = new javax.swing.JLabel();
         tSendStudentName = new javax.swing.JLabel();
-        tSendLinks = new javax.swing.JLabel();
+        tSendLinks = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
@@ -198,7 +198,14 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
         tSendStudentName.setText("jLabel16");
 
-        tSendLinks.setText("jLabel17");
+        tSendLinks.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "tSendLinks"
+            }
+        ));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student Registration");
@@ -1057,110 +1064,122 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        String todate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        try {
-            Connection con = Helper.DB.connect();
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate("INSERT INTO students "
-                    + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status,regDate)"
-                    + "VALUES"
-                    + "('" + newStudent + "','" + fName.getText() + "','" + lName.getText() + "',"
-                    + "'" + gName.getText() + "','" + gPhone.getText() + "','" + address.getText() + "',"
-                    + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0','" + todate + "')");
-            con.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        String year = new SimpleDateFormat("yyyy").format(new Date());
-        String month = new SimpleDateFormat("MM").format(new Date());
+        jButton8.setText("Please wait...");
+        jButton8.setEnabled(false);
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String todate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                try {
+                    Connection con = Helper.DB.connect();
+                    Statement stmt = con.createStatement();
+                    stmt.executeUpdate("INSERT INTO students "
+                            + "(id,firstName,lastName,guardianName,guardianPhone,address,grade,telegramId,status,regDate)"
+                            + "VALUES"
+                            + "('" + newStudent + "','" + fName.getText() + "','" + lName.getText() + "',"
+                            + "'" + gName.getText() + "','" + gPhone.getText() + "','" + address.getText() + "',"
+                            + "'" + grade.getSelectedItem().toString() + "','" + telegramId.getText() + "','0','" + todate + "')");
+                    con.close();
+                } catch (SQLException ex) {
+                    System.out.println(ex);
+                }
+                String year = new SimpleDateFormat("yyyy").format(new Date());
+                String month = new SimpleDateFormat("MM").format(new Date());
 
-        int rowcount = jTable1.getRowCount();
-        Helper.TelegramBot bot = new Helper.TelegramBot();
-        tSendLinks.setText("");
-        for (int y = 0; y < rowcount; y++) {
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                stmt.executeUpdate("INSERT INTO regclass "
-                        + "(studentId,classId) "
-                        + "VALUES "
-                        + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
-                ResultSet rs = stmt.executeQuery("SELECT * "
-                        + "FROM classes "
-                        + "WHERE id='" + jTable1.getValueAt(y, 0) + "'");
-                while (rs.next()) {
-                    String telegramIdx = rs.getString("telegramId");
-                    ResultSet rs2 = stmt.executeQuery("SELECT * "
-                            + "FROM regclass "
-                            + "WHERE studentId='" + newStudent + "' "
-                            + "AND classId='" + jTable1.getValueAt(y, 0) + "'");
-                    while (rs2.next()) {
-                        CreateChatInviteLink link = new CreateChatInviteLink();
-                        link.setChatId(telegramIdx);
-                        link.setCreatesJoinRequest(true);
-                        link.setName(rs2.getString("id"));
-                        String chatInvite = null;
-                        try {
-                            chatInvite = bot.execute(link).getInviteLink();
-                        } catch (TelegramApiException e) {
-                            System.out.println(e);
-                        }
-                        tSendLinks.setText(tSendLinks.getText() + " " + chatInvite);
-                        stmt.executeUpdate("INSERT INTO chatinvites "
-                                + "(regClassId,link,messageId) "
+                int rowcount = jTable1.getRowCount();
+                Helper.TelegramBot bot = new Helper.TelegramBot();
+                DefaultTableModel modelx = (DefaultTableModel) tSendLinks.getModel();
+                modelx.setRowCount(0);
+                for (int y = 0; y < rowcount; y++) {
+                    try {
+                        Connection con = Helper.DB.connect();
+                        Statement stmt = con.createStatement();
+                        stmt.executeUpdate("INSERT INTO regclass "
+                                + "(studentId,classId) "
                                 + "VALUES "
-                                + "('" + rs2.getString("id") + "','" + chatInvite + "','0')");
+                                + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
+                        ResultSet rs = stmt.executeQuery("SELECT * "
+                                + "FROM classes "
+                                + "WHERE id='" + jTable1.getValueAt(y, 0) + "'");
+                        while (rs.next()) {
+                            String telegramIdx = rs.getString("telegramId");
+                            ResultSet rs2 = stmt.executeQuery("SELECT * "
+                                    + "FROM regclass "
+                                    + "WHERE studentId='" + newStudent + "' "
+                                    + "AND classId='" + jTable1.getValueAt(y, 0) + "'");
+                            while (rs2.next()) {
+                                CreateChatInviteLink link = new CreateChatInviteLink();
+                                link.setChatId(telegramIdx);
+                                link.setCreatesJoinRequest(true);
+                                link.setName(rs2.getString("id"));
+                                String chatInvite = null;
+                                try {
+                                    chatInvite = bot.execute(link).getInviteLink();
+                                } catch (TelegramApiException e) {
+                                    System.out.println(e);
+                                }
+                                Object[] row = {chatInvite};
+                                modelx.addRow(row);
+                                stmt.executeUpdate("INSERT INTO chatinvites "
+                                        + "(regClassId,link,messageId) "
+                                        + "VALUES "
+                                        + "('" + rs2.getString("id") + "','" + chatInvite + "','0')");
+                            }
+                        }
+                        con.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex);
+                    }
+                    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    try {
+                        Connection con = Helper.DB.connect();
+                        Statement stmt = con.createStatement();
+                        stmt.executeUpdate("INSERT INTO payments "
+                                + "(studentId,classId,year,month,status,paymentDate) "
+                                + "VALUES ('" + newStudent + "',"
+                                + "'" + jTable1.getValueAt(y, 0) + "',"
+                                + "'" + year + "',"
+                                + "'" + month + "','0','" + today + "')");
+                        con.close();
+                    } catch (SQLException ex) {
+                        System.out.println(ex);
                     }
                 }
-                con.close();
-            } catch (SQLException ex) {
-                System.out.println(ex);
+
+                tSendStudentId.setText("" + newStudent);
+                tSendStudentName.setText(fName.getText() + " " + lName.getText());
+
+                Helper.CardGenerator card = new Helper.CardGenerator();
+                card.cardGenerator();
+
+                File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
+                File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
+                if (imgPathSave.exists()) {
+                    imgPathSave.delete();
+                    tempImage.renameTo(imgPathSave);
+                } else {
+                    tempImage.renameTo(imgPathSave);
+                    tempImage.delete();
+                }
+
+                Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
+                sendMessage.studentRegistrationSuccess();
+
+                Component[] com1 = jPanel9.getComponents();
+                for (int a = 0; a < com1.length; a++) {
+                    com1[a].setEnabled(false);
+                }
+                Component[] com2 = jPanel3.getComponents();
+                for (int a = 0; a < com2.length; a++) {
+                    com2[a].setEnabled(true);
+                }
+                jButton8.setText("Save");
+                clearData();
+                Moderator.NewStudent student = new Moderator.NewStudent();
+                JOptionPane.showMessageDialog(student, "Success!");
             }
-            String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            try {
-                Connection con = Helper.DB.connect();
-                Statement stmt = con.createStatement();
-                stmt.executeUpdate("INSERT INTO payments "
-                        + "(studentId,classId,year,month,status,paymentDate) "
-                        + "VALUES ('" + newStudent + "',"
-                        + "'" + jTable1.getValueAt(y, 0) + "',"
-                        + "'" + year + "',"
-                        + "'" + month + "','0','" + today + "')");
-                con.close();
-            } catch (SQLException ex) {
-                System.out.println(ex);
-            }
-        }
-
-        tSendStudentId.setText("" + newStudent);
-        tSendStudentName.setText(fName.getText() + " " + lName.getText());
-
-        Helper.CardGenerator card = new Helper.CardGenerator();
-        card.cardGenerator();
-
-        File tempImage = new File("C:\\ProgramData\\LycorisCafe\\IMS\\Temp\\TempStudent.png");
-        File imgPathSave = new File("C:\\ProgramData\\LycorisCafe\\IMS\\StudentImgs\\" + newStudent + ".png");
-        if (imgPathSave.exists()) {
-            imgPathSave.delete();
-            tempImage.renameTo(imgPathSave);
-        } else {
-            tempImage.renameTo(imgPathSave);
-            tempImage.delete();
-        }
-
-        Helper.AutomatedMessages sendMessage = new Helper.AutomatedMessages();
-        sendMessage.studentRegistrationSuccess();
-
-        JOptionPane.showMessageDialog(this, "Success!");
-        Component[] com1 = jPanel9.getComponents();
-        for (int a = 0; a < com1.length; a++) {
-            com1[a].setEnabled(false);
-        }
-        Component[] com2 = jPanel3.getComponents();
-        for (int a = 0; a < com2.length; a++) {
-            com2[a].setEnabled(true);
-        }
-        clearData();
+        });
+        t1.start();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
@@ -1273,7 +1292,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField lName;
-    public static javax.swing.JLabel tSendLinks;
+    public static javax.swing.JTable tSendLinks;
     public static javax.swing.JLabel tSendStudentId;
     public static javax.swing.JLabel tSendStudentName;
     public static javax.swing.JLabel telegram;
