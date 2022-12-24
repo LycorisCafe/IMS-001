@@ -248,28 +248,33 @@ public class ExamResults extends javax.swing.JFrame {
                     while (rs.next()) {
                         String studentNamex = rs.getString("firstName") + " " + rs.getString("lastName");
                         String telegramIdx = rs.getString("telegramId");
-                        ResultSet rs2 = stmt.executeQuery("SELECT * "
+                        Statement stmt2 = con.createStatement();
+                        ResultSet rs2 = stmt2.executeQuery("SELECT * "
                                 + "FROM results "
                                 + "WHERE id='" + resultId + "'");
                         while (rs2.next()) {
-                            ResultSet rs3 = stmt.executeQuery("SELECT * "
+                            Statement stmt3 = con.createStatement();
+                            ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                     + "FROM exams "
                                     + "WHERE id='" + rs2.getString("examId") + "'");
                             while (rs3.next()) {
                                 String examNamex = rs3.getString("name");
                                 String examDatex = rs3.getString("date");
-                                ResultSet rs4 = stmt.executeQuery("SELECT * "
+                                Statement stmt4 = con.createStatement();
+                                ResultSet rs4 = stmt4.executeQuery("SELECT * "
                                         + "FROM classes "
                                         + "WHERE id='" + rs3.getString("classId") + "'");
                                 while (rs4.next()) {
                                     String teacherId = rs4.getString("teacherId");
                                     String subjectId = rs4.getString("subjectId");
-                                    ResultSet rs5 = stmt.executeQuery("SELECT * "
+                                    Statement stmt5 = con.createStatement();
+                                    ResultSet rs5 = stmt5.executeQuery("SELECT * "
                                             + "FROM teachers "
                                             + "WHERE id='" + teacherId + "'");
                                     while (rs5.next()) {
                                         String teacherNamex = rs5.getString("name");
-                                        ResultSet rs6 = stmt.executeQuery("SELECT * "
+                                        Statement stmt6 = con.createStatement();
+                                        ResultSet rs6 = stmt6.executeQuery("SELECT * "
                                                 + "FROM subjects "
                                                 + "WHERE id='" + subjectId + "'");
                                         while (rs6.next()) {
