@@ -32,6 +32,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.telegram.telegrambots.meta.api.methods.groupadministration.CreateChatInviteLink;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
  *
@@ -136,6 +138,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         telegramId = new javax.swing.JLabel();
         tSendStudentId = new javax.swing.JLabel();
         tSendStudentName = new javax.swing.JLabel();
+        tSendLinks = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jLabel13 = new javax.swing.JLabel();
@@ -194,6 +197,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         tSendStudentId.setText("jLabel16");
 
         tSendStudentName.setText("jLabel16");
+
+        tSendLinks.setText("jLabel17");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Student Registration");
@@ -1070,6 +1075,8 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         String month = new SimpleDateFormat("MM").format(new Date());
 
         int rowcount = jTable1.getRowCount();
+        Helper.TelegramBot bot = new Helper.TelegramBot();
+        tSendLinks.setText("");
         for (int y = 0; y < rowcount; y++) {
             try {
                 Connection con = Helper.DB.connect();
@@ -1078,6 +1085,33 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
                         + "(studentId,classId) "
                         + "VALUES "
                         + "('" + newStudent + "','" + jTable1.getValueAt(y, 0) + "')");
+                ResultSet rs = stmt.executeQuery("SELECT * "
+                        + "FROM classes "
+                        + "WHERE id='" + jTable1.getValueAt(y, 0) + "'");
+                while (rs.next()) {
+                    String telegramIdx = rs.getString("telegramId");
+                    ResultSet rs2 = stmt.executeQuery("SELECT * "
+                            + "FROM regclass "
+                            + "WHERE studentId='" + newStudent + "' "
+                            + "AND classId='" + jTable1.getValueAt(y, 0) + "'");
+                    while (rs2.next()) {
+                        CreateChatInviteLink link = new CreateChatInviteLink();
+                        link.setChatId(telegramIdx);
+                        link.setCreatesJoinRequest(true);
+                        link.setName(rs2.getString("id"));
+                        String chatInvite = null;
+                        try {
+                            chatInvite = bot.execute(link).getInviteLink();
+                        } catch (TelegramApiException e) {
+                            System.out.println(e);
+                        }
+                        tSendLinks.setText(tSendLinks.getText() + " " + chatInvite);
+                        stmt.executeUpdate("INSERT INTO chatinvites "
+                                + "(regClassId,link,messageId) "
+                                + "VALUES "
+                                + "('" + rs2.getString("id") + "','" + chatInvite + "','0')");
+                    }
+                }
                 con.close();
             } catch (SQLException ex) {
                 System.out.println(ex);
@@ -1239,6 +1273,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
     public static javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField lName;
+    public static javax.swing.JLabel tSendLinks;
     public static javax.swing.JLabel tSendStudentId;
     public static javax.swing.JLabel tSendStudentName;
     public static javax.swing.JLabel telegram;

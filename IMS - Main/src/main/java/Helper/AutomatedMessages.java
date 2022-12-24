@@ -7,6 +7,9 @@ package Helper;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -85,6 +88,7 @@ public class AutomatedMessages {
         } catch (TelegramApiException ex) {
             System.out.println(ex);
         }
+        String[] inviteLinks = Moderator.NewStudent.tSendLinks.getText().split(" ");
         int rowcount = Moderator.NewStudent.jTable1.getRowCount();
         for (int y = 0; y < rowcount; y++) {
             String grade = (String) Moderator.NewStudent.jTable1.getValueAt(y, 1);
@@ -94,6 +98,7 @@ public class AutomatedMessages {
             String time = (String) Moderator.NewStudent.jTable1.getValueAt(y, 5);
             String duration = (String) Moderator.NewStudent.jTable1.getValueAt(y, 6);
             String payment = (String) Moderator.NewStudent.jTable1.getValueAt(y, 7);
+            String groupLink = inviteLinks[y];
             message.setChatId(chatId);
             message.setText("Hello, " + studentName + "\n\n"
                     + "You have successfully enrolled to :\n"
@@ -101,12 +106,22 @@ public class AutomatedMessages {
                     + "Teacher : " + teacher + "\n"
                     + "Schedule : " + day + " @ " + time + "\n"
                     + "Duration : " + duration + "\n"
-                    + "Payment : " + payment
+                    + "Payment : " + payment + "\n\n"
+                    + "> Please join the class with : \n" + groupLink
             );
+            int messageId = 0;
             try {
-                bot.execute(message);
+                messageId = bot.execute(message).getMessageId();
             } catch (TelegramApiException ex) {
                 System.out.println(ex);
+            }
+            try {
+                Connection con = DB.connect();
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("UPDATE chatinvites SET "
+                        + "messageId='" + messageId + "'");
+            } catch (SQLException e) {
+                System.out.println(e);
             }
         }
     }
