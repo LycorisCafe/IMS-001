@@ -86,11 +86,19 @@ public class ClassesDetails extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        disposeText = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+
+        disposeText.setText("jLabel1");
+        disposeText.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                disposeTextPropertyChange(evt);
+            }
+        });
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Classes Details");
@@ -187,6 +195,11 @@ public class ClassesDetails extends javax.swing.JFrame {
         loadData();
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
+    private void disposeTextPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_disposeTextPropertyChange
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_disposeTextPropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -225,6 +238,7 @@ public class ClassesDetails extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    public static javax.swing.JLabel disposeText;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;

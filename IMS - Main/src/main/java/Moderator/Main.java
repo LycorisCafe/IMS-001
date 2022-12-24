@@ -708,6 +708,9 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         if (ImagePreview.disposeText != null) {
             ImagePreview.disposeText.setText("0");
         }
+        if (ClassesDetails.disposeText != null) {
+            ClassesDetails.disposeText.setText("0");
+        }
         MainPkg.Welcome logout = new MainPkg.Welcome();
         logout.setVisible(true);
         this.dispose();
