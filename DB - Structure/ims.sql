@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 23, 2022 at 08:58 PM
+-- Generation Time: Dec 24, 2022 at 03:02 PM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -32,6 +32,19 @@ CREATE TABLE `attendance` (
   `regClassId` int(20) NOT NULL,
   `date` date NOT NULL,
   `time` varchar(8) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `chatinvites`
+--
+
+CREATE TABLE `chatinvites` (
+  `id` int(20) NOT NULL,
+  `regClassId` int(20) NOT NULL,
+  `link` varchar(50) NOT NULL,
+  `messageId` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -229,6 +242,13 @@ ALTER TABLE `attendance`
   ADD KEY `regClassId` (`regClassId`);
 
 --
+-- Indexes for table `chatinvites`
+--
+ALTER TABLE `chatinvites`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `studentId` (`regClassId`);
+
+--
 -- Indexes for table `classes`
 --
 ALTER TABLE `classes`
@@ -318,6 +338,12 @@ ALTER TABLE `attendance`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `chatinvites`
+--
+ALTER TABLE `chatinvites`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `classes`
 --
 ALTER TABLE `classes`
@@ -386,6 +412,12 @@ ALTER TABLE `teachers`
 --
 ALTER TABLE `attendance`
   ADD CONSTRAINT `attendance_ibfk_1` FOREIGN KEY (`regClassId`) REFERENCES `regclass` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `chatinvites`
+--
+ALTER TABLE `chatinvites`
+  ADD CONSTRAINT `chatinvites_ibfk_1` FOREIGN KEY (`regClassId`) REFERENCES `regclass` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `classes`
