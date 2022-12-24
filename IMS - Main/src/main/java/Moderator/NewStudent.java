@@ -50,7 +50,6 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         disablePanels();
     }
     
-    String code = null;
     private WebcamPanel panel = null;
     private Webcam webcam = null;
     private Executor executor = Executors.newSingleThreadExecutor(this);
@@ -755,8 +754,7 @@ public class NewStudent extends javax.swing.JFrame implements Runnable, ThreadFa
         }
         jButton6.setEnabled(false);
         Faker faker = new Faker();
-        code = faker.number().digits(5);
-        jTextField5.setText(code);
+        jTextField5.setText(faker.number().digits(5));
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
