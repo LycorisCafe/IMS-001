@@ -75,14 +75,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
         }
-        if (Maintainer.Main.jTextArea1 != null) {
+        if (Administrator.Main.jToggleButton1 != null && Administrator.Main.jToggleButton1.isSelected()) {
             String user;
             if (update.getMessage().getFrom().getUserName() == null) {
                 user = update.getMessage().getFrom().getFirstName();
             } else {
                 user = update.getMessage().getFrom().getUserName();
             }
-            Maintainer.Main.jTextArea1.append(update.getMessage().getFrom().getId().toString()
+            Administrator.Main.jTextArea4.append(update.getMessage().getFrom().getId().toString()
                     + " " + "@" + user + " : " + update.getMessage().getText() + "\n");
         }
 
@@ -120,6 +120,5 @@ public class TelegramBot extends TelegramLongPollingBot {
 //                System.out.println(e);
 //            }
 //        }
-
     }
 }

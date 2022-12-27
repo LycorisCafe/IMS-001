@@ -27,8 +27,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         formDetails();
     }
-    
-    private void formDetails(){
+
+    private void formDetails() {
         Helper.MainDetails details = new Helper.MainDetails();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(details.iconPath())));
     }
@@ -138,7 +138,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel4.setText("Password :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Moderator", "Administrator", "System Maintainer" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Moderator", "Administrator" }));
         jComboBox1.setToolTipText("Select User Type");
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,63 +240,50 @@ public class Login extends javax.swing.JFrame {
         String typex = jComboBox1.getSelectedItem().toString();
         String userx = user.getText();
         String passwordx = String.valueOf(password.getPassword());
-
         Connection con = Helper.DB.connect();
-        if ("System Maintainer".equals(typex)) {
-            if ("".equals(userx) && "".equals(passwordx)) {
-                Maintainer.Main maintainer = new Maintainer.Main();
-                maintainer.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid user name or password!");
-            }
-        } else {
-            try {
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * "
+        try {
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * "
+                    + "FROM login "
+                    + "WHERE type='" + typex + "'");
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String usery = rs.getString("user");
+                Statement stmt2 = con.createStatement();
+                ResultSet rs2 = stmt2.executeQuery("SELECT * "
                         + "FROM login "
-                        + "WHERE type='" + typex + "'");
-                while (rs.next()) {
-                    String usery = rs.getString("user");
-                    if (usery.equalsIgnoreCase(userx)) {
-                        Statement stmt2 = con.createStatement();
-                        ResultSet rs2 = stmt2.executeQuery("SELECT id "
-                                + "FROM login "
-                                + "WHERE user='" + userx + "'");
-                        while (rs2.next()) {
-                            String userid = rs2.getString("id");
-                            Statement stmt3 = con.createStatement();
-                            ResultSet rs3 = stmt3.executeQuery("SELECT pass "
-                                    + "FROM login "
+                        + "WHERE user='" + userx + "' "
+                        + "AND id='" + id + "'");
+                while (rs2.next()) {
+                    String userid = rs2.getString("id");
+                    Statement stmt3 = con.createStatement();
+                    ResultSet rs3 = stmt3.executeQuery("SELECT pass "
+                            + "FROM login "
+                            + "WHERE id='" + userid + "'");
+                    while (rs3.next()) {
+                        String psw = rs3.getString("pass");
+                        String logtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                        if ("Moderator".equals(typex) && usery.equals(userx) && psw.equals(passwordx)) {
+                            stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
                                     + "WHERE id='" + userid + "'");
-                            while (rs3.next()) {
-                                String psw = rs3.getString("pass");
-                                if (passwordx.equals(psw)) {
-                                    String logtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                                    stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
-                                            + "WHERE id='" + userid + "'");
-                                    if ("Moderator".equals(typex)) {
-                                        Moderator.Main moderator = new Moderator.Main();
-                                        moderator.setVisible(true);
-                                        this.dispose();
-                                    } else {
-                                        Administrator.Main admin = new Administrator.Main();
-                                        admin.setVisible(true);
-                                        this.dispose();
-                                    }
-                                } else {
-                                    JOptionPane.showMessageDialog(this, "Invalid user name or password!");
-                                }
-                            }
+                            Moderator.Main moderator = new Moderator.Main();
+                            moderator.setVisible(true);
+                            this.dispose();
+                        } else if ("Administrator".equals(typex) && usery.equals(userx) && psw.equals(passwordx)) {
+                            stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
+                                    + "WHERE id='" + userid + "'");
+                            Administrator.Main admin = new Administrator.Main();
+                            admin.setVisible(true);
+                            this.dispose();
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Invalid user name or password!");
                     }
                 }
-                con.close();
-            } catch (HeadlessException | SQLException e) {
-                System.out.println(e);
             }
+            JOptionPane.showMessageDialog(this, "Invalid username or password!");
+            con.close();
+        } catch (HeadlessException | SQLException e) {
+            System.out.println(e);
+            JOptionPane.showMessageDialog(this, "Database connection error!");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
