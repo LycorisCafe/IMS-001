@@ -240,6 +240,8 @@ public class Login extends javax.swing.JFrame {
         String typex = jComboBox1.getSelectedItem().toString();
         String userx = user.getText();
         String passwordx = String.valueOf(password.getPassword());
+        int x = 0;
+        String userid = null;
         Connection con = Helper.DB.connect();
         try {
             Statement stmt = con.createStatement();
@@ -247,36 +249,10 @@ public class Login extends javax.swing.JFrame {
                     + "FROM login "
                     + "WHERE type='" + typex + "'");
             while (rs.next()) {
-                String id = rs.getString("id");
-                String usery = rs.getString("user");
-                Statement stmt2 = con.createStatement();
-                ResultSet rs2 = stmt2.executeQuery("SELECT * "
-                        + "FROM login "
-                        + "WHERE user='" + userx + "' "
-                        + "AND id='" + id + "'");
-                while (rs2.next()) {
-                    String userid = rs2.getString("id");
-                    Statement stmt3 = con.createStatement();
-                    ResultSet rs3 = stmt3.executeQuery("SELECT pass "
-                            + "FROM login "
-                            + "WHERE id='" + userid + "'");
-                    while (rs3.next()) {
-                        String psw = rs3.getString("pass");
-                        String logtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                        if ("Moderator".equals(typex) && usery.equals(userx) && psw.equals(passwordx)) {
-                            stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
-                                    + "WHERE id='" + userid + "'");
-                            Moderator.Main moderator = new Moderator.Main();
-                            moderator.setVisible(true);
-                            this.dispose();
-                        } else if ("Administrator".equals(typex) && usery.equals(userx) && psw.equals(passwordx)) {
-                            stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
-                                    + "WHERE id='" + userid + "'");
-                            Administrator.Main admin = new Administrator.Main();
-                            admin.setVisible(true);
-                            this.dispose();
-                        }
-                    }
+                if (rs.getString("user").equals(userx)
+                        && rs.getString("pass").equals(passwordx)) {
+                    x = 1;
+                    userid = rs.getString("id");
                 }
             }
             JOptionPane.showMessageDialog(this, "Invalid username or password!");
@@ -284,6 +260,27 @@ public class Login extends javax.swing.JFrame {
         } catch (HeadlessException | SQLException e) {
             System.out.println(e);
             JOptionPane.showMessageDialog(this, "Database connection error!");
+        }
+
+        String logtime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        if (x == 1) {
+            try {
+                Statement stmt = con.createStatement();
+                stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
+                        + "WHERE id='" + userid + "'");
+                if (typex.equals("Moderator")) {
+                    Moderator.Main moderator = new Moderator.Main();
+                    moderator.setVisible(true);
+                    this.dispose();
+                }
+                if (typex.equals("Administrator")) {
+                    Administrator.Main admin = new Administrator.Main();
+                    admin.setVisible(true);
+                    this.dispose();
+                }
+            } catch (SQLException e) {
+                System.out.println(e);
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
