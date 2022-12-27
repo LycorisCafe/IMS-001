@@ -81,12 +81,6 @@ public class MainDetails {
 
     public static String devChatId() {
         String devGroupId = null;
-        try ( Stream<String> lines = Files.lines(Paths.get(
-                "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc"))) {
-            devGroupId = lines.skip(3).findFirst().get();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
         return devGroupId;
     }
 }

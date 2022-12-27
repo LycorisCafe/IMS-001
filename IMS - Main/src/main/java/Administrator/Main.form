@@ -5112,6 +5112,12 @@
                 <Component class="javax.swing.JTextField" name="jTextField50">
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField51">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JButton" name="jButton44">
                   <Properties>
@@ -5125,6 +5131,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Verify"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton45ActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>

@@ -70,6 +70,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                                     update.getMessage().getChat().getId().toString());
                             Administrator.Main.success.setText("groupTIdUpdate");
                         }
+                        case "adminId" -> {
+                            Administrator.Main.jTextField51.setText(
+                                    update.getMessage().getChat().getId().toString());
+                        }
                     }
                 }
             }

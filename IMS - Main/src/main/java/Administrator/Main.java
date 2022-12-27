@@ -464,29 +464,13 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void loadApp() {
-        String tPath = "C:\\ProgramData\\LycorisCafe\\IMS\\telegram.lc";
-        String defPath = "C:\\ProgramData\\LycorisCafe\\IMS\\files.lc";
-        File f = new File(tPath);
-        if (f.exists()) {
-            try ( Stream<String> lines = Files.lines(Paths.get(tPath))) {
-                jTextField50.setText(lines.skip(0).findFirst().get());
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, ex);
-            }
-            try ( Stream<String> lines = Files.lines(Paths.get(tPath))) {
-                jTextField49.setText(lines.skip(1).findFirst().get());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e);
-            }
-            try ( Stream<String> lines = Files.lines(Paths.get(tPath))) {
-                jTextField51.setText(lines.skip(2).findFirst().get());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, e);
-            }
-        }
-        File f1 = new File(defPath);
+        jTextField50.setText(Helper.MainDetails.botUsername());
+        jTextField49.setText(Helper.MainDetails.botAPI());
+        jTextField51.setText(Helper.MainDetails.adminChatId());
+        File f1 = new File("C:\\ProgramData\\LycorisCafe\\IMS\\files.lc");
         if (f1.exists()) {
-            try ( Stream<String> lines = Files.lines(Paths.get(defPath))) {
+            try ( Stream<String> lines = Files.lines(Paths.get(
+                    "C:\\ProgramData\\LycorisCafe\\IMS\\files.lc"))) {
                 jTextField52.setText(lines.skip(0).findFirst().get());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, ex);
@@ -3624,6 +3608,8 @@ public class Main extends javax.swing.JFrame {
 
         jLabel90.setText("Admin Chat ID : ");
 
+        jTextField51.setEditable(false);
+
         jButton44.setText("Save");
         jButton44.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -3632,6 +3618,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton45.setText("Verify");
+        jButton45.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton45ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel49Layout = new javax.swing.GroupLayout(jPanel49);
         jPanel49.setLayout(jPanel49Layout);
@@ -6366,13 +6357,24 @@ public class Main extends javax.swing.JFrame {
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         // TODO add your handling code here:
-        if (jToggleButton1.isSelected()==true){
+        if (jToggleButton1.isSelected() == true) {
             jToggleButton1.setText("Listening (on)");
         } else {
             jToggleButton1.setText("Listening (off)");
         }
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void jButton45ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton45ActionPerformed
+        // TODO add your handling code here:
+        success.setText("---");
+        TelegramVerify tVerify = new TelegramVerify();
+        tVerify.setVisible(true);
+        Faker faker = new Faker();
+        TelegramVerify.jTextField1.setText(faker.number().digits(5));
+        type.setText("private");
+        returnMethod.setText("adminId");
+    }//GEN-LAST:event_jButton45ActionPerformed
+    
     /**
      * @param args the command line arguments
      */
@@ -6709,7 +6711,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField49;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField50;
-    private javax.swing.JTextField jTextField51;
+    public static javax.swing.JTextField jTextField51;
     private javax.swing.JTextField jTextField52;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
