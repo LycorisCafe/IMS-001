@@ -859,7 +859,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                     while (rs2.next()) {
                         int count = rs2.getInt(1);
                         Statement stmt3 = con.createStatement();
-                        ResultSet rs3 = stmt.executeQuery("SELECT * "
+                        ResultSet rs3 = stmt3.executeQuery("SELECT * "
                                 + "FROM students "
                                 + "WHERE id='" + studentId + "'");
                         while (rs3.next()) {
