@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package MainPkg;
+package Main;
 
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -269,12 +269,12 @@ public class Login extends javax.swing.JFrame {
                 stmt.executeUpdate("UPDATE login SET lastLogin='" + logtime + "' "
                         + "WHERE id='" + userid + "'");
                 if (typex.equals("Moderator")) {
-                    Moderator.Main moderator = new Moderator.Main();
+                    Moderator.MMain moderator = new Moderator.MMain();
                     moderator.setVisible(true);
                     this.dispose();
                 }
                 if (typex.equals("Administrator")) {
-                    Administrator.Main admin = new Administrator.Main();
+                    Administrator.AMain admin = new Administrator.AMain();
                     admin.setVisible(true);
                     this.dispose();
                 }

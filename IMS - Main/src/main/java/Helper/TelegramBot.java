@@ -43,35 +43,35 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             if (Administrator.TelegramVerify.jTextField1 != null && !Administrator.TelegramVerify.jTextField1.getText().equals("---")) {
                 if (update.getMessage().getText().equals(Administrator.TelegramVerify.jTextField1.getText())
-                        && update.getMessage().getChat().getType().equals(Administrator.Main.type.getText())) {
+                        && update.getMessage().getChat().getType().equals(Administrator.AMain.type.getText())) {
                     Administrator.TelegramVerify.disposeText.setText("0");
-                    switch (Administrator.Main.returnMethod.getText()) {
+                    switch (Administrator.AMain.returnMethod.getText()) {
                         case "teacherAdd" -> {
-                            Administrator.Main.telegramId.setText(update.getMessage().getFrom().getId().toString());
-                            Administrator.Main.success.setText("teacherAdd");
+                            Administrator.AMain.telegramId.setText(update.getMessage().getFrom().getId().toString());
+                            Administrator.AMain.success.setText("teacherAdd");
                         }
                         case "teacherUpdate" -> {
-                            Administrator.Main.telegramId.setText(
+                            Administrator.AMain.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
-                            Administrator.Main.success.setText("teacherUpdate");
+                            Administrator.AMain.success.setText("teacherUpdate");
                         }
                         case "groupAdd" -> {
-                            Administrator.Main.telegramId.setText(
+                            Administrator.AMain.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
-                            Administrator.Main.success.setText("groupAdd");
+                            Administrator.AMain.success.setText("groupAdd");
                         }
                         case "studentUpdate" -> {
-                            Administrator.Main.telegramId.setText(
+                            Administrator.AMain.telegramId.setText(
                                     update.getMessage().getFrom().getId().toString());
-                            Administrator.Main.success.setText("studentUpdate");
+                            Administrator.AMain.success.setText("studentUpdate");
                         }
                         case "groupTIdUpdate" -> {
-                            Administrator.Main.telegramId.setText(
+                            Administrator.AMain.telegramId.setText(
                                     update.getMessage().getChat().getId().toString());
-                            Administrator.Main.success.setText("groupTIdUpdate");
+                            Administrator.AMain.success.setText("groupTIdUpdate");
                         }
                         case "adminId" -> {
-                            Administrator.Main.jTextField51.setText(
+                            Administrator.AMain.jTextField51.setText(
                                     update.getMessage().getChat().getId().toString());
                         }
                     }
@@ -79,14 +79,14 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
 
         }
-        if (Administrator.Main.jToggleButton1 != null && Administrator.Main.jToggleButton1.isSelected()) {
+        if (Administrator.AMain.jToggleButton1 != null && Administrator.AMain.jToggleButton1.isSelected()) {
             String user;
             if (update.getMessage().getFrom().getUserName() == null) {
                 user = update.getMessage().getFrom().getFirstName();
             } else {
                 user = update.getMessage().getFrom().getUserName();
             }
-            Administrator.Main.jTextArea4.append(update.getMessage().getFrom().getId().toString()
+            Administrator.AMain.jTextArea4.append(update.getMessage().getFrom().getId().toString()
                     + " " + "@" + user + " : " + update.getMessage().getText() + "\n");
         }
 

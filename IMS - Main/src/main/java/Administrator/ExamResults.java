@@ -36,8 +36,8 @@ public class ExamResults extends javax.swing.JFrame {
     private void loadResults() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
-        int r = Main.jTable8.getSelectedRow();
-        String examId = Main.jTable8.getValueAt(r, 0).toString();
+        int r = AMain.jTable8.getSelectedRow();
+        String examId = AMain.jTable8.getValueAt(r, 0).toString();
         String rank;
         try {
             Connection con = Helper.DB.connect();

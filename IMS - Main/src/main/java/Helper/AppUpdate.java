@@ -241,7 +241,7 @@ public class AppUpdate {
                 Updates.jLabel1.setText("Setting Paths...");
                 String jarDir = null;
                 try {
-                    CodeSource codeSource = MainPkg.IMS.class.getProtectionDomain().getCodeSource();
+                    CodeSource codeSource = Main.IMS.class.getProtectionDomain().getCodeSource();
                     File jarFile = new File(codeSource.getLocation().toURI().getPath());
                     jarDir = jarFile.getParentFile().getPath();
                 } catch (URISyntaxException e) {

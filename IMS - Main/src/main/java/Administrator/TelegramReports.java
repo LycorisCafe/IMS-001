@@ -221,7 +221,7 @@ public class TelegramReports extends javax.swing.JFrame {
                     "C:\\ProgramData\\LycorisCafe\\IMS\\Logs\\broadcastMessage.log", true));
             output.append("----------\n");
             output.append(time + "\n");
-            output.append("Message :\n" + Main.broadcastMessage.getText() + "\n");
+            output.append("Message :\n" + AMain.broadcastMessage.getText() + "\n");
             output.append(jTextArea1.getText());
             output.append("----------\n\n");
             output.close();

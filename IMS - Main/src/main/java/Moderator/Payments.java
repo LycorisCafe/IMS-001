@@ -27,7 +27,7 @@ public class Payments extends javax.swing.JFrame {
     }
 
     private void dataGrab() {
-        String studentId = Main.studentIdLabel.getText();
+        String studentId = MMain.studentIdLabel.getText();
         jTextField2.setText(studentId);
         String subject;
         String grade;
@@ -210,14 +210,14 @@ public class Payments extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Main main = new Main();
+        MMain main = new MMain();
         main.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        Main main = new Main();
+        MMain main = new MMain();
         main.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed

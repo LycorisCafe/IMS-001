@@ -42,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Lycoris Cafe
  */
-public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory {
+public class MMain extends javax.swing.JFrame implements Runnable, ThreadFactory {
 
     private WebcamPanel panel = null;
     private Webcam webcam = null;
@@ -58,7 +58,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
     /**
      * Creates new form Operations
      */
-    public Main() {
+    public MMain() {
         initComponents();
         formDetails();
         initWebCam();
@@ -711,7 +711,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
         if (ClassesDetails.disposeText != null) {
             ClassesDetails.disposeText.setText("0");
         }
-        MainPkg.Welcome logout = new MainPkg.Welcome();
+        Main.Welcome logout = new Main.Welcome();
         logout.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -1060,21 +1060,23 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MMain.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new MMain().setVisible(true);
             }
         });
     }
@@ -1128,7 +1130,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(MMain.class.getName()).log(Level.SEVERE, null, ex);
             }
             Result result = null;
             BufferedImage image = null;
@@ -1144,7 +1146,7 @@ public class Main extends javax.swing.JFrame implements Runnable, ThreadFactory 
                 try {
                     result = new MultiFormatReader().decode(bitmap);
                 } catch (NotFoundException ex) {
-//                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+//                Logger.getLogger(MMain.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 if (result != null) {
                     qrResult = result.getText();
