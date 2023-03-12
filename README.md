@@ -1,8 +1,10 @@
-# IMS
-Institute Management System
+# IMS - 001
+Institute Management System by Lycoris Cafe!
 [ IMS-001 ] 
 
 # [ Will never maintained ]
+
+`this project isn't compleated and latest stable version is here. feel free to clone/fork and edit.`
 
 > Coding :
 - Language : Java (JDK 17)
